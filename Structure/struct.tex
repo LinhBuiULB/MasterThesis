@@ -1,0 +1,69 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[pdftex]{graphicx}
+\usepackage[left=3cm,right=3cm,top=3cm,bottom=3cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[francais,english]{babel}
+\newcommand*{\escape}[1]{\texttt{\textbackslash#1}}
+\frenchbsetup{StandardLists=true}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{listings}
+
+%ALGORITHM
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\renewcommand{\algorithmicforall}{\textbf{for each}}
+\newcommand{\var}[1]{\mathit{#1}}
+\newcommand{\func}[1]{\mathrm{#1}}
+\algdef{SE}[DOWHILE]{Do}{doWhile}{\algorithmicdo}[1]{\algorithmicwhile\ #1}
+%
+
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{makecell}
+
+\usepackage{graphicx}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+
+
+\title{Structure du Mémoire \\ Methods for large-scale image classification and application to biomedical data}
+\author{\bsc{BUI QUANG PHUONG} Linh - ULB ID : 000427796 \\ MA1 Computer Sciences}
+\date{March 2019}
+
+
+\begin{document}
+
+\maketitle
+
+Comme indique le titre, le mémoire va être diviser en deux grandes parties qui vont constituer la lignée principale du sujet : la classification d'images classiques (pas de domaine particulier) et un focus plus précis sur des données biomédicales. \\
+
+Quant à la structure du mémoire, en plus de la page de garde, du sommaire, du lexique, etc qui seront évidemment présents, le mémoire va se structurer comme tel :
+
+\begin{enumerate}
+\item \textbf{L'abstract} : résumé du problème et des méthodes abordés (à rédiger en fin de mémoire) 
+\item \textbf{L'introduction} : 
+\begin{itemize}
+\item présentation du contexte (quand, comment ce problème est-il survenu) 
+\item présentation des problèmes généraux de la vie courante relatifs à la classification d'images comme Google Images ou les caméras de surveillance + présentation d'exemples dans différents domaines notamment le domaine dans le domaine médical. 
+\item Définition plus concrète du problème (assignation d'un label à une image) dont la sous-question : "Comment est donc représenté l'image?"
+\item Brève présentation du machine learning et des méthodes associées (méthodes encore à déterminer) 
+\item Présentation des objectifs 
+\end{itemize}  
+
+\item \textbf{Etat de l'art} : 
+% Présentation du schéma classique de classification d'image et des différentes étapes tels que l'extraction de caractéristiques, le préprocessing, ...  
+
+\end{enumerate} 
+
+
+
+\end{document}
