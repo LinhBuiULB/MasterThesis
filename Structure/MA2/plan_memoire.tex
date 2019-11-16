@@ -1,0 +1,83 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[pdftex]{graphicx}
+\usepackage[left=3cm,right=3cm,top=3cm,bottom=3cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[francais,english]{babel}
+\newcommand*{\escape}[1]{\texttt{\textbackslash#1}}
+\frenchbsetup{StandardLists=true}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{listings}
+
+%ALGORITHM
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\renewcommand{\algorithmicforall}{\textbf{for each}}
+\newcommand{\var}[1]{\mathit{#1}}
+\newcommand{\func}[1]{\mathrm{#1}}
+\algdef{SE}[DOWHILE]{Do}{doWhile}{\algorithmicdo}[1]{\algorithmicwhile\ #1}
+%
+
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{makecell}
+
+\usepackage{graphicx}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+
+
+\title{Structure du Mémoire \\ Methods for large-scale image classification and application to biomedical data}
+\author{\bsc{BUI QUANG PHUONG} Quang Linh - ULB ID : 000427796 \\ MA2 Computer Sciences}
+\date{Novembre 2019}
+
+
+\begin{document}
+
+\maketitle
+
+Ce qui a été réalisé en \textbf{Master 1} : 
+
+\begin{enumerate}
+\item \textbf{Introduction} : présentation des concepts, historique, des exemples d'application. 
+
+\item \textbf{General concepts of AI} : présentation du machine learning et deep learning, supervised/unsupervised learning, définition du problème de classification d'images. 
+
+\item \textbf{Material and Methods} : présentation des neural network, CNN, SVM ainsi que des méthodes d'évaluation et de validation. 
+
+\item \textbf{Breast cancer detection} : présentation d'un cas connu à partir d'un article, présentation de ses méthodes et résultats 
+
+\end{enumerate}
+
+\noindent\hrulefill
+
+\vspace{0.5cm}
+Ce qui va être réalisé en \textbf{Master 2} :
+
+\begin{enumerate}
+\setcounter{enumi}{4}
+
+\item \textbf{Model prototype} : création d'un premier modèle et application sur des données non-médicales (CIFAR10). Présentation du dataset CIFAR10, présentation du modèle, des différents paramètres, les manipuler et comparer/présenter les résultats obtenus en fonction de ces différentes valeurs. 
+
+\item \textbf{A specific case: Identification of Leukemia Subtypes} (ou autre article/problème): présentation du problème en question, essayer notre modèle dessus, appliquer les différentes méthodes/filtres utilisés (data augmentation) dans l'article afin de reproduire (voir améliorer) les résultats si possible. 
+
+
+\item \textbf{Exclusive data analysis} : 
+
+\item \textbf{Interactive image labelling} : 
+
+\item \textbf{Combining different types of data in CNN} : 
+
+\end{enumerate}
+
+A première vue, les points 5 ainsi qu'une grande partie (voir totalement) du point 6 vont être réalisés pendant le premier quadri tandis que les 3 derniers points seront réservées au second quadri. 
+
+\end{document}

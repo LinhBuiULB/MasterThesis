@@ -1,0 +1,92 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[pdftex]{graphicx}
+\usepackage[left=3cm,right=3cm,top=3cm,bottom=3cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[francais,english]{babel}
+\newcommand*{\escape}[1]{\texttt{\textbackslash#1}}
+\frenchbsetup{StandardLists=true}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{listings}
+
+%ALGORITHM
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\renewcommand{\algorithmicforall}{\textbf{for each}}
+\newcommand{\var}[1]{\mathit{#1}}
+\newcommand{\func}[1]{\mathrm{#1}}
+\algdef{SE}[DOWHILE]{Do}{doWhile}{\algorithmicdo}[1]{\algorithmicwhile\ #1}
+%
+
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{makecell}
+
+\usepackage{graphicx}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+
+
+\title{Structure du Mémoire \\ Methods for large-scale image classification and application to biomedical data}
+\author{\bsc{BUI QUANG PHUONG} Quang Linh - ULB ID : 000427796 \\ MA1 Computer Sciences}
+\date{March 2019}
+
+
+\begin{document}
+
+\maketitle
+
+Comme indique le titre, le mémoire va être diviser en deux grandes parties qui vont constituer la lignée principale du sujet : la classification d'images classiques (pas de domaine particulier) et un focus plus précis sur des données biomédicales. \\
+
+Quant à la structure du mémoire, en plus de la page de garde, du sommaire, du lexique, etc qui seront évidemment présents, le début du mémoire va se structurer comme tel , donc en \textit{ce qui concerne cette année} (MA1) : 
+
+\begin{enumerate}
+\item \textbf{L'abstract} : résumé du problème et des méthodes abordés (à rédiger en fin de mémoire) 
+\item \textbf{L'introduction} : 
+\begin{itemize}
+\item présentation du contexte (quand, comment ce problème est-il survenu) 
+\item présentation des problèmes généraux de la vie courante relatifs à la classification d'images comme Google Images ou les caméras de surveillance + présentation d'exemples dans différents domaines notamment le domaine dans le domaine médical (détection de tumeur / radiographie / etc). 
+\item Définition plus concrète du problème (assignation d'un label à une image) dont la sous-question : "Comment est donc représenté l'image?" 
+\item Présentation des objectifs 
+\end{itemize}  
+
+\item \textbf{Background} : 
+\begin{itemize}
+\item Introduction du machine learning / deep learning et des méthodes associées - par exemple Convolutional Neural Networks, SIFT, SURF, SVM, etc (méthodes encore à déterminer)
+\item Introduction à la réduction de dimension et de visualisation
+\end{itemize}
+
+\item \textbf{Etat de l'art} : 
+Dans un premier temps, présentation des méthodes classiques/générales pour la classification d'images : 
+\begin{itemize}
+\item Présentation du schéma classique de classification d'image et des différentes étapes tels que l'extraction de caractéristiques, le préprocessing, ...  
+\item Comparaison des méthodes abordées, quels sont les spécificités de chaque méthode ? 
+\item Présentation de quelques résultats obtenus par les différentes références bibliographiques 
+\item Avantages et limites du Machine Learning / Deep Learning (et donc de ces méthodes) ?
+\item Efficacité ? Performance ? Précision des résultats ?
+\end{itemize}
+
+Puis dans un second temps, on va s'intéresser aux données biomédicales : 
+\begin{itemize}
+\item Quels méthodes sont utilisées généralement pour ce genre de données ? 
+\item Présentation de quelques résultats sur des données des références bibliographiques. 
+\item Tout comme pour les images classiques, efficacité ? Performance ? Précision des résultats ?
+\item Etude de cas sur un certain sous-problème, par exemple détection d'une lésion, ...
+\end{itemize}
+
+\item (Section provisoire pour la MA1) \textbf{Objectifs et plan pour la suite du mémoire} : 
+\begin{itemize}
+\item présentation des projets à venir pour la MA2, des sujets et méthodes abordées, des données qui vont être traitées, etc. 
+\end{itemize}
+
+\end{enumerate} 
+
+\end{document}
