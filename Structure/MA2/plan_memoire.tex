@@ -65,7 +65,17 @@ Ce qui va être réalisé en \textbf{Master 2} :
 \begin{enumerate}
 \setcounter{enumi}{4}
 
-\item \textbf{Model prototype} : création d'un premier modèle et application sur des données non-médicales (CIFAR10). Présentation du dataset CIFAR10, présentation du modèle, des différents paramètres, les manipuler et comparer/présenter les résultats obtenus en fonction de ces différentes valeurs. 
+\item \textbf{Model prototype} : création d'un premier modèle et application sur des données non-médicales (CIFAR10). Présentation du dataset CIFAR10, présentation du modèle, des différents paramètres: 
+
+\begin{itemize}
+\item Tester différents optimisers : adam, SGD, ...
+\item Tester avec et sans dropout + test de différentes valeurs de dropout
+\item Tester avec et sans kernel\_regularizer (weight decay)
+\item Tester data augmentation
+\item Tester différentes valeurs de hyperparameters (epochs, batch\_size, ...) 
+\end{itemize}
+
+$\rightarrow$ Manipuler et comparer/présenter les résultats obtenus en fonction de ces différentes valeurs et voir quelle configuration obtient les meilleurs résultats. + justification en expliquant les différents paramètres / variables   
 
 \item \textbf{A specific case: Identification of Leukemia Subtypes} (ou autre article/problème): présentation du problème en question, essayer notre modèle dessus, appliquer les différentes méthodes/filtres utilisés (data augmentation) dans l'article afin de reproduire (voir améliorer) les résultats si possible. 
 
