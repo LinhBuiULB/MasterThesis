@@ -1,0 +1,957 @@
+\documentclass[11pt, openany]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,left=3cm,right=3cm,top=3cm,bottom=3cm]{geometry}
+\usepackage[english]{babel}
+\usepackage{libertine}
+\usepackage[pdftex]{graphicx}
+\usepackage{tabu}
+\usepackage{makeidx}
+\usepackage{lipsum}
+\makeindex
+
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+\newcommand{\hsp}{\hspace{20pt}}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\usepackage{amsmath,amsfonts,amssymb,amsthm,epsfig,epstopdf,titling,url,array}
+
+% SHOW SUBSUBSECTION IN TABLES OF CONTENTS 
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+% BIBLIOGRAPHIE 
+\usepackage{natbib}
+\bibliographystyle{apalike-fr}
+\renewcommand{\UrlFont}{\ttfamily\footnotesize}
+
+% CAPTION PACKAGE
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{makecell}
+
+%%% MATHS PACKAGE 
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem*{cor}{Corollary}
+\newcommand\norm[1]{\left\lVert#1\right\rVert}
+
+%ALGORITHM
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\renewcommand{\algorithmicforall}{\textbf{for each}}
+\newcommand{\var}[1]{\mathit{#1}}
+\newcommand{\func}[1]{\mathrm{#1}}
+\algdef{SE}[DOWHILE]{Do}{doWhile}{\algorithmicdo}[1]{\algorithmicwhile\ #1}
+%
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{conj}{Conjecture}[section]
+\newtheorem{exmp}{Example}[section]
+
+\theoremstyle{remark}
+\newtheorem*{rem}{Remark}
+\newtheorem*{note}{Note}
+
+\DeclareUnicodeCharacter{200A}{!!!FIX ME!!!} 
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%% PAGE DE GARDE %%%%%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+  \begin{sffamily}
+  \begin{center}
+
+    % Upper part of the page. The '~' is needed because \\
+    % only works if a paragraph has started.
+    \includegraphics[scale=0.4]{figures/logo_ulb.jpg}~\\[1cm]
+    
+	\textsc{\LARGE UNIVERSITÉ LIBRE DE BRUXELLES}\\[0.5cm]
+    \textsc{\LARGE Computer Sciences Department, Faculty of Sciences}\\[2cm]
+    \textsc{\LARGE Master Thesis}\\[2cm]
+
+    % Title
+    \hrule width 15cm
+    \vspace{0.5cm}
+    { \huge \bfseries Methods for large-scale image classification and application to biomedical data}
+    \vspace{0.5cm}
+	\hrule width 15cm
+	\vspace{1cm}
+	
+	
+	\LARGE Quang Linh \textsc{\textbf{\LARGE Bui Quang Phuong}} \\ [0.5cm]
+	\large ULB ID: 000427796 
+	
+    \vfill
+
+    % Bottom of the page
+    {\large \textbf{Promotor :} Matthieu Defrance} \\
+    \vspace{0.5cm}
+    Academic Year 2019-2020
+
+  \end{center}
+  \end{sffamily}
+\end{titlepage}
+
+
+\begin{abstract}
+
+In this document, the important computer vision problem called image classification is tackled. To introduce the problem, different applications of image recognition and classification are given and explained to prove its importance in our actual world,  especially in the medical field which will be focused in this paper. Furthermore, machine learning and deep learning methods are used to solve image classification problem. In 2012, convolutional neural networks (CNN) have significantly increase the performance of the previous learning methods. In addition to CNN, this document expounds support vector machines (SVM) which is a well-known method for classifying data into classes. Subsequently, these methods will be used to resolve medical images classification problems. In particular, the methodology following Regab et al.'s paper \cite{breast-cancer} to detect breast cancer by analysing mammogram images with an average accuracy of 80\%  makes subject of an entire chapter of the document.      
+
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%% TABLE DES MATIERES %%%%%%%%%%%%%%%%%%%%%%%%
+\tableofcontents
+
+
+\chapter{Introduction}
+
+\section{Context and birth of the classification problem}
+
+\subsection{Context}
+
+In our days, countless numbers of pictures are taken of everything and anything due to the exponential growing of photography and digital photo cameras. Whether it is thanks to the built-in camera of your smartphone or your faithful travel companion, taking a picture has become a disconcerting ease. All these pictures are inevitably shared and searched on the internet. Without any classification, it would be a really laborious task to find a particular picture over the millions (even billions actually!) photos taken by users worldwide. This classification problem can be extended in a large panel of fields: it can go from your personal use to a more impacting field such as medical images analysis. Overall, this problem can be generalized and divided into an image processing and recognition sub-problems. More applications are presented in the next section.  \\
+
+Thereby, fast and efficient methods have to be found to realize a reliable classification of big data. It is in the 50's, when the artificial intelligence (AI) has begun to take shape, that image recognition becomes a more serious problem to manage. As Marvin Minsky, co-founder of the Massachusetts Institute of Technology's (MIT) AI laboratory, defines: 
+\begin{quote}
+\textit{"AI is the science of making machines do things that would require intelligence if done by men."} (1968)
+\end{quote}      
+
+Following this definition, image recognition and classification can clearly be resolved by AI methods, such as \textit{Machine Learning} -- which is a technique for teaching machines to learn, and indeed becomes one of the main application of AI. \\
+
+\subsection{History and first methods}
+
+The first methods used are based on \textit{Artificial Neural Networks} (ANN) where the first artificial neuron is created in 1943. Very briefly, the basic idea behind a neural network is to simulate (i.e. copy in a good way) lots of densely interconnected brain cells inside a computer so you can get it to learn things and recognize patterns to finally take a decision as a human would do. % source:https://www.explainthatstuff.com/introduction-to-neural-networks.html
+This is exactly what we want to apply for an image. Giving on input an image, the neural network will recognize and learn the different patterns of this input and will assign the image on a specific category where these patterns are retrieved. These patterns are also called \textbf{features}.
+
+Nevertheless, it is in the 21st century that image classification and recognition has evolved faster and faster. Previously, the accuracy of the recognition was not very high, implying a somehow large rate of error (at least more than 20\%).
+
+In 2010, the appearance of \textit{Deep Learning} -- a class of machine learning algorithms that goes deeper into data to recognize patterns, accelerates the evolution of image classification problem and enhances this accuracy, especially due to a new class of neural networks called \textit{Convolutional Neural Networks} (CNN) that will be tackled in details in the next chapters.  % à expliquer vite fait 
+
+For instance, in 2012, Alex Krizhevsky, Ilya Sutskever and Geoffrey Hinton created a new recognition algorithm for objects images ensuring an 85\% level of accuracy and in 2015, developed tools using CNN reaches a 95\% level of accuracy for facial recognition \cite{History-1}. \\  
+
+\section{Some application of image classification}
+% lien utile : https://imagga.com/blog/the-top-5-uses-of-image-recognition/
+
+\subsection{Google Images}
+When thinking of image classification, Google Images is probably one of the most famous application of image classification. This extension of Google is the most used image search engine. At the beginning, Google's technology do basic things like extracting text from images, but its real power is in actually recognizing the objects in an image. Google says it has trained the algorithm to recognize "thousands" of different objects. % source: https://techcrunch.com/2016/02/18/google-opens-its-cloud-vision-api-to-all-developers/?guccounter=1
+Over time, Google has evolved and offers new features analysis such as sentiment and emotion detection. \\
+
+Moreover, in 2013, Google released search for personal photos, giving users the ability to retrieve photos in their libraries based on the objects present in the images. Two years later, in 2015, this feature was implemented in Google Photos, the application of Google that stores all of your personal photos to ease your photos classification \cite{Google-2}. Following the AI's definition of Minsky, that proves that computer vision software could classify images to human standards avoiding annoying tasks to humans such as labelling manually all its photos. The models built to label images are even done to see pictures more like humans do. Indeed, the model is analysing every pixel of the photo and does not take in account if the object is in the foreground or in the background, the model will label it anyway as seen in the example given in \autoref{fig:googleImages-ex-labelling}. 
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.3]{figures/googleImages-ex-labeling.png}
+  \caption{Example of Google Images' photo's labelling \cite{Google-2}}
+  \label{fig:googleImages-ex-labelling}
+\end{figure}
+
+
+\newpage
+\subsection{Face recognition}
+As you can imagine, no face can exactly be the same as another face. Every face has different features specific to each which can be the size of your mouth, the distance between your eyes or even the form of your face. This is how image classification is used in face recognition technology. These features are extracted and analysed to recognize and evaluate which face belongs to which person. As said, every face has different specific features which are characterized by \textbf{keypoints} which are essential to mark and extract. An example of keypoints extraction is given in \autoref{fig:face-recognition-keypoints}. The most used technique to extract these features is CNN which is, of course, not only used for facial recognition. 
+
+Facial recognition is used recurrently in various fields, here are some examples of face recognition applications:  
+\begin{itemize}
+\item \textbf{Security and control}: face recognition systems help control access to personal devices, residences, vehicles, offices and other premises alike. It can also be used to secure online payments with face recognition confirmation. 
+\item \textbf{Health}: some specific features of the face are an evidence of illnesses. These features could be detected with facial recognition. 
+\item \textbf{Criminal identification}: as presented in detective movies, creating a photofit picture is a way to identify criminals to find him in the population database\footnote{Indeed, the FBI currently have a database which includes half of the national population's faces.} thanks to face recognition.    
+\end{itemize}
+
+% https://hackernoon.com/building-a-facial-recognition-pipeline-with-deep-learning-in-tensorflow-66e7645015b8
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.20]{figures/face-recognition-keypoints.jpeg}
+  \caption{Keypoints marking to extract features for face recognition \cite{Face-Recognition-1}}
+  \label{fig:face-recognition-keypoints}
+\end{figure}
+
+\subsection{Musical images analysis}
+Actually, music is easily represented by images. It can be in the form of music score or spectral density, every song has its proper visual representation. Image recognition technology can be used to recognize the song obviously, but also to classify a large dataset of songs by genre. What was said about the presence of images in our daily life is also valid for music. Indeed, the music's market is growing and new genres are created over the multiple genres already existing. Applications that allows you to listen music (such as Spotify or Deezer) have to classify all their music library by genre. This is especially useful for the songs recommendations that the software is proposing to you following your music preferences or simply to find a specific song in the large library. \\ 
+
+% source : https://pdfs.semanticscholar.org/22bf/c923870688d47fe3e4e97c52ab119a028f27.pdf
+Concerning image processing, the overall procedure is the same as for simple images. the genre classification process of music has two main steps: feature extraction and classification. The first step obtains audio signal information, while the second one classifies the music into various genres according to extracted features. For instance, for music score analysis, one of the interesting features are the notes and their rhythm so that we have to create a model that recognizing musical notation as illustrated in \autoref{fig:partition-example}. To do that, it exists different methods that will be tackled further in the document such as CNN or Markov models. 
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.18]{figures/partition-example.jpg}
+  \caption{(French) Labelling of the different notes of "Au clair de la lune" 's music score}
+  \label{fig:partition-example}
+\end{figure}
+  
+More generally, what is applied to music can also be applied to recognize sounds in general such as dog's bark, riding moto or human voice in particular thanks to their spectrogram representation. The following figure is using Deep belief network (DBL), a class of neural network, to recognize the audio.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.4]{figures/spectrogramSound.png}
+  \caption{A sound spectrogram recognition using convolutional DBN \cite{sound}.}
+  \label{fig:spectrogramSound}
+\end{figure}
+
+
+\subsection{Medical images analysis}
+% Faire une grosse paranthèse sur le domaine médical % faire un lien avec facial recognition, on peut voir les diseases en fonction du visage
+In the medical field, different techniques of medical images exist which make the use of images quite abundant. The most popular one are radiography or ultrasounds scan, but much more imaging techniques exist such as magnetic resonance imaging (MRI) or histological images observed under a microscope. This huge amount of images generated is a precious source of information and constitutes an important training dataset to help to extract important and redundant features for future analysis. Thus, the existing methods for image classification can also used for medical image analysis. The main goal of these methods is to highlight anomalies that may help to detect diseases. Deep learning excels in perceptual tasks such as detection and segmentation. Here are some examples of different types of medical images analysis and their reason for being used.
+
+\begin{enumerate}
+\item \textbf{mammographic mass classification:} this is actually one of the most frequent disease for women over a certain age. The important thing is to detect the disease at starting point to treat it correctly. Thus, what we want to detect here is a center of a lesion, especially to detect malignant tumor which is a sign of breast cancer.  To do that, the image includes different types of features that are used to raise the lesion such as contrast features that highlight a feature that is often mentioned by radiologists which is the distance that separates the lesion from the background. An other feature that is relevant to raise is the presence of holes in the candidate lesion which often decrease their suspiciousness, since tumours are solid, with possibly the exception of lobular carcinoma\footnote{From the \textit{National Cancer Institute} (NCI): Cancer that begins in the lobules (milk glands) of the breast. Lobular carcinoma is a noninvasive condition in which abnormal cells are found in the lobules of the breast. Lobular carcinoma rarely becomes invasive cancer, but having lobular carcinoma in one breast increases the risk of developing invasive cancer in either breast.} \cite{breast-cancer-2}. This is just two types of features that is relevant to analyse mammographic mass but they are many more.  In particular, breast cancer detection is subject of an entire part of the document (\autoref{chap:breast-cancer}).
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.4]{figures/breast-images-examples.png}
+  \caption{Mammographic mass images classification. (a, b) Segmentation of lesion, (a) is the illustration of the lesion on a smaller scale. \cite{breast-cancer-2} (c) breast cancer metastases detection in lymph nodes using an histopathology image.}
+  \label{fig:breast-example}
+\end{figure}
+
+\item \textbf{segmentation of lesions in the brain:} brain tumors can easily lead to death if they are not detected early and accurately to avoid disasters. Thus, brain tumors segmentation is an important challenge for medical purposes. Magnetic Resonance Imaging (MRI) is the medical imaging technique which is extensively used for diagnosis and treatment of brain tumors in clinical practice. Of course, these images provided by MRI includes different patterns of tumors which are interesting to collect to detect it automatically from deep learning and AI techniques. \\
+Usually, healthy brain tissue consists of three parts: gray matter, white matter, and cerebrospinal fluid. The segmentation is used to identify areas surrounded by a tumor by separating the active tumorous tissue from the necrotic tissue. This is done by identifying abnormal areas when compared to normal tissue \cite{brain-tumor-1}. 
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.5]{figures/brain-images-examples.png}
+  \caption{Brain MRI slices captured from different directions \cite{brain-tumor-1}.}
+  \label{fig:brain-example}
+\end{figure}
+
+\newpage
+\item \textbf{diabetic retinopathy (DR) classification :} DR is an eye deficiency created by diabetes and can lead to blindness. The main purposes of this deficiency is due to the high-level of sugar in your blood which can lead to the blockage of the tiny blood vessels that nourish the retina, cutting off its blood supply. Classification methods and pattern recognition are tried to help analysing color fundus photographies (which is represented in the figure) to detect DR automatically and are actually in good progress. These classifying models are capable of quantifying the different features as blood vessels, fluid drip, exudates, hemorrhages and micro aneurysms\footnote{A micro aneurysm is a small swelling that forms in the wall of tiny blood vessels. These small swellings may break and allow blood to leak into nearby tissue.} into different classes. All these features are signs of DR, especially micro aneurysms which is usually the first visible sign of diabetic retinopathy. \\
+Many filters are used to highlight these features such as edges detection which is the one of the feature extraction methods where the boundaries of the features are highlighted (i.e., the edges of the blood clots, white lesions, veins) are detected based on the sudden change in the pixel values with the neighborhood pixel intensity \cite{DR-1}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.6]{figures/DR-images-examples.png}
+  \caption{Representative retinal images of DR at various stages of the disease, as labeled: A- normal, B- end stage, C- early stage. Arrows in B point to pathological indications. White boxes in C enclose very small lesions that the CNNs have difficulty discerning \cite{DR-2}.}
+  \label{fig:DR-example}
+\end{figure}
+
+\end{enumerate}
+
+However, the outcomes of these methods of image processing is not sufficient to give complete information about the image. The computer has not yet the knowledge of scientists and doctors which means that a human's intervention is necessary to complete the information given by the computer's outcomes. That is why the deep learning methods used are rather called \textbf{computer aided detection} (CAD) which is defined as systems that assist doctors in the interpretation of medical images. 
+
+\chapter{General concepts of AI}
+
+\section{Machine learning and deep learning}
+We know that image classification is a problem resolvable by AI methods such as machine learning and especially deep learning. These methods are usually used to resolve data science problems such as image classification. Let's introduce and define them.
+
+\subsection{Machine learning}
+
+\begin{defn}
+\textit{Machine learning} is an application of artificial intelligence (AI) that provides systems the ability to automatically learn and improve from experience without being explicitly programmed. Machine learning focuses on the development of computer programs that can access data and use it learn for themselves \cite{ML-1}. 
+\end{defn}
+
+% source : https://searchenterpriseai.techtarget.com/definition/machine-learning-ML
+The main goal of machine learning is then to allow the computers \textbf{learn automatically} without human intervention to find a model that does an approximation of reality by doing predictions. Nevertheless, there exists different types of learning whose supervised and unsupervised learning -- which are defined thereafter, where in the first case, data are pretreated by humans while in the second case it does not need it and use instead an iterative approach to review data and arrive at conclusions which is object of deep learning. 
+
+\subsubsection{Supervised and unsupervised learning} \label{sec:supervised-unsupervised}
+
+\begin{defn}
+\textit{Supervised} learning is a type of system in which both input and desired output data are provided. Input and output data are labelled for classification to provide a learning basis for future data processing \cite{Supervised-1}. 
+\end{defn}
+
+\begin{exmp}
+A simple example for \textit{supervised} learning. Given the dataset presented in \autoref{table:ex1-supervised}, the machine can easily compute the output $y$ of input $x$. 
+If $x = 10$, the computer will output $y = 100$ by learning the pattern of squaring the input thanks to the provided dataset.  
+
+\newpage
+\begin{center}
+    \begin{tabular}{|c|c|}
+      \hline
+      Input $x$ & Output $y$ \\
+      \hline
+      1 & 1 \\
+      \hline
+      2 & 4 \\
+      \hline
+      3 & 9 \\
+      \hline
+      4 & 16 \\
+      \hline
+    \end{tabular}
+    \captionof{table}{Example of dataset for supervised learning}
+    \label{table:ex1-supervised}
+\end{center}
+\end{exmp}
+
+Note that in supervised learning, machine learning cannot be used without a good dataset. Before using machine learning to models and evaluates new data, we need to give him a relevant and useful set of data to allow him to learn correctly. If what we are interested for is a specific feature, the data should be adapted to highlight and label this specific feature to ease the learning of the machine. Once data are correctly pretreated, the machine will use this dataset called \textbf{training set} to learn from it and acquire knowledge about the data to apply it to new data.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.25]{figures/cifar10.png}
+  \caption{Example of training dataset : CIFAR-10}
+  \label{fig:cifar10}
+\end{figure}
+
+\begin{defn}
+\textit{Unsupervised} learning is the training of an AI algorithm using information that is neither classified nor labeled and allowing the algorithm to act on that information without guidance, i.e. data are unlabeled and the system’s algorithms act on the data without prior training \cite{Unsupervised-1}. 
+\end{defn}
+
+\begin{exmp}
+Compared to supervised learning, in unsupervised learning \textbf{only inputs} are given as dataset which means that there is no output to match to. As simple example, given a group of people, we are trying separate them in different categories. The machine has different ways to classify them: their ethnicity, their hair colors, their gender, etc. But no one is giving information to the machine about the right way to divide the group. The machine has to learn without any supervisor. That is what unsupervised learning means.   To resolve this, different methods of \textit{clustering} algorithms exist and will be used to run through the data and find natural clusters if they exist. % on va en parler plus tard des =/= méthodes des clustering, lien utile pour plus tard: https://blog.algorithmia.com/introduction-to-unsupervised-learning/
+
+\end{exmp}    
+
+% https://towardsdatascience.com/deep-learning-for-image-classification-why-its-challenging-where-we-ve-been-and-what-s-next-93b56948fcef
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.32]{figures/supervised-unsupervised.png}
+  \caption{Supervised learning VS Unsupervised learning. In supervised learning, the separation and the categories are well defined while in unsupervised learning, clusters have to be found. \cite{supervisedVSunsupervised-1}}
+  \label{fig:supervised-unsupervised}
+\end{figure}
+
+
+\newpage
+\subsubsection{Categories of machine learning} \label{sec:categories-ML}
+% https://openclassrooms.com/fr/courses/4011851-initiez-vous-au-machine-learning/4120981-comment-se-passe-lapprentissage-dun-modele
+% https://towardsdatascience.com/machine-learning-general-process-8f1b510bd8af
+% linear regression, logistic regression, decision trees, support vector machines, and neural networks, as well as non-parametric models such as k-Nearest Neighbors.
+Machine learning is divided into 4 main categories which are classification, regression, clustering and dimensionality reduction. The two first are generally used for supervised learning while clustering is more often used for unsupervised learning. Regarding dimensionality reduction, its function is to transform data to highly dimensional data which could be used for both types of learning. Let's now introduce and define these terms. 
+
+\begin{defn}
+\textit{Classification} algorithms are used when the desired output is a discrete label. In other words, they're helpful when the answer to your question about your business falls under a finite set of possible outcomes \cite{class-regression-1}. 
+When the set of possible outcomes is composed by only two elements, such as returning if an image has been forged or not, is called binary classification. 
+\end{defn}
+
+\begin{defn}
+\textit{Regression} is useful for predicting outputs that are continuous. That means the answer to the question is represented by a quantity that can be flexibly determined based on the inputs of the model rather than being confined to a set of possible labels \cite{class-regression-1}. We are trying to map input variables to some continuous functions. 
+\end{defn}
+
+\begin{defn}
+\textit{Clustering} is the assignment of objects to homogeneous groups (called clusters) while making sure that objects in different groups are not similar. As said, clustering is considered an unsupervised task as it aims to describe the hidden structure (features) of the objects \cite{clustering-dimensionalityReduction-1}  . 
+\end{defn}
+
+\begin{defn}
+As its name said, \textit{dimensionality reduction} is a process where its main objective is to reduce the number of random variables under consideration to treat smaller and specific data. The number of features under consideration decreases, where each feature is a dimension that partly represents the objects.
+\end{defn}
+
+
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.8]{figures/classification-regression.png}
+  \caption{Difference between classification and regression on a weather example. For classification, we are doing a clear separation between two classes : hot and cold. For regression, we are trying to mean the degrees values given on input by a certain function.}
+  \label{fig:classification-regression}
+\end{figure}
+
+\newpage
+\subsection{Deep learning}
+
+\begin{defn}
+\textit{Deep learning} is an artificial intelligence function that imitates the workings of the human brain in processing data and creating patterns for use in decision making. Deep learning is a subset of machine learning in artificial intelligence (AI) that has networks capable of learning unsupervised from data that is unstructured or unlabeled. Also known as deep neural learning or deep neural network \cite{DL-1}. 
+\end{defn}
+
+Contrary to simple machine learning, deep learning is thus used to treat data that do not need to be pretreated and then used for unsupervised learning. To do that, deep learning will use artificial neural networks inspired by human's brain. This network is composed by a certain number of layers (which explains the term "deep" in "deep learning") where every layer receives and interprets informations of previous layer. To see more details, neural networks make object of \autoref{sec:neural-networks}.  
+
+\subsubsection{Differences between machine learning and deep learning}
+Of course, machine learning and deep learning are both used. Some difference make machine learning more useful than deep learning in a specific case and vice versa. Some of those difference are presented below: 
+\begin{itemize}
+\item Machine learning (ML) uses statistical learning algorithms to treat labelled data while deep learning (DL) uses neural networks to treat unlabelled data.
+\item On one hand (ML), raw data are labelled manually by a data scientist to give a "clean" dataset to the machine. On the other hand (DL) , raw data are directly given to the machine which will uses its neurons to extract features. 
+\item ML uses linear learning techniques while DL uses a non-linear architecture which its complexity is growing proportionally to the number of neurons.   
+\item ... in summary, ML has a \textbf{supervisor} (human) to learn while DL does not have. 
+\item But both ML and DL are able to handle massive dataset sizes, however, ML methods make much more sense with small datasets. 
+\end{itemize} 
+ 
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.65]{figures/machineVSdeep.png}
+  \caption{Illustration of the main difference between machine learning and deep learning}
+  \label{fig:machineVSdeep}
+\end{figure}
+
+
+\section{Definition of image classification problem}
+% lien utile : https://developers.google.com/machine-learning/practica/image-classification/ 
+Recognize an animal from an object is a trivial task for humans but how about machines? A machine cannot assert with a 100\% accuracy if an image contains such or such thing. That proves that classify images seems to be a complex task for machines. Thus, the main objective of image classification problem is to converge towards a perfect accuracy. 
+
+Basically, \textbf{image classification is the task of categorizing images into different classes}. This problem can be extended into other computer vision problems, such as localization, detection, and segmentation. However, it can either be a supervised learning problem or an unsupervised learning problem. 
+
+\begin{defn}
+\textit{Supervised image classification} is a problem where we have to define a set of target classes (for instance, objects to identify in images), and train a model to recognize them using labelled example photos \cite{Google-2}. The idea is that a user can select sample pixels in an image that are representative of specific classes and then softwares apply it on new images to retrieve features of these specific classes used as reference. 
+\end{defn}
+
+\begin{defn}
+\textit{Unsupervised image classification} is a problem where the outcomes (clusters of pixels with same features) are based on the software analysis of an image without the user providing sample classes. The computer uses techniques to determine which pixels are related and groups them into classes. 
+\end{defn}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.5]{figures/supervised-unsupervised-2.png}
+  \caption{Supervised classification VS Unsupervised classification. \cite{supervisedVSunsupervised-2}}
+  \label{fig:supervised-unsupervised-2}
+\end{figure}
+
+\subsection{Which methods should we use?}
+% présenter les différents cas quand on utilise supervisé, pareil pour non supervisés et présneter les avantages de l'un par rapport à l'autre
+% https://www.mathworks.com/discovery/machine-learning.html
+It exists different methods whether for supervised or unsupervised learning and all of them are useful. There exists no method better than an other one. Choosing the method depends of different criteria whose information missed, size of data, the insights you want to get from the data, etc. Generally, supervised learning is used to train a model to \textbf{make a prediction}. It can be used for instance for weather forecast and more generally for continuous and linear variables. On the other hand, unsupervised learning is employed to explore data and train a model to \textbf{find clusters} into the data. Some of the most familiar methods are \textit{Support Vector Machine} (SVM), nearest neighbour, maximum likelihood, decision tree classifier for supervised learning. Concerning unsupervised learning, K-means clustering algorithm or neural networks are the most common methods. 
+% All these methods will be tackled later.. 
+
+
+
+
+\chapter{Materials and Methods} % etat de l'art
+% Cas particulier -> reconnaissance d'image facile comme les lettres  
+% https://arxiv.org/pdf/1705.02680.pdf
+% example lettres : https://www.youtube.com/watch?v=mmXB636p_E8
+% Cas particulier (domaine médical) -> à définir 
+% cancer du sein : https://peerj.com/articles/6201.pdf 
+
+%\textit{\textbf{Plan du chapitre:} état de l'art - présentation des méthodes utilisés dans les références traités ainsi que des résultats (comparaison). Focus sur le cas du cancer du sein selon l'article : "Breast cancer detection using deep convolutional neural networks and support vector machines". Les deux premières sections introduisent CNN et SVM : les deux méthodes de classification principales utilisés dans l'article. S'en suit la méthodologie complète présentée dans l'article ainsi que les résultats obtenus.} 
+
+In this chapter, different methods of learning are introduce and presented. In particular, neural networks is the main and most known method for images classification especially convolutional neural networks (CNN). In a second time, support vector machines (SVM) models are presented to associate learning algorithms that analyse data used for classification and regression analysis. Finally, we take interested of the evaluation methods: how do we evaluate the classification? From which percentage is the evaluation correct? Therefore, this evaluation leads to a question of validation to define how do we validate a prediction.
+
+
+\section{Neural networks} \label{sec:neural-networks}
+% parler de ANN -> pourquoi c'est pas suffisant et pourquoi on a besoin de CNN ? 
+% https://uv.ulb.ac.be/pluginfile.php/1393702/mod_resource/content/1/NeuralNetworks.pdf
+% http://www.cs.tau.ac.il/~dcor/Graphics/pdf.slides/YY-Deep%20Learning.pdf 
+% définition / intro à CNN 
+% parler vite fait de ANN etc mais SURTOUT bien parler de CNN car c'est ce qui est utilisé dans la classification d'images pour détecter les patterns
+When speaking about deep learning, the most known technique is probably neural networks. Formally, the simplest definition of a neural network, more properly referred to as an 'artificial' neural network (ANN), is provided by the inventor of one of the first neurocomputers, Dr. Robert Hecht-Nielsen:  
+
+\begin{quote}
+\textit{"A neural network is a computing system made up of a number of simple, highly interconnected processing elements, which process information by their dynamic state response to external inputs."}
+\end{quote}    
+
+% https://www.researchgate.net/publication/262936797_ARTIFICIAL_NEURAL_NETWORK_PART_1
+This definition is somehow explaining how a human's brain work and this is mostly why a ANN is inspired of to recognize patterns. To imitate the behaviour of a human's brain, let's see first how does a brain works. Basically, the biological neural network is composed of four main elements:
+somas, dendrites, axons and synapses. For a better understanding, we have to define their respective functions to create elements that will act similarly in our ANN.
+\begin{itemize}
+\item \textbf{Soma:} central part of a neuron, contains the cell nucleus which mainly contains all of the cell's genome (DNA). In ANN, this should correspond to the neurons. 
+\item \textbf{Dendrite:} projection of a neuron that receive signals (information) from other neurons. In ANN, this should correspond to the inputs. 
+\item \textbf{Axon:} carries nerve impulses away from the cell body. A neuron typically has one axon that connects it with other neurons or with muscle or gland cells. In ANN, this should correspond to the outputs. 
+\item \textbf{Synapse:} transfer electric activity (information) from one cell to another.  In ANN, this should correspond to the links between every neuron and their respective weights which correspond to the strength or amplitude of a connection between two nodes. Besides, that's why this weight is also called \textit{synaptic weight}. 
+\end{itemize} 
+
+To sum up, we can associate these biological elements to artificial ones following \autoref{table:bio-ANN}. The representation of both neural networks are shown in \autoref{fig:bio-ANN}. 
+
+\begin{center}
+    \begin{tabular}{|c|c|}
+      \hline
+      Biological NN & Artificial NN \\
+      \hline
+      Soma & Neuron \\
+      \hline
+      Dendrite & Input \\
+      \hline
+      Axon & Output \\
+      \hline
+      Synapse & Weight \\
+      \hline
+    \end{tabular}
+    \captionof{table}{Association of elements from biological neural network to articial neural network.}
+    \label{table:bio-ANN}
+\end{center}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.25]{figures/brainVSneuralnet.png}
+  \caption{Comparison between a biological neural network and an ANN. The same color associates elements with the same function in a biological and artificial point of view.}
+  \label{fig:bio-ANN}
+\end{figure}
+
+\subsection{How does neural network works?} \label{sec:nn-work}
+Typically, a neural network is initially trained or fed large amounts of data. Training consists of providing input and telling the network what the output should be. The objective is to obtain a neural network that is trained and generalizes well that should behaves correctly on new instances of the learning task. To do that, we need an architecture of neural network composed by a set of neurons and links connecting neurons such that each link has a synaptic weight. Multiple neural network architectures exist such as single-layer or multi-layer perceptron. Inevitably, we need a learning algorithm to learn. Linear regression, logistic regression, decision tree or SVM are some examples of learning algorithms. The last one cited make object of \autoref{sec:svm}. 
+
+Generally, a neural network is represented by the scheme presented below in \autoref{fig:nn-scheme}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.7]{figures/nn-scheme.png}
+  \caption{General representation of a neural network \cite{neuralnet-course-1}.}
+  \label{fig:nn-scheme}
+\end{figure}
+
+\newpage
+Firstly, input values are given to the neural network. In the case of an image processing, the input will be given by each pixel of the image. For instance, if we try to process an image of 200x200 pixels, the input values will be defined by the set $\{x_{1}, x_{2}, ... , x_{39999}, x_{40000}\}$ where $x_{i}$ is a value that describes the level of a certain property (luminosity, contrast, ...) on the pixel. All these informations are given to \textbf{neurons}.
+
+Neurons are functions consisting of a set of links described by synaptic weights which are computed by a summing (adder) function: 
+$$ v_{j} = \sum_{i=1}^{n} x_{i} w_{ij} $$ where $n$ is the input number, $x_{i}$ the value of neuron $i$ and $w_{ij}$ the weight between neuron $i$ and neuron $j$. $v_{j}$ is called the local induced field of the neuron. 
+
+Finally, this induced field added to a bias value $b$ are given to an activation function  $\phi$ (also called decision function) to determine the output value: 
+$$ y = \phi(v + b)$$
+
+Many types of activation function exist but in general, a sigmoid (and its derivative) is used for the statistical interpretation and is the most widely decision function used. The sigmoid is defined: 
+$$ \phi(x) = \frac{1}{1+e^-x} $$ 
+and its derivative:
+$$ \phi'(x) = \phi(x)[1-\phi(x)] $$ 
+
+The reason that sigmoid is one of the most used activation function is that it is a non-linear function which allow then to stack layers and to treat non-binary activations. Moreover, the output of the activation function is always going to be in range (0,1) compared to (-$\infty$, $\infty$) of linear function. Thus, an output with a value approaching 1 means that the prediction is most likely focused on this solution. 
+
+\subsection{Convolutional neural networks} \label{sec:CNN}
+Concerning image classification and recognition, traditional multilayer perceptron (MLP) models were a successfully method used. Nevertheless, due to the full connectivity between nodes they suffer from the curse of dimensionality, and thus do not scale well to higher resolution images. For example, a 1000×1000-pixel image with RGB color channels has 3 million weights, which is too high to feasibly process efficiently at scale with full connectivity \cite{wiki-cnn}. For this reason, scientists had to find an efficient solution to remedy this situation. That's why in the end of the 80's, convolutional neural network (CNN) were created. 
+
+CNN is a type of neural network mostly applied for visual tasks such as image or video recognition.  A convolution is the simple application of a filter to an input that results in an activation. Thus, we are applying a filter of a fixed size $N \times N$ to every window of size $N \times N$ of the input image a number of times needed to filter the whole image. This filter is used to highlight the feature that we are interested in. CNN basically uses the same structure as a basic neural network: input, hidden and output layers. However, several difference occur especially for hidden layers. Indeed, the hidden layers of a CNN typically consist of convolutional layers, pooling layers and fully connected layers as shown in \autoref{fig:cnn-architecture} and detailed in the next sections. 
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.55]{figures/cnn-architecture.png}
+  \caption{CNN image classification pipeline \cite{CNN-1}.}
+  \label{fig:cnn-architecture}
+\end{figure}
+
+\subsubsection{Convolutional layers}
+The objective of convolutional layers is to extract the high-level features such as edges, by learning features representations of the input image with shape width x height x depth.  As said previously, a convolution is simply applying a filter, also called kernel $K$, to the image. A simple example of convolution using $K = \begin{bmatrix} 
+1 & 0 & 1 \\
+0 & 1 & 0 \\
+1 & 0 & 1 
+\end{bmatrix}$ 
+is shown in \autoref{fig:cnn-ex1} where we are applying the filter to every window of size 3x3 of the 5x5 image. Thus, the filter will be applied and shifted 9 times. 
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.55]{figures/cnn-ex1.png}
+  \caption{Convoluting a 5x5x1 image with a 3x3x1 kernel to get a 3x3x1 convolved feature. }
+  \label{fig:cnn-ex1}
+\end{figure}
+
+\newpage
+The neurons in the convolutional layers are then arranged into feature maps. As ANN did, every neuron is connected to a neighborhood of neurons in the previous layer via a set of trainable weights. Inputs are then convolved following these weights in order to compute a new feature map which will be finally sent to an activation function.  
+The $k$th output feature map $Y_{k}$ can be computed as \cite{CNN-1}: 
+$$ Y_{k} = f(W_{k} * x) $$ 
+where $f()$ is the nonlinear activation function, $W_{k}$ is the convolutional filter related to the kth feature map and $x$ the input image. 
+
+
+\subsubsection{Pooling layers}
+Another novelty compared to traditional neural network is the pooling layers. Pooling layers have a dimensionality reduction function to decrease the computational power required to process the data. Same as convolutional layers, reducing dimensionality is a way to detect patterns. The two most known and used pooling types are max pooling and average pooling. Their names are very explicit. Max Pooling returns the maximum value from the portion of the image covered by the filter while average pooling returns the average of all the values from the portion of the image covered by the filter. 
+
+But which type of pooling is better? Should I use average or max pooling? Initially, the most common choice was the average pooling. This method smooths out the image and hence the sharp features may not be identified when this pooling method is used. Hence, average pooling simply performs dimensionality reduction as a noise suppressing mechanism by measures the mean value of existence of a pattern in a given region. 
+
+On the other hand, max pooling discards the noisy activations altogether and also performs de-noising along with dimensionality reduction. This method is then sensitive to existence of some pattern in pooled region and roughly says "this type of feature was detected in this general area".
+
+Therefore, there is no pooling method better than an other. The choice of pooling operation is made based on the data.  
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.7]{figures/averageVSmaxPOOLING.png}
+  \caption{Average pooling vs Max pooling \citep{CNN-1}.}
+  \label{fig:avgVSmaxPOOLING}
+\end{figure}
+
+\newpage
+\subsubsection{Fully connected layers}
+Now that we can detect these high level features thanks to the convolutional and pooling layers, the fully connected layer follows to interpret these feature representations. The structure of the fully connected layer is the same as a MLP: every neuron in one layer is connected to every neuron in another layer. The way this fully connected layer works is that it looks at the output of the previous layer (which as we remember should represent the activation maps of high level features) and determines which features most correlate to a particular class by mostly using the \textit{Softmax} classification technique.
+The softmax classifier is defined: 
+$$ L = \frac{1}{N} \sum_{i=1} L_{i} =  \frac{1}{N} \sum_{i = 1} - log \left(  \frac{e^{f_{yi}}}{\sum_{j=1}^K e^{f_{j}}}  \right) $$ 
+where $x_{i}$ is the $i$th input feature with corresponding label $y_{i}$, $K$ the number of classes, $N$ the amount of training datas and $f$ the softmax function defined by: 
+$$ f_{j}(z) = \frac{e^{z_{j}}}{\sum_{k} e^{z_{k}}} $$ where $z$ is a vector of arbitrary real-valued scores. 
+
+Therefore, it is at fully connected layers that the model is classifying the image and gives the prediction of what is represented in with a certain probability computed using weights.
+
+% https://adeshpande3.github.io/A-Beginner%27s-Guide-To-Understanding-Convolutional-Neural-Networks/ 
+
+% https://towardsdatascience.com/a-comprehensive-guide-to-convolutional-neural-networks-the-eli5-way-3bd2b1164a53
+
+% SVM vs Softmax : http://cs231n.github.io/linear-classify/ 
+
+
+% \subsection -> training, backpropagation ? 
+
+\newpage
+\section{Support Vector Machine} \label{sec:svm}
+Support vector machines (SVM) are supervised learning models that are efficient to resolve classification problems or regression problems\footnote{Defined in \autoref{sec:categories-ML}}. Basically, in the first case, we talk about \textit{support vector classification} (SVC) while we talk about \textit{support vector regression} (SVR) in the second case. SVM is based on the idea of finding an \textbf{hyperplane} that best separates the features into different domains. 
+
+\subsection{Data structure and linearity}
+The most known type of SVM is the \textit{linear kernel SVM} which the separation between the different domains is a straight line (or hyperplane if working in multidimensional plans). Nevertheless, it is the very basic case which is only usable for data which are linearly separable (as the example shown in \autoref{fig:classification-regression}) but not for non-linear data. In this case, in 1992, Bernhard E. Boser, Isabelle M. Guyon and Vladimir N. Vapnik suggested a way to create nonlinear classifiers by applying the \textbf{kernel trick} to \textbf{maximum-margin hyperplanes} \cite{wiki-svm}. 
+
+\subsubsection{Margin maximisation}
+Maximising the margin, which corresponds to the distance between the closest points (also called \textit{support vector points}) and the hyperplane, can be interpreted as maximising the confidence of the model. In other words, more the SV points is far from the hyperplane, more is the probability of correctly classifying the points in their respective region or classes. Therefore, we can denote the importance of the SV points positions which has an direct impact to the hyperplane. 
+
+As a reminder for the simplest case, given $a \in \mathbb{R}$ the slope and $b \in \mathbb{R}$ the $y$-intercept, the equation form of a linear separation $y$ is:  
+\begin{align} \label{eq:1}
+y = ax + b
+\end{align}
+
+Concerning the hyperplane $\pi$, given $x$ an input vector, $w$ the margin width and $b$ the bias, the form of equation defining the decision surface separating the classes is a hyperplane $\pi$ of the form: 
+\begin{align} \label{eq:2}
+\pi \equiv w^\top x + b = 0
+\end{align}
+
+Moreover, we can define $\pi_{1}$ as the hyperplane of the first class $y^{-}$ (green) parallel to the decision border hyperplane $\pi$ and $\pi_{2}$ as the hyperplane crossing the SV point of the second class $y^{+}$ (red) parallel to $\pi$. The margin is then defined by $\pi_{2}-\pi_{1}$. Knowing the hyperplane defined by \autoref{eq:2}, we can define $\pi_{1}$ and $\pi_{2}$ as: 
+\begin{align} \label{eq:3}
+\pi_{1} \equiv w^\top x + b = -1 \\
+\pi_{2} \equiv w^\top x + b = 1
+\end{align}
+
+By solving algebraically $\pi_{2}-\pi_{1}$, we obtain:
+\begin{align}
+\pi_{2}-\pi_{1} &= (w^\top x + b - 1) - (w^\top x + b + 1)\nonumber  \\ 
+ 				&= \frac{2}{\mid w \mid} \nonumber
+\end{align} 
+
+Thus, to increase the margin, we have to minimize $\mid w \mid$. In other words, with the condition that there are no datapoints between $\pi_{1}$ and $\pi_{2}$:
+\begin{center}
+$ x_{i} \cdot w + b \geq +1 \Rightarrow y_{i} = +1 \Rightarrow y^{+} $ \\
+$ x_{i} \cdot w + b \leq -1 \Rightarrow y_{i} = -1 \Rightarrow y^{-} $
+\end{center}
+
+The following pseudo-code sums up the procedure, so either we save the $w$ and $b$ values and keep going or we adjust the parameters, which corresponds to a convex optimization problem which surely gives us global minimum value, and keep going. Moreover, \autoref{fig:margin-svm} illustrates the problem and all the variables. 
+ 
+\begin{algorithm} 
+  \caption{Margin Maximization - Finding the best hyperplane} \label{alg:max-margin}
+  \begin{algorithmic}[1]
+  \ForAll {point $x_{i}$ we check:}
+  \If {$y_{i} \cdot (w \cdot x_{i} + b) = 1$}
+  \State $x_{i} =$ SV point
+  \State Correctly classified $\Rightarrow$ Save parameters $b$ and $w$ 
+  \ElsIf {$y_{i} \cdot (w \cdot x_{i} + b) > 1$} 
+  \State Correctly classified $\Rightarrow$ Save parameters $b$ and $w$
+  \Else 
+  \State Incorrectly classified $\Rightarrow$ Adjust parameters $b$ and $w$
+  \EndIf 
+  \EndFor
+  \end{algorithmic}
+\end{algorithm}
+
+
+
+% http://web.mit.edu/6.034/wwwbob/svm-notes-long-08.pdf
+% https://medium.com/deep-math-machine-learning-ai/chapter-3-support-vector-machine-with-math-47d6193c82be 
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.85]{figures/margin-svm.png}
+  \caption{SVM hyperplane and margin representation \cite{svm-towardsdatascience}.}
+  \label{fig:margin-svm}
+\end{figure}
+
+\newpage
+\subsubsection{Kernel trick}
+Let's now define the kernel trick and how does it work. Basically, the kernel trick is used by a \textit{radial basis function} (RBF) SVM where this trick will allow us to use a linear classifier to resolve a non-linear problem by transforming data into another higher dimension (potentially infinite) that has a clear dividing margin between classes of data. The kernel trick is then a way of computing the scalar product of two vectors $x$ and $y$ in some (very high dimensional) feature space. \\
+
+More formally, given an input vector $x$ labelled by $y$. We apply a non-linear transformation $\phi : \mathbb{R} \rightarrow H$ to the data where $H$ is an \textit{Hilbert space}\footnote{An \textit{Hilbert space} is a real vectorial space including a scalar product, which allow us to measure lengths, angles and to define an orthogonality.}. After this transformation, the procedure only depends of the scalar product $\phi(x) \cdot \phi(y)$  but computing this scalar product in a high-dimensional space is somehow complicated. The idea of the kernel trick is then to use a kernel function $K$ of the form: $K(x,y) = \phi(x) \cdot \phi(y)$. Simply, applying kernel trick means just to the replace scalar product of two vectors by the kernel function.\\ 
+       
+% est-ce que je dois expliquer comment ça marche ?
+
+% https://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html
+Concerning RBF SVM, the kernel function is defined as: 
+$$ K(x,y) = exp( - \gamma \norm{x-y}^2 ) $$
+where $\gamma$ defines how far the influence of a single training example reaches, with low values meaning "far" and high values meaning "close". Moreover, RBF SVM implies a cost  parameter $c$ which defines a penalty value when a datapoint is not correctly classified. For larger values of $c$, a smaller margin will be accepted if the decision function is better at classifying all training points correctly. A lower $c$ will encourage a larger margin, therefore a simpler decision function, at the cost of training accuracy. 
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.65]{figures/kernel-trick.png}
+  \caption{A training example of SVM with kernel given by $\phi((a, b)) = (a, b, a^{2} + b^{2})$ and thus goes from a 2D space to a 3D space defined by $K(x, y) = x \cdot y + x^2 y^2$. The training points are mapped to a 3-dimensional space where a separating hyperplane can be easily found. \cite{wiki-svm}.}
+  \label{fig:kernel-trick}
+\end{figure}
+
+\newpage
+\section{Evaluation and validation} \label{sec:evaluation}
+% \textit{\textbf{Plan:} maitrise d'évaluation, parler du pourcentage de précision, comment on évalue la classification? comment on entraine? comment on valide?}
+% parler de crossvalidation, overfit, 
+% Confusion matrix -> TP, FP etc 
+% ROC Curves
+ 
+Once classification models are done, it is mandatory to evaluate the prediction to determine potential errors that should falsify the obtained results.  To do that, it is useful to know which type of error exist and how are we computing the performance of a classification model to finally validate the prediction or not. More precisely, we call the statistical measures of the performance of a binary classification test "sensitivity" and "specificity". 
+
+\subsection{Sensitivity, specificity and confusion matrix}
+A confusion matrix is an $N \times N$ matrix that is often used to summarize the performance of a classification model. The confusion matrix gives information about what the model is predicting right and what error it did. These two informations are separated in 4 categories: True Positive (TP), True Negative (TN), False Positive (FP) and False Negative (FN). The two first one are the results where reality is in favor with the model predictions while FP and FN define the two types of errors that the model can encounter.
+
+Given the confusion matrix, we can compute the accuracy of the model to show how often the classifier was correct following this formula: 
+$$ accuracy = \frac{TP + TN}{TP + TN + FP + FN} $$
+A variant of accuracy is the Positive Predicted Value (PPV), also called \textit{precision}, that computes how often the model was correct when it predicted positively: 
+$$ precision = \frac{TP}{TP + FP} $$ 
+
+The two other values interesting to compute are the \textbf{sensitivity} and \textbf{specificity} of the model. 
+
+The sensitivity, also called \textit{true positive rate} or \textit{recall}, shows how often the model correctly detect a true response while it is the case. It increases by reducing the number of FN. When the number of FN is null, it means that the positive response of the model is always verified. Likewise, a negative response asserts that the positive case is impossible. In summary, when the model has a 100\% sensitivity, it means that the model is predicting perfectly. Mathematically, the sensitivity is computed by: 
+$$ sensitivity = \frac{TP}{TP + FN} $$ 
+
+The specificity, also called \textit{true negative rate}, is simply the opposite of sensitivity. It shows how often the model predicted negatively when the response in reality is negative too. Similarly, the specificity is increased by reducing the number of FP.
+$$ specificity = \frac{TN}{TN + FP} $$ 
+
+
+Moreover, it exists a value, called {F1 score}, that combines recall and precision which indicates the weighted average of both elements. It is usually used to rate classifier performance and hence take into account FP and FN. 
+$$ \text{F1 score} = \frac{2*recall*precision}{recall+precision} $$
+
+\subsubsection{Application} \label{sec:appli-confusion-matrix}
+To illustrate these terms and the use of the confusion matrix, let's take an example of a medical testing where the model is trying to predict if a patient has a disease or not. Roughly, there exist 4 possible results and evaluations: 
+\begin{center}
+    \begin{tabular}{cl}
+      TP & the patient has the disease and the test is positive\\
+      TN & the patient does not have the disease and the test is negative \\
+      FP & the patient does not have the disease but the test is positive \\
+      FN & the patient has the disease but the test is negative \\
+    \end{tabular}
+\end{center}
+
+Taking a sample of 100 people, the current model predicts 20 people to have the disease but only 15 people have actually disease and among those 15 people, the model predicted 12 correctly. These results put in the confusion matrix gives what is illustrated in \autoref{fig:confusion-matrix}. 
+
+Moreover, we can compute the different values tackled previously to evaluate the model. 
+
+\begin{center}
+    \begin{tabular}{|c|c|}
+      \hline 
+      accuracy & 89\% \\
+      \hline
+      precision & 60\% \\
+      \hline
+      sensitivity & 80\% \\
+      \hline
+      specificity &  90\% \\
+      \hline
+    \end{tabular}
+\end{center}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.4]{figures/confusion-matrix.png}
+  \caption{A confusion matrix prototype and an application to the above example. $TP = 12$, $FP = 8$, $TN = 3$, $TN = 77$.}
+  \label{fig:confusion-matrix}
+\end{figure}
+
+
+\subsection{ROC curves}
+The \textit{Receiver Operating Characteristic} curve (ROC curve) is a plot of the true positive rate (TPR, sensitivity) against the false positive rate (FPR, corresponding to 1-specificity) for different classification thresholds. In other words, ROC curves can be used to select a threshold for a classifier which maximizes the TP while minimizing the FP. A perfect ROC curve would follow the two axes. In general, real-life classification rules produce ROC curves which lie between these two extremes. 
+
+Given a ROC curve, it is interesting to compute what we call the \textit{Area Under The Curve} (AUC) which represents the degree or measure of separability, i.e. how much the model is capable of distinguishing between classes. If $AUC = 1$, it means that the test has perfect accuracy. 
+
+For instance, in the example tackled above in \autoref{sec:appli-confusion-matrix} , higher the AUC is, better the model is at distinguishing between patients with disease and patients with no disease.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.8]{figures/roc-curve.png}
+  \caption{A ROC curve. The blue line denotes the change of TPR with different FPR for a model. The AUC is described by the area under this blue line. \cite{roc-schema} }
+  \label{fig:roc-curve}
+\end{figure}
+
+\newpage
+\subsection{Overfit, underfit and cross-validation}
+%OVERFIT + UNDERFIT & CROSS VALIDATION section à faire si possible
+A frequent problem in model training is when the fitting is too low or too high which implies a lack of information or in contrary a too large value of information to learn which may lead to noise. The first case is called \textit{underfitting} while the second case is called \textit{overfitting}. Finding a happy medium is then an important case to manage. This value is also called \textit{goodness of fit} which refers to how closely a model's predicted values match the observed (true) values.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.35]{figures/over-under-fit.png}
+  \caption{Illustration of an underfit, a good fit and an overfit. \cite{over-under-fit-schema} }
+  \label{fig:over-under-fit}
+\end{figure}
+
+\subsubsection{Overfitting}
+Generally, more you learn, the better it is. But in case of learning to predict, it can cause troubles. Why would learn a large number of information/features be a bad thing? 
+The objective is to find a model that \textbf{generalizes} well certain patterns to finally apply these generalisations to new data. Therefore, while learning too much data, the model may save too much superfluous and too detailed information which are only specific to the images that the model is currently learning. In other words, the predictive model will capture the generalizable correlations and the \textbf{noise} produced by the data.
+
+In summary, we can define overfitting as a model that is too specialized on training set data and that will not generalize well. That implies that the model will predict very well on training set data but bad on new datasets. Therefore, to detect overfitting, we see if the model predict much better on the training set (used to learn) than on the test set (that is never touched before prediction), if it is the case, then we are likely overfitting.
+
+
+\subsubsection{Underfitting}
+Underfitting problem is more meaningful to everyone. This is exactly the contrary to overfitting which means that not enough information are learnt to predict new datasets correctly, even for the training set. In this case, the model suffers from a large bias and then will not be viable for any dataset. 
+
+
+\subsubsection{Cross-validation}
+To prevent those problems, cross-validation (fully called \textit{k-fold cross-validation}) is one of the most known method which is estimating the skill of machine learning models. In standard $k$-fold cross-validation, we partition the data into $k$ subsets, called folds. Then, we iteratively train the algorithm on $k-1$ folds while using the remaining fold as the test set. In other words, one round of cross-validation involves partitioning a sample of data into complementary subsets, performing the analysis on one subset (called the training set), and validating the analysis on the other subset (called the validation set or testing set) \cite{wiki-cross-validation}. This way, we generate multiple mini train-test splits (then, the training tests number) from the initial training data to multiply the chance to detect and prevent from over or underfitting.
+
+The choice of $k$ is usually 5 or 10. But as $k$ gets larger, the difference in size between the training set and the resampling subsets decreases which implies the reduction of the bias of the technique.
+
+Of course, cross-validation is not the only way to prevent from over and underfitting. There exists much solutions such as simply train with more data or remove some features. 
+
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=1.3]{figures/cross-validation.jpg}
+  \caption{Illustration of 5-fold cross-validation \cite{MachineLearningForDummies}.}
+  \label{fig:over-under-fit}
+\end{figure}
+
+
+\chapter{A well-known application: breast cancer detection} \label{chap:breast-cancer}
+One of the most recurrent serious disease which is one of the leading for women globally is breast cancer. To overcome this disease, mammography is one of the important methods which use medical imaging to detect breast cancer. This chapter is devoted to the state-of-the-art of the article "Breast cancer detection using deep convolutional neural networks and support vector machines" \cite{breast-cancer} written by Dina A. Ragab, Maha Sharkas, Stephen Marshall and Jinchang Ren published recently in January 2019. We will study the methodology adopted by the authors to detect breast cancer through magnetic resonance imaging and present the results that they have obtained. These results are obtained using the digital database for screening mammography (\textbf{DDSM}) and the Curated Breast Imaging Subset of DDSM (\textbf{CBIS-DDSM}) that are publicly available datasets.
+
+\section{Biological features}
+% voir page 5 du 2e article sur breast cancer 
+To detect breast cancer, it is essential to detect the indicators of it, i.e. tumors. Globally, the two most important and most significant signs of the disease are \textit{masses} and \textit{microcalcifcations} (MCs).  
+
+\begin{defn}
+A mass is a lump in the body and may be caused by the abnormal growth of cells, a cyst, hormonal changes, or an immune reaction. It can be either benign or malignant \cite{NCI}.
+\end{defn}  
+
+\begin{defn}
+A MC is a tiny deposit of calcium in the breast that cannot be felt but can be detected on a mammogram. A cluster of these very small specks of calcium may indicate that cancer is present \cite{NCI}. Same as masses, MCs can either be benign or malignant.  
+\end{defn}
+
+\subsection{Benign and malignant tumors}
+In two words, the difference between benign and malignant tumors is that the meaning of malignant is cancerous and the meaning of benign is non-cancerous but they have each one specific features. The benign tumors won't invade nearby tissues or spread to other areas of the body and are characterized for breast cancer detection by round or oval shapes. Nevertheless, even if at the start they are non-cancerous, it may lead to malignant tumors which denotes the importance of removing it. 
+
+On the other hand, malignant tumors can invade nearby tissues. In the case of breast cancer, the tumor begins in breast tissue but could spread to lymph nodes which may lead the cancer cells to other areas of the body, like the liver or bones. In this case, the malignant tumors are characterized by partially rounded shape with an irregular outline and will appear whiter than any tissue surrounding it.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.28]{figures/tumor-types.png}
+  \caption{Illustration of the different types of tumor. (a) Mass, (b) MCs, (c) Benign, (d) Malignant. First, the tumor can be masses or MCs and no matter what type, they are either benign or malignant. (a) and (b) images are from \cite{breast-cancer} and (c) and (d) from Joshua Seong \copyright Verywell, 2017.}
+  \label{fig:tumor-types}
+\end{figure}
+
+Therefore, the purpose of the work of Ragab et al. \cite{breast-cancer} is to detect the masses and to classify benign and malignant tissues in mammograms. The methodology to do that is presented in the next section.  
+
+\section{Methodology for breast cancer detection}
+The methodology tackled in the paper \cite{breast-cancer} is divided into 5 main steps: (1) image enhancement, (2) image segmentation, (3) feature extraction, (4) feature classification, and finally, (5) an evaluation for the classifier. 
+
+The functions and the methods applied for these steps make subject of the next subsections. Basically, the objective is to detect the region of interest (ROI) of the image to extract and classify the features that would indicate if the disease is present or not. 
+
+\subsection{Image enhancement}
+Taking a mammogram image in input returned by magnetic resonance imaging, the first step consists to suppress the noise to make the image more clear to highlight potential anomalies. To do that, the authors of the paper are using \textit{contrast-limited adaptive histogram equalization} (CLAHE) which is a type of \textit{adaptive contrast enhancement} (AHE) will be used to improve the contrast in images.  
+
+The CLAHE technique is characterized by these following steps \cite{breast-cancer}: 
+\begin{enumerate}
+\item Divide the original image into contextual regions of equal size. \\
+	  $\rightarrow$ \textit{Contextual regions} are relevant regions depending on neighbourhood pixels. For example, if we take a region of size 2x2, it is quite hard to extract information from that. The difficulty is then to find regions' sizes which may help.   
+
+\newpage	  
+\item Apply the histogram\footnote{An \textit{histogram} is an accurate representation of the distribution of numerical data. (Wikipedia)} equalization on each region \\ 
+	  $\rightarrow$ \textit{Histogram equalization} is a method in image processing of contrast adjustment using the image's histogram characterized by the following equation \cite{book-digital-processing}: 
+	  $$ g_{i,j} = floor((L-1) \sum_{n=0}^{f_{i,j}} p_{n}) $$ where $g$ is the histogram equalized image, $L$ is the number of possible intensity values, $f$ the image and $p$ the normalized histogram computed by $p_{n} = \frac{\text{pixel numbers with intensity n}}{\text{total number of pixels}}$. 
+	  
+\item Limit this histogram by the clip level (which corresponds to the threshold level to determine how the clipping occurs) 
+
+\item Redistribute the clipped amount among the histogram to be as close as possible to the desired histogram
+
+\item Obtain the enhanced pixel value by the histogram integration. 
+\end{enumerate}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.55]{figures/CLAHE.png}
+  \caption{Mammogram enhancement using CLAHE \cite{breast-cancer}. (A) Original malignant mass case extracted from DDSM,(B) Enhanced image using CLAHE, and (C) Histogram representation of the image.}
+  \label{fig:CLAHE}
+\end{figure}
+
+\subsection{Image segmentation}
+After the enhancement of the image done, the next step is to segment the image into different regions which have similar features and properties. This segmentation can for example be done by using ANN, which is presented in \autoref{sec:neural-networks}. The methods used in the paper are thresholding and region-based methods in addition to CNN tackled in \autoref{sec:CNN} to extract the region of interest (ROI). The tumors in the DDSM dataset are labelled with a red contour and accordingly, these contours are determined manually by examining the pixel values of the tumor and using them to extract the ROI \cite{breast-cancer}.
+
+\subsubsection{Thresholding method}
+Thresholding is the simplest method of image segmentation and usually used to transform an image into binary images\footnote{Warning: binary images are not grey-scale images. In binary images, only 2 values are possible for each pixel: black or white.} (black and white images). As its name said, the thresholding method is based on a threshold value $T$ which will determine if a pixel is 0 (white) or 1 (black) in the output image $p(x,y)$ for every pixel of the original image $q(x,y)$. Formally: 
+$$
+q(x,y) = \left\{
+    \begin{array}{ll}
+        1 & \mbox{if } p(x,y) > T \\
+        0 & \mbox{else if } p(x,y) < T
+    \end{array}
+\right.
+$$
+In our case, thresholding method is used to determine the tumor region by a threshold value which is a value determined with respect to the red color pixel. After some trials, the threshold was set to 76 for all the images regardless of the size of the tumor \cite{breast-cancer}.
+
+\subsubsection{Region-based method} 
+Region-based method divides an image into different regions based on pre-defined criteria (color, intensity, etc). The main advantage of this method is that it is noise resilient. The method is defined by two types of algorithms: (1) region growing and (2) region splitting and merging. Thus, after the thresholding method which returns the biggest area within this threshold along the image, region-based method is used to crop automatically the tumor. 
+
+\begin{itemize}
+\item \textbf{Region growing:} also classified as a pixel-based image segmentation, region growing algorithm is based on a single pixel called \textit{seed pixel} and checks the neighboring pixels and add them to the region if they are similar to the seed. This last is repeated for each of the newly added pixels and is stopped if no more pixels can be added. Thus, these adding steps are making the region growing. 
+
+\item \textbf{Region splitting and merging:} the image is successively split into quadrants based on a homogeneity criterion and regions that possess similarities regarding this criterion are merged to create the segmented result. All regions are then compared with its neighbours to compute their homogeneity and merged with them if the region pass the homogeneity test. The process is repeated until all regions pass this homogeneity test. The region splitting and merging is somehow the opposite of the region growing algorithm. 
+\end{itemize} 
+
+\subsubsection{Image segmentation summary}
+The methodology used by Ragab et al. is then summarized by these following steps combining CNN, threshold and region-based techniques \cite{breast-cancer}: 
+\begin{enumerate}
+\item $\left[\text{Threshold}\right]$\footnote{The [] indicates the technique used for this step.} Convert the original mammogram grayscale image into a binary image. 
+\item $\left[\text{CNN}\right]$ Binary image objects are labelled and the number of pixels are counted. 
+\item $\left[\text{Threshold \& region-based}\right]$ All binary objects are removed except for the largest one, which is the tumor with respect to the threshold. The largest area is the area enclosed within the red contour labelled around the tumor. 
+\item $\left[\text{Threshold}\right]$ After the algorithm checks all pixels in the binary image, the largest area pixels within the threshold are set to 1, otherwise all other pixels are set to 0
+\item The resulting binary image is multiplied with the original mammogram image to get
+the final image without taking in account any useless information in the image.
+\end{enumerate}
+
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.6]{figures/image-segmentation.png}
+  \caption{Image segmentation using above methodology. (A) Original malignant mass case extracted from DDSM, (B) enhanced ROI extracted manually using circular contours, and (C) enhanced ROI extracted automatically by the region based method \cite{breast-cancer}.}
+  \label{fig:image-segmentation}
+\end{figure}
+
+
+\subsection{Feature extraction}
+The next step after image enhancement and segmentation is to extract features from these preprocessed images. To do that, CNN is the most used common and used method of the recent years. Different types of CNN architectures exist such as CiFarNet, the Inception v1 (GoogleNet) or AlexNet. This last is the one chosen by the authors from its performance that has been proved better over the other deep learning methods for image recognition by reducing the top-5 error from 26\% to 15.3\%. 
+
+\subsubsection{AlexNet architecture}
+AlexNet architecture is defined by 5 convolution layers, 3 pooling layers, and 2 fully connected layers with approximately 60 million free parameters. As reminder, the function of these different types of layers is explained in \autoref{sec:CNN}. Concerning the activation function, AlexNet uses Rectified Linear Units (ReLUs) defined by $f(x) = max(0, x)$ which turns every negative values to zero. 
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.47]{figures/AlexNet.png}
+  \caption{Illustration of AlexNet architecture \cite{AlexNet}.}
+  \label{fig:image-segmentation}
+\end{figure}
+
+\subsubsection{Types of features}
+There exists different types of features to extract in a mammogram image. Here are a non-exhaustive list of these different features types \cite{breast-cancer-2}: 
+\begin{itemize}
+\item \textbf{Contrast features:} this feature's type captures how well a lesion is separated from the background. An important nuisance in this setting is the tissue surrounding the lesion in addition to its border sharpness computed by the acutance feature and margin contrast. 
+
+\item \textbf{Texture features:} a sign that may indicate the presence of a tumor is the non-presence of holes in the candidate lesion. Indeed, linear structures within a lesion can indicate an unfortunate projection rather then cancer \cite{breast-cancer-2}. 
+
+\item \textbf{Geometrical features:} regularity of the border of a lesion is often used to classify lesions. The authors of \cite{breast-cancer-2} have incorporated 5 topology descriptor that may help to detect the disease. These are eccentricity, convexity, compactness, circular variance and elliptic variance \cite{breast-cancer-2}. 
+\end{itemize}
+
+Moreover, note that there exists other feature's type that are not related to the mammogram image. For instance, location features indicate the locations that are more sensible to the occurrence of lesions such as lymph nodes or patient features such as his age. 
+
+
+\subsection{Classification}
+The breast cancer detection has obviously two different possible outputs regarding the lesion. The ROI is classified as either \textbf{benign} or \textbf{malignant} according to the features. To classify this type of data, there exists many methods such as ANN, binary decision tree or SVM. This last has proven its efficiency for breast cancer detection by achieving high classification rates. That is the reason why the authors of the paper are using it. SVM method is fully explained in \autoref{sec:svm}.  
+
+To do that, after the training step, the last fully connected layer is replaced by a new layer for the classification of these two classes: benign and malignant masses.
+
+\subsection{Evaluation}
+Finally, the last step of the classification is the evaluation. We have seen in \autoref{sec:evaluation} different tools and methods to evaluate a classifier. All these tools are appropriate to use in order to get an accurate classifier to make potential modification to enhance the model if necessary. The evaluation results of Ragab et al.'s model make subject of the next section. 
+
+A global summary of the methodology is presented in the \autoref{fig:summary-breast-cancer-methodology}.
+
+\newpage
+\hspace*{0mm}\vfill
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.375]{figures/summary-breast-cancer-methodology.png}
+  \caption{Summary of the breast cancer detection methodology of Regab et al.'s paper \cite{breast-cancer}.}
+  \label{fig:summary-breast-cancer-methodology}
+\end{figure}
+\vfill\hspace*{0mm}
+
+\newpage
+\section{Current results}
+The following results are obtained by taking samples from the DDSM dataset which contains images that have been pre-processed and converted to 299x299 images by extracting the ROIs. The entire dataset contains 55,890 training examples, of which 14\% are positive and the remaining 86\% negative. 70\% of the DDSM samples taken have been used for training and 30\% for testing. This proportion is usually used when doing a classification problem. 
+
+The first steps are images enhancement and segmentation. For those steps, the following numbers of training and testing samples were used:
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+      \hline
+       & Training & Testing & Total \\
+      \hline
+       DDSM (ROI cropped manually) & 1580 & 676 & 2256 \\
+      \hline
+       DDSM (ROI using threshold and region based) & 1288 & 552 & 1840 \\
+      \hline
+       CBIS-DDSM & 3691 & 1581 & 5272 \\
+      \hline
+    \end{tabular}
+    \captionof{table}{The number of training and testing samples for all the datasets used \cite{breast-cancer}.}
+\end{center}
+
+Initially, when using manual cropping method for segmentation in addition to CNN to classify, the accuracy of the new-trained AlexNet was only 71.01\%. However, when combining CNN with SVM for the classification, this accuracy increased to 79\% with AUC equals to 0.88 (88\%). As reminder, higher the AUC is, better the model is at predicting malignant as malignant and benign as benign.
+
+Whereas, concerning the thresholding and region-based method for segmentation, the accuracy while using only CNN reached only 69.2\%. Nevertheless, this accuracy was strongly increased and even more than the first method since it achieved 80.9\% with same AUC value. 
+
+The complete evaluation of both methods using SVM with different kernel functions is presented in \autoref{fig:eval-article} by computing the accuracy, AUC, sensitivity, specificity, precision and F1 score. 
+
+
+In conclusion, the choice concerning the kernel function is unequivocal, the best result was always obtained by using linear kernel functions. Concerning the choice of the segmentation technique, both are viable. Nevertheless, thresholding added to region-based method has slightly a better average accuracy and precision.
+
+\newpage
+\hspace*{0mm}\vfill
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.465]{figures/eval-article.png}
+  \caption{Complete evaluation of the different methods used. The first results table is obtained by using manual cropping for segmentation while the second one is using thresholding and region-based methods. Moreover, these two first tables are comparing results with different kernel functions for SVM. The last table is summarizing the different evaluation values between these two segmentation methods. A red value indicates the greatest value between the compared methods \cite{breast-cancer}.}
+  \label{fig:eval-article}
+\end{figure}
+\vfill\hspace*{0mm}
+
+\bibliographystyle{unsrt}
+\nocite{*}
+\bibliography{bibliography}
+
+\end{document}
+
