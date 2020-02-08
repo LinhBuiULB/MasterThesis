@@ -58,6 +58,8 @@
 \newtheorem*{rem}{Remark}
 \newtheorem*{note}{Note}
 
+\usepackage[scaled=.8]{beramono}
+
 \DeclareUnicodeCharacter{200A}{!!!FIX ME!!!} 
 
 \begin{document}
@@ -495,7 +497,7 @@ CNN is a type of neural network mostly applied for visual tasks such as image or
   \label{fig:cnn-architecture}
 \end{figure}
 
-\subsubsection{Convolutional layers}
+\subsubsection{Convolutional layers} \label{sec:conv-layers}
 The objective of convolutional layers is to extract the high-level features such as edges, by learning features representations of the input image with shape width x height x depth.  As said previously, a convolution is simply applying a filter, also called kernel $K$, to the image. A simple example of convolution using $K = \begin{bmatrix} 
 1 & 0 & 1 \\
 0 & 1 & 0 \\
@@ -517,7 +519,7 @@ $$ Y_{k} = f(W_{k} * x) $$
 where $f()$ is the nonlinear activation function, $W_{k}$ is the convolutional filter related to the kth feature map and $x$ the input image. 
 
 
-\subsubsection{Pooling layers}
+\subsubsection{Pooling layers} \label{sec:pooling-layers}
 Another novelty compared to traditional neural network is the pooling layers. Pooling layers have a dimensionality reduction function to decrease the computational power required to process the data. Same as convolutional layers, reducing dimensionality is a way to detect patterns. The two most known and used pooling types are max pooling and average pooling. Their names are very explicit. Max Pooling returns the maximum value from the portion of the image covered by the filter while average pooling returns the average of all the values from the portion of the image covered by the filter. 
 
 But which type of pooling is better? Should I use average or max pooling? Initially, the most common choice was the average pooling. This method smooths out the image and hence the sharp features may not be identified when this pooling method is used. Hence, average pooling simply performs dimensionality reduction as a noise suppressing mechanism by measures the mean value of existence of a pattern in a given region. 
@@ -534,7 +536,7 @@ Therefore, there is no pooling method better than an other. The choice of poolin
 \end{figure}
 
 \newpage
-\subsubsection{Fully connected layers}
+\subsubsection{Fully connected layers} \label{sec:fully-connected-layer}
 Now that we can detect these high level features thanks to the convolutional and pooling layers, the fully connected layer follows to interpret these feature representations. The structure of the fully connected layer is the same as a MLP: every neuron in one layer is connected to every neuron in another layer. The way this fully connected layer works is that it looks at the output of the previous layer (which as we remember should represent the activation maps of high level features) and determines which features most correlate to a particular class by mostly using the \textit{Softmax} classification technique.
 The softmax classifier is defined: 
 $$ L = \frac{1}{N} \sum_{i=1} L_{i} =  \frac{1}{N} \sum_{i = 1} - log \left(  \frac{e^{f_{yi}}}{\sum_{j=1}^K e^{f_{j}}}  \right) $$ 
@@ -948,6 +950,366 @@ In conclusion, the choice concerning the kernel function is unequivocal, the bes
   \label{fig:eval-article}
 \end{figure}
 \vfill\hspace*{0mm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 								MA2 							 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Model prototype}
+
+After discussing theoretically about the different methods and materials of image classification and recognition, this chapter is tackling a simple image classification model implementation for the non-medical dataset CIFAR-10 \cite{CIFAR10} based on the CNN implementation of Jason Brownlee \cite{CIFAR10-implementation-1} and Dan Nelson \cite{CIFAR10-implementation-2}. Henceforth we can determine the parameters which optimize the evaluation criteria of a predictive model and how it reacts to noise. 
+
+\section{The CIFAR10 dataset}
+The CIFAR (Canadian Institute For Advanced Research) created two versions of datasets: CIFAR-10 and CIFAR-100 which differs from the number of image classes that contains the respective datasets. In this work, we will use the CIFAR10 dataset whose involves a collection of images belonging to the following 10 classes: airplanes, cars, birds, cats, deer, dogs, frogs, horses, ships, and trucks illustrated in \autoref{fig:cifar10}.  
+
+The CIFAR-10 dataset consists of 60000 $32\times32$ colour images in these 10 classes, with 6000 images per class mutually exclusive. 50000 of these images are dedicated to the training phase and constitutes the training set while the 10000 remaining are dedicated to the evaluation and then shapes the test set (test batch). These 50000 training images are divided into batches of 10000 elements. The training batches contain the remaining images in random order, but some training batches may contain more images from one class than another. Between them, the training batches contain exactly 5000 images from each class.
+
+The fact that the images are in low resolution allows mainly fast training phase execution which makes the testing easier. Moreover, CIFAR-10 is a well-known dataset and has proven several times that it was a friendly and efficient dataset to use in order to test different models on it as well as MNIST dataset which approaches a trivial problem (recognizing 10 digits).       
+
+\section{Model implementation}
+
+In this section, the development of a convolutional neural network using Python3 and its machine learning packages such as TensorFlow and Keras is done. Moreover, parameters used are reviewed in order to optimize the model's accuracy. 
+
+\subsection{Why CNN over other models?}
+As seen in \autoref{sec:CNN}, the best model type for images are convolutional neural networks. Some reasons of this efficiency may be that CNN is a kind of deep learning neural network where \textbf{transfer} learning happens which means that learned knowledge about the data are stored and used for the future. An example of transfert learning related to CIFAR-10 would be that the knowledge acquired to recognize cars could be applied when trying to recognize trucks. A simple analogy of transfert learning could be the learning of a Romance (e.g. Spanish) language while your native language is another Romance language (e.g. Italian) facilitates and accelerates the learning. This works the same for machine learning and image recognition.     
+
+Moreover, thanks to its pooling layers (see \autoref{sec:pooling-layers}), CNN manages dimensionality reduction which enhances the feature extraction. Thus, CNN can somehow be thought of automatic feature extractors from the image. In comparison with other methods such as KNN, SVM or logistic regression where we need to spend much time on feature selection, this time is then less significant for CNN.   
+
+\subsection{Structure and implementation}
+
+\subsubsection{Dataset preprocessing}
+
+% Sample 
+\textbf{Sampling}
+
+Before starting to create the model, the preprocessing step on dataset is essential in order to get more significant prediction results. Initially, the training set of CIFAR-10 is composed of 50000 images. However, it is necessary to \textbf{sample} this starting training set for two reasons: 
+\begin{itemize}
+\item To avoid multiple large execution times: multiple tests are done, it would be really long and constraint to train on the whole training set at each execution 
+\item To produce highly imbalanced set in order to test the methods on it and obtain significant results
+\end{itemize}
+
+Hence, the sampling phase is splitting up the 50000 images into a drastically smaller number. Knowing that the CIFAR-10 is divided into 5 batches of 10000 images, the sample method of our model is simply to use only one batch of the dataset.  \\
+
+%One-hot encoding
+\textbf{One hot encoding} 
+
+The second preprocessing to apply on the dataset is a process called \textbf{One hot encoding}. What is this doing is converting the categorical data label encoding (i.e. airplanes=0, cars=1, birds=2, ...) into another type of encoding that enhances the reading of these data by the machine learning algorithms. But why this label encoding would not be enough?  The problem with label encoding is that the categories now have natural ordered relationships. The model will then assumes that the higher numbers has higher weights which may result in poor performance or unexpected results. Therefore, rather than labelling things as a number starting from 0 and then increasing for each category, we will go for more of a binary style of categorizing.  
+
+Thus, one hot encoding transforms our categorical labels into vectors of zeros and ones. The length of this vectors is equal to the number of classes that our model is expected to classify. The one hot encoding of CIFAR-10 is illustrated in \autoref{fig:ohe-CIFAR10}. For example, the dog class is then represented by the vector $[0,0,0,0,0,1,0,0,0,0]$.  
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.55]{figures/ohe-cifar10.png}
+  \caption{One hot encoding of CIFAR-10 dataset. To the left, the categorical data label encoding. To the right, the one hot encoding.}
+  \label{fig:ohe-CIFAR10}
+\end{figure}
+
+\subsubsection{Creating the CNN}
+
+The CNN is created using keras library from Python. Its architecture is based on the classic CNN architecture illustrated on \autoref{fig:cnn-architecture} taking on input an image passing through convolutional layers and a fully connected layer giving the output class. Below is described the basic structure of our implemented CNN (baseline). \\
+
+\textbf{Model basis}
+
+When using keras, it allows two ways to generate a model: sequential or functional. The major difference between them is that the functional model allows you to connect layers to more than just the previous and next layers which allows you to create much more complex models and networks. In our case, it is not necessary. A sequential model is widely sufficient. Indeed, its limit is defined by its incapacity to share layers or have multiple inputs or outputs which is not necessary to resolve a simple image classification problem. The model is then created using the following method: 
+\begin{center}
+\texttt{Sequential()}
+\end{center} 
+
+\textbf{Convolutional layers}
+
+Once the basis of the model has been created, we can generate the first convolutional layers. As we manage images, we have to use 2D convolutional layer which mainly take the number of filters for the convolution, the filter's size and the input shape as parameters. The keras method to create a 2D convolutional layer is then basically defined by:
+\begin{center}
+\texttt{Conv2D(filters, filter\_size, input\_shape)}
+\end{center}
+In our case, we use 32 as starting filters number which doubles each time we add a convolutional layer. The size of each filter is a 3x3 window. We also add \texttt{padding="same"} (which defines that we do not change the input image size) as well as its activation function as parameters. We generally use \texttt{ReLU} as activation function which is the most widely used activation function in neural networks today such as the AlexNet architecture. The exhaustive list of \texttt{Conv2D} method parameters can be found on the official keras library documentation \cite{keras-doc}. 
+
+Between each layer, we use batch normalization which normalizes the inputs heading into the next layer using, ensuring that the network always creates activations with the same distribution that we desire \cite{CIFAR10-implementation-2}: 
+\begin{center}
+\texttt{BatchNormalization()}
+\end{center}
+
+After creating two convolutional layers, we generate a pooling layer of size 2x2 which compresses the information of the image to make it smaller (see \autoref{sec:pooling-layers} for full explanation). The pooling layer is created using: 
+\begin{center}
+\texttt{MaxPooling2D(size)}
+\end{center}
+It's important to not have too many pooling layers, as each pooling discards some data. Pooling too often will lead to a too small number of information that can be used for the next layers (densely connected layers) to learn about the data. Generally, we add a pooling layer between 2 convolutional layers to reduce the spatial volume of input image after convolution. 
+
+Should we add another convolutional layer? There is no exact number of convolutional layers but each one added increases the number of filters so the model can learn more complex representations but obviously also adds more computation expenses. 
+
+As we manage small sized images (32x32), the model that we are creating will be quite small. We then only add a third convolutional layer. Thus, we only pool once as our model contains only 3 convolutional layers. \\ 
+
+\textbf{Fully-connected layer}
+
+Before creating the fully-connected layer, we need to flatten the data to obtain the data into a 1-dimensional array (containing all the pixels data) for inputting it to the next layer so that he can process pixel by pixel to finally have the final output in the good format (a single vector of 10 elements representing the likelihood of each 10 outputs). We then add a flatten layer by using: 
+\begin{center}
+\texttt{Flatten()}
+\end{center}
+
+We can now create the fully-connected layer (dense layers) where the neurons have a complete connection to all the activations from the previous layers to generate a prediction from the results of these previous layers. A dense layer basically takes the number of neurons as parameter and then can be used in keras using (all parameters available in keras documentation \cite{keras-doc}:
+\begin{center}
+\texttt{Dense(neuronsNumber)}
+\end{center}
+The number of neurons chosen are starting from 256 which decreases in succeeding layers to finally approach the same number of neurons as there are classes in the dataset. Thus, we pass to the final layer the number of classes for the number of neurons (=10). Each neuron then represents a class with a certain probability that the image is belonging to this class. Moreover, as we want to prevent from overfitting, we also add a kernel constraint as parameter which regularize the data as it learns. 
+
+Finally, as we have seen in \autoref{sec:fully-connected-layer}, we use \textit{Softmax} as activation function which selects the neuron with the highest probability as its output, voting that the image belongs to that class. 
+
+The \autoref{fig:my-CNN} is summarizing the baseline of the CNN implemented. 
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.38]{figures/my-cnn.png}
+  \caption{The baseline of the CNN implemented. In this example, the input image is a car and the CNN model outputs "car" as highest probability (0.7) and is then assigning the input image as "car" class.}
+  \label{fig:my-CNN}
+\end{figure}
+
+\subsection{Summary pseudo-code}
+
+\begin{algorithm}[H]
+  \caption{Baseline CNN implementation} \label{alg:CNN}
+  \begin{algorithmic}[1]
+  \State Init the model: \texttt{Sequential()}
+  \For {a number of convolutional layer to add}  
+  \State Add convolutional layer
+  \State ReLU activation function 
+  \If {between 2 convolutional layer}
+  \State Add pooling layer
+  \EndIf
+  \State Batch Normalization  
+  \EndFor
+  \State Flatten the data
+  
+  \For {a number of Dense layer to form the fully-connected layer}  
+  \State Add dense layer
+  \If {not last layer}
+  \State ReLU activation function
+  \State Batch Normalization 
+  \Else 
+  \State{Softmax activation function} 
+  \EndIf
+  \EndFor
+  
+  \State Compile the model 
+  \State Train the model: \texttt{model.fit(X\_train, y\_train, X\_test, y\_test)} 
+  \State Predict: \texttt{model.predict()}
+  \end{algorithmic}
+\end{algorithm}
+
+\section{Optimizing parameters (Regularization)}
+The CNN model created above is the simplest way to create a CNN and would probably not have the best prediction results. In this section, the different parameters that may enhance the accuracy and the results of our predictive CNN model are theoretically described in order to understand how to get better results. Generally, these parameters add information in order to prevent overfitting of which the process is called \textbf{regularization}.  
+
+\subsection{Epochs}
+When compiling your model, you give a number of epochs and a batch size to your model. Batch size may not influence the accuracy result but only the memory space needed. Higher the batch size, the more memory space you'll need. We usually use 64. In contrast, epochs certainly influences the performance of the model since an epoch refers to one cycle through the full training dataset. Thus, more epochs the model is learning, more features it will learn which can be damaging the model's performance due to overfitting, i.e. your model does not learn the data, it memorizes the data. Finding the good epochs number is then meaningful for the model's performance. 
+
+
+\subsection{Optimizer}
+Also at compilation step, you need to specify an optimizer. Optimizers are algorithms or methods used to change the attributes of your neural network such as weights and learning rate in order to reduce the losses. 
+
+Optimizers algorithms are generally based on \textit{gradient descent algorithm} which is optimization algorithm used to minimize some function by iteratively moving in the direction of steepest descent as defined by the negative of the gradient \cite{gradient}. 
+
+The choice of optimizers are based on the type of network, type of layers and type of data. In the \autoref{sec:exp-cnn}, we will experiment 5 different optimizers: RMSProp, ADAM, SGD, AdaGrad and AdaDelta. %p-e a expliquer 
+
+\subsection{Dropout}
+Dropout refers to ignoring units (i.e. neurons) during the training phase of certain set of neurons which is chosen at random. For instance, a dropout value of 0.2 means that you randomly select 20\% of the neurons and set their weights to zero for the forward and backward passes i.e. for one iteration. This dropout process is used to prevent from overfitting that can be led by neurons developing co-dependency amongst each other during training phase. 
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.45]{figures/dropout.png}
+  \caption{Dropout Neural Net Model. Left: A standard neural net with 2 hidden layers. Right: An example of a thinned net produced by applying dropout to the network on the left. Crossed units have been dropped. \cite{dropout}}
+  \label{fig:dropout}
+\end{figure}
+
+\newpage
+\subsection{Weight decay}
+Another way to prevent from overfitting is to use weight decay which involves updating the loss function to penalize the model in proportion to the size of the model weights. By updating weights this way, we penalize the learning complexity and then reduces the chance of overfitting. Weight decay is a regularization method existing by 3 types of regularizers, with $x$ a small number:
+\begin{itemize}
+\item $L1(x)$: we multiply the sum of the absolute weights with $x$.
+\item $L2(x)$: we multiply the sum of the squared weights with $x$.
+\item $L1L2(x)$: we multiply the sum of the absolute and squared weights with $x$.
+\end{itemize}  
+Generally, we use L2 weight regularization which is the most common type used for neural networks since L2 regularizer does not have sparse estimations and is computational efficient due to having analytical solutions. 
+
+
+\subsection{Data augmentation}
+Same as previous parameters, our objective is to reduce overfitting to generalizes well the data. Another way to allow the model to learn the same general features is making copies of the examples in the training dataset and add small random modifications to the images. It expands the dataset so that model learns to not take in account these modifications but only the general features. This process is called data augmentation. Many types of data application can be applied to images such as cropping, rotating, shifting, zooming, random erasing, etc.   
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.55]{figures/data_augmentation.png}
+  \caption{Some image data augmentation examples.}
+  \label{fig:dropout}
+\end{figure}
+
+
+\subsection{Adding noise}
+% https://www.researchgate.net/figure/Performance-on-CIFAR-10-for-varying-amounts-of-noisy-labels-Noisy-training-examples-are_fig2_317241165 
+% https://machinelearningmastery.com/how-to-improve-deep-learning-model-robustness-by-adding-noise/ 
+What if the images are getting noisy over time? Is the model reacting well to that kind of perturbations? Theoretically, if the model suffers from overfitting, adding noise may be benefit to the accuracy of the model for the reason that learning noisy images is more complex and the model may only distinguish general features and big lines of the images.
+Thus, adding noise during the training phase should have a regularization effect and can make the training process more robust and reduce generalization error. 
+
+The most common type of noise is Gaussian noise illustrated in \autoref{fig:gaussian-noise}. Of course, adding noise is done relating to a configurable hyperparameter. The choice of this value is then decisive since too little noise has no effect, whereas too much noise makes the mapping function too challenging to learn. 
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=1]{figures/gaussian-noise.png}
+  \caption{Illustration of adding Gaussian noise to an image. The image becomes blurry.}
+  \label{fig:gaussian-noise}
+\end{figure}
+
+ 
+
+\section{Experiments and results}
+
+Several experiments testing the efficiency of the different parameters are done and the corresponding results are presented to find optimal parameters. 
+
+\subsection{Experiments} \label{sec:exp-cnn}
+Here under are the experiments that have been done in order to encompass all the parameters tests to show how the CNN model react to them and how they impact its performance. So that, each parameter are approached \textbf{separately} (= without any other regularizer than the parameter in question). These experiments are done with sampling on 1 batch of the training set (10000 images) on 5 epochs. Note that the sampling is \textbf{not stratified} which means that the batch selected does not respect the proportions of each class from the complete dataset. Moreover, we also have done the experiments concerning regularizers (experiment 3 to 6) on the complete training set also on 5 epochs. Indeed, regularizers are processes used to counter overfitting. Therefore, using the whole training set may be more reliable to observe their efficiency. For both cases, the testing phase has been done on the test set (10000 images). They all have been done using AdaDelta as optimizer (except experiment 2 obviously). 
+
+\begin{itemize}
+\item \textit{Experiment 1 - Epochs number:} run on 40 epochs, on the baseline CNN without any regularizer (= no dropout, no weight decay, no data augmentation and no added noise) 
+
+\item \textit{Experiment 2 - Optimizer:} 5 runs testing the following optimizers: RMSProp, ADAM, SGD, AdaGrad and AdaDelta. 
+
+\item \textit{Experiment 3 - Dropout value:} 6 runs with the following dropout values: 
+\newline $[0, 0.1, 0.2, 0.4]$, the last value means that the dropout value is increasing from 0.2 to 0.5 over layers.
+ 
+\item \textit{Experiment 4 - Weight decay values:} 2 runs with the following weight decay values: $[0.001, 0.01]$.   
+
+\item \textit{Experiment 5 - Data augmentation:} unique run with data augmentation on images : horizontal flip, minor shifts of the image and small zooming.
+
+\item \textit{Experiment 6 - Adding Gaussian noise:} 3 runs with the following Gaussian noise rate: $[0.1, 0.2, 0.4]$.
+\end{itemize}
+
+\subsection{Results} 
+
+\textit{N.B.: As we use sampling to avoid multiple large execution times, the results may be quite lower compared to if we have used the whole dataset. Nevertheless, these results can be more significant since the training set is highly imbalanced.}    
+
+\subsubsection{Experiment 1 - Epochs number} 
+What we can see from the results presented in \autoref{fig:cifar_epoch_res} is that the accuracy reaches $\approx 100\%$ for the training set after only 5-6 epochs which shows that using more epochs should not be relevant and even counterproductive. Indeed, we can see that the global accuracy is not evolving and stalling around 65\% between 10 and 40 epochs which shows the uselessness of using too much epochs. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.6]{Code/figures_result/40epochs_sample_withoutoptimisation.PNG}
+  \caption{Experiment 1 result: model accuracy and lost over epochs.}
+  \label{fig:cifar_epoch_res}
+\end{figure}
+ 
+\subsubsection{Experiment 2 - Optimizer} 
+
+This experiment represents the results without any regularizer depending only on optimizer choice.
+
+The general behaviour of the results observed about the optimizers is that SGD (Stochastic gradient descent) seems to not be a good optimizer in this case. Indeed, SGD is very basic and rarely used now: although SGD minimizes loss faster, it is noisier and it oscillates around the the minimum giving some variation in accuracy and loss run to run.
+
+The other optimizers as for them have quite similar results even if ADAM and AdaGrad seems to be the most adapted in our case. In fact, their algorithm is quite similar too: RMSProp and AdaDelta have both been developed independently but AdaDelta is an extension of AdaGrad and ADAM is somehow a combination of AdaDelta and RMSProp. However, we generally use AdaGrad to deal with sparse data and ADAM for more general cases since it requires relatively low memory and combines the good properties of AdaDelta and RMSProp. That may explain why ADAM and AdaGrad stand out from the crowd. 
+
+\begin{center}
+\begin{tabular}{|c|c|}
+  \hline
+  Optimizer & Accuracy (with sampling) \\
+  \hline
+  RMSProp & 54.640\% \\
+  ADAM  & 61.220\% \\
+  SGD & 51.720\% \\
+  AdaGrad & \textbf{63.490\%} \\
+  AdaDelta & 55.770\% \\
+  \hline
+\end{tabular}
+\captionof{table}{Experiment 2 results.}  
+\end{center}
+
+
+\subsubsection{Experiment 3 - Dropout value} 
+
+For the sampling case, we see that the best result is obtained while not using dropout. It is somehow logical since sampling removes already lot of information and is hence less subject to overfitting but more to underfitting. 
+
+However, when using the entire training set, it is more to be prone to overfitting. That is why we obtain better results when using dropout. Watch out, we have to take care of the value of dropout added. Indeed, the results show that see that a too high dropout value is decreasing drastically the accuracy which means that too much dropout was done impacting the capacity of the model to learn well. On the following results, we see that a dropout value above 0.2 is decreasing the accuracy which can be considered as the threshold value which impact negatively the model's learning. Using keras, dropout can be added using \texttt{model.add(Dropout(dropoutValue))}. 
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+  \hline
+  Dropout value & Accuracy (no sampling) & Accuracy (with sampling) \\
+  \hline
+  0 & 76.13\% &  \textbf{63.490\%} \\
+  0.1 & 76.51\% & 55.530\% \\
+  0.2 & \textbf{78.140\%} & 57.840\% \\
+  0.4 & 59.890\% & 45.140\% \\
+  \hline
+\end{tabular}
+\captionof{table}{Experiment 3 results table.}  
+\end{center}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.6]{Code/figures_result/dropout_graph.png}
+  \caption{Experiment 3 result graph: the blue line is the experiment without sampling and the orange line is the one with sampling. $0.2 \rightarrow 0.5$ refers to the experiment using increasing dropout values.}
+  \label{fig:cifar_dropout_res}
+\end{figure}
+
+\subsubsection{Experiment 4 - Weight decay values} 
+
+The impact of weight decay looks a bit less effective as dropout in most and general cases. But in the sampling case, we now observe a small accuracy enhancement which was not observable when using dropout. However, using larger weighting (0.01) looks to not be a good idea neither since weight decay is usually used with a very small weighting number. Using keras, weight decay is done by adding \texttt{kernel\_regularizer=l2(0.01)} to \texttt{Conv2D} parameters. 
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+  \hline
+  Weight decay value & Accuracy (no sampling) & Accuracy (with sampling) \\
+  \hline
+  0 & 76.13\% &  63.490\% \\
+  0.001 & 77.470\% & 64.190\% \\
+  0.01 & 76.090\% & 60.140\% \\
+  \hline
+\end{tabular}
+\captionof{table}{Experiment 4 results table.}  
+\end{center}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.6]{Code/figures_result/weight_decay_graph.png}
+  \caption{Experiment 4 result: the blue line is the experiment without sampling and the orange line is the one with sampling.}
+  \label{fig:cifar_weightdecay_res}
+\end{figure}
+
+
+\subsubsection{Experiment 5 - Data augmentation} 
+
+In both cases, we see an improvement compared to the baseline results. Data augmentation seems then to be a good process to enhance the model's accuracy. Making copies of the images with random modifications expands the training set passed to the model and then can only be benefit the model's learning. To implement data augmentation, we have used \texttt{ImageDataGenerator} method also from keras library.   
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+  \hline
+  Data augmentation & Accuracy (no sampling) & Accuracy (with sampling) \\
+  \hline
+  No & 76.13\% & 63.490\% \\
+  Yes & 78.410\% & 64.810\% \\
+  \hline
+\end{tabular}
+\captionof{table}{Experiment 5 results table.}  
+\end{center}
+
+\subsubsection{Experiment 6 - Adding Gaussian noise} 
+Same as previous regularizers, choosing the right added noise rate is really important. As the training set is highly balanced, this can be well observed in the non-sampling case where we observe that the accuracy is decreasing a lot when adding too much noise. This can easily be explained same as experiment 3 with dropout, i.e. in the sampling case, we learn less then we already have missing information (underfitting), adding noise is then not benefit to increase the model accuracy.
+
+However, for the non-sampling case that the model is reacting well to noise since that the accuracy is not fluctuating at all and keep constant. This Gaussian noise has been added after the pooling layer by using \texttt{GaussianNoise(value)} from keras.   
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.6]{Code/figures_result/gaussian_noise_graph.png}
+  \caption{Experiment 6 result: the blue line is the experiment without sampling and the orange line is the one with sampling.}
+  \label{fig:cifar_noise_res}
+\end{figure}
+
+
+\subsection{Conclusion}
+When talking about image classification, the most popular model is a convolutional neural network. After creating a baseline CNN, several regularizers have been introduced and have been experimented to observe their impact on our model's accuracy. Following the results obtained, dropout regularizer and data augmentation seems to be the most efficient ones. After discussing about a simple non-medical case, we can henceforth tackle medical images using our knowledge about CNNs. 
+
+
+\chapter{Identification of Leukemia Subtypes from microscopic images}
+
+
+
+
+
+
 
 \bibliographystyle{unsrt}
 \nocite{*}
