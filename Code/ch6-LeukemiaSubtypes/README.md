@@ -7,6 +7,8 @@ ULB ID: 000427796 <br />
 ULB mail: qbuiquan@ulb.ac.be <br /> 
 Université libre de Bruxelles - ULB <br />
 
-### About the dataset
+### About the datasets
 The ALL_IDB dataset has been provided by Fabio Scotti.
 https://homes.di.unimi.it/scotti/all/ 
+
+The DEMIR-LEUKEMIA dataset has been provided by Nizar Ahmed. 
