@@ -1303,9 +1303,8 @@ When talking about image classification, the most popular model is a convolution
 
 \chapter{Identification of Leukemia Subtypes from microscopic images}
 
-Leukemia is a malignant progressive disease that results in high numbers of abnormal blood cells in the bone marrow and other blood-forming organs. These abnormal blood cells suppress the production of normal blood cells leading to multiple symptoms. The main method to detect these abnormal blood cells is from microscopic images of blood's content. Moreover, leukemia is subdivided into a variety of large group which can also be detected by these microscopic images. In this chapter, we first tackle the detection of leukemia as a binary classification (ill/healthy). In a second step, the different types of leukemia make object of a multi-class image classification problem. This allows us to distinguish the difference between medical and non-medical images previously studied (CIFAR10). Are the methods the same? Are the regularizers used for non-medical images relevant for the medical ones? This chapter is based on the work of Ahmed et al \cite{leukemia}. 
+Leukemia is a malignant progressive disease that results in high numbers of abnormal blood cells in the bone marrow and other blood-forming organs. These abnormal blood cells suppress the production of normal blood cells leading to multiple symptoms. The main method to detect these abnormal blood cells is from microscopic images of blood's content. Moreover, leukemia is subdivided into a variety of large group which can also be detected by these microscopic images. In this chapter, we first tackle the detection of leukemia as a binary classification (ill/healthy) using the ALL-IDB dataset \cite{ALL-IDB}. In a second step, the different types of leukemia make object of a multi-class image classification problem. Experiments on these different types of leukemia will use the DEMIR-LEUKEMIA dataset \cite{leukemia}. This allows us to distinguish the difference between medical and non-medical images previously studied (CIFAR10). Are the methods the same? Are the regularizers used for non-medical images relevant for the medical ones? This chapter is based on the work of Ahmed et al \cite{leukemia}. 
 
-% ajouter les dataset plus tard
 
 \section{Subtypes of leukemia}
 The two main subdivisions of leukemia are acute and chronic forms and can be defined following the National Cancer Institute: 
@@ -1348,6 +1347,8 @@ We can see the importance of determining the leukemia subtype of the patient. A 
 
 \section{ALL-IDB dataset}
 
+\section{DEMIR-LEUKEMIA dataset}
+
 \section{Methodology}
 
 \section{Results}
@@ -1358,4 +1359,3 @@ We can see the importance of determining the leukemia subtype of the patient. A 
 \bibliography{bibliography}
 
 \end{document}
-
