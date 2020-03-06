@@ -75,7 +75,7 @@
     
 	\textsc{\LARGE UNIVERSITÉ LIBRE DE BRUXELLES}\\[0.5cm]
     \textsc{\LARGE Computer Sciences Department, Faculty of Sciences}\\[2cm]
-    \textsc{\LARGE Master Thesis}\\[2cm]
+    \textsc{\LARGE Computer Sciences Master Thesis}\\[2cm]
 
     % Title
     \hrule width 15cm
@@ -1344,10 +1344,56 @@ We can see the importance of determining the leukemia subtype of the patient. A 
   \label{fig:leukemia-subtypes}
 \end{figure}
 
-
+\newpage
 \section{ALL-IDB dataset}
+The ALL-IDB dataset, fully named \textit{Acute Lymphoblastic Leukemia Image Database for Image Processing}, is provided by Fabio Scotti from the University of Milan \cite{ALL-IDB}. As its name indicates, the ALL-IDB dataset only contains microscopic images from patients that have the ALL type of leukemia when labelled positive to illness. For each image in the dataset, the classification/position of ALL lymphoblasts is provided by expert oncologists. 
 
+The ALL-IDB dataset is divided into 2 sets of data: ALL-IDB1 and ALL-IDB2. 
+\begin{itemize}
+\item ALL-IDB1 contains large images of average size 2592 x 1944 which contains about 39000 blood elements spread into 108 images collected in September 2015. In these 108 images, 50 are labelled positive to leukemia and 58 labelled healthy. The ALL-IDB1 image files are named with the notation ImXXX\_Y.jpg where XXX is a 3-digit integer counter and Y is a boolean digit equal to 0 is no blast cells are present (healthy), and equal to 1 if at least one blast cell is present in the image (ill). As the images are large, ALL-IDB1 is quite useful for testing different image preprocessing methods such as segmentation or data augmentation to see their efficiency in the final classification accuracy.  As the dataset also provides the position of the blast cells in the image, this information may be used to estimate the location of the centroids of the blast cells as well as the number of ALL blast.  
+
+\item ALL-IDB2 is a collection of cropped area of interest of normal and blast cells that belongs to the ALL-IDB1 dataset. These images are then somehow already preprocessed regarding the region of interest. Their size is $\approx$ 250 x 250. ALL-IDB2 images have similar gray level properties to the images of the ALL-IDB1, except the image dimensions. The images are annotated similarly to the images from ALL-IDB1. ALL-IDB2 contains 260 images including 130 ALL cases and 130 healthy cases.  
+\end{itemize}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=1]{figures/all-idb.PNG}
+  \caption{Image examples of ALL-IDB1 and ALL-IDB2.}
+  \label{fig:all-idb}
+\end{figure}
+
+\newpage
 \section{DEMIR-LEUKEMIA dataset}
+The DEMIR-LEUKEMIA dataset has been created by Ahmed et al. \cite{leukemia} from the The American Society of Hematology (ASH) Image Bank \cite{ASH}. Since ALL-IDB only deals with ALL leukemia subtype, the DEMIR-LEUKEMIA dataset is complementary to ALL-IDB by providing a collection of CLL, AML and CML leukemia subtypes images.  
+
+ASH Image Bank is publicly available on the Web and includes a comprehensive collection of
+images related to a wide range of hematological topics. In this study, Ahmed et al. have selected all available blood cell images annotated with leukemia, including any of CLL, AML and CML subtypes. 
+
+DEMIR-LEUKEMIA contains 177 AML, 185 CLL and 185 CML images. It contains no healthy cases. The sizes of the images are very variables, it can goes from 200 x 200 to 1000 x 1000. As Ahmed et al. have chosen the images with no specific criteria except the leukemia subtype, the images are very disparate. When using this dataset, the preprocessing step is then mandatory. 
+
+\autoref{table:datasets-leukemia} sums up the content of the two original datasets used for leukemia subtypes detection, i.e. the number of samples. 
+
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+      \hline
+      \textbf{Dataset} & \textbf{ALL} & \textbf{AML} & \textbf{CLL} & \textbf{CML} & \textbf{HEALTHY} & \textbf{Total}\\
+      \hline
+      ALL-IDB1 & 50 & 0 & 0 & 0 & 58 & 108  \\
+      \hline
+      ALL-IDB2 & 130 & 0 & 0 & 0 & 130 & 260  \\
+      \hline
+      ALL-IDB & 180 & 0 & 0 & 0 & 188 & 368  \\
+      \hline
+      DEMIR-LEUKEMIA & 0 & 177 & 185 & 185 & 0 & 547  \\
+      \hline
+      \hline
+      ALL-IDB + DEMIR-L & 180 & 177 & 185 & 185 & 188 & 915 \\ 
+      \hline
+    \end{tabular}
+    \captionof{table}{Summary of the ALL-IDB and DEMIR-LEUKEMIA datasets used for leukemia subtypes detection.}
+    \label{table:datasets-leukemia}
+\end{center} 
 
 \section{Methodology}
 
