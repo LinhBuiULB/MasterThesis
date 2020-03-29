@@ -17,16 +17,19 @@ def createFileList(myDir, format='.jpg'):
 	return fileList
 
 def data_to_CSV(myFileList):
-	if os.path.exists("resizedALLIDB1.csv"):
-  		os.remove("resizedALLIDB1.csv")
+	csv_file_name = "resizedLEUKSUBTYPES-grey.csv"
+	if os.path.exists(csv_file_name):
+  		os.remove(csv_file_name)
 
-	with open("resizedALLIDB1.csv", 'w') as f:
-		writer = csv.writer(f)
-		first_line = ""
+	with open(csv_file_name, 'w') as f:
+		writer = csv.writer(f, delimiter=' ', escapechar=' ', quoting=csv.QUOTE_NONE)
+		newline = '' 
 		for i in range(10000):
-			first_line += str(i)
-			first_line += ","
-		writer.writerow([first_line])
+			newline += str(i)
+			if(i != 9999):
+				newline += ","
+		writer.writerow([newline])
+
 
 	for file in myFileList:
 	    print(file)
@@ -38,16 +41,16 @@ def data_to_CSV(myFileList):
 	    format = img_file.format
 	    mode = img_file.mode
 
-	    # Make image Greyscale
-	    img_grey = img_file.convert('L')
-	    #img_grey.save('result.png')
-	    #img_grey.show()
+	    # Format img (color or greyscale)
+	    img_format = img_file.convert('L') # parameter 'L' = greyscale , 'P' = color
+	    #img_format.save('result.png')
+	    #img_format.show()
 
-	    # Save Greyscale values
-	    value = np.asarray(img_grey.getdata(), dtype=np.int).reshape((img_grey.size[1], img_grey.size[0]))
+	    # Save values
+	    value = np.asarray(img_format.getdata(), dtype=np.int).reshape((img_format.size[1], img_format.size[0]))
 	    value = value.flatten()
 	    print(value)
-	    with open("resizedALLIDB1.csv", 'a') as f:
+	    with open(csv_file_name, 'a') as f:
 	        writer = csv.writer(f)
 	        writer.writerow(value)
 
@@ -55,14 +58,15 @@ def get_yLabels(myFileList):
 	yLabels = [] 
 	for file in myFileList: 
 		fileName = os.path.basename(file)
-		yLabels.append([int(fileName[6])])
+		yLabels.append([int(fileName[12])])
 	return yLabels
 
 def resize_folder(directory):
 	for file_name in os.listdir(directory):
 		print("Processing %s" % file_name)
 		image = Image.open(os.path.join(directory, file_name))
-
+		if image.mode != 'RGB':
+			image = image.convert('RGB')
 		x,y = image.size
 		print(x,y)
 		new_dimensions = (100, 100)
@@ -75,16 +79,16 @@ def resize_folder(directory):
 
 def main(): 
 	# Resize img folder
-	#resize_folder("Datasets/ALL_IDB1/im")
+	resize_folder("LEUK-SUBTYPES/im")
 	
 	# Create CSV from img folder
-	myFileList = createFileList('Datasets/ALL_IDB1/resized_im') 
-	data_to_CSV(myFileList)
+	#myFileList = createFileList('ALL_IDB1/resized_im_data_aug') 
+	#data_to_CSV(myFileList)
 
 	# get Y labels from the data 
-	myFileListForY = createFileList('Datasets/ALL_IDB1/im') 
-	y = get_yLabels(myFileListForY)
-	print(y)
+	#myFileListForY = createFileList('ALL_IDB1/im') 
+	#y = get_yLabels(myFileListForY)
+	#print(y)
 	
 if __name__ == "__main__":
    main()
