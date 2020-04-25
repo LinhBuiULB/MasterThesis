@@ -11,5 +11,5 @@ Université libre de Bruxelles - ULB <br />
 The ALL_IDB dataset has been provided by Fabio Scotti.
 https://homes.di.unimi.it/scotti/all/ 
 
-The DEMIR-LEUKEMIA dataset has been provided by Nizar Ahmed. 
+The DEMIR-LEUKEMIA dataset has been provided by Nizar Ahmed. <br /> 
 The datasets and the CSV files are then not provided in the repository.
