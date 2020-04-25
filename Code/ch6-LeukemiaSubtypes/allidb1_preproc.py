@@ -17,16 +17,16 @@ def createFileList(myDir, format='.jpg'):
 	return fileList
 
 def data_to_CSV(myFileList):
-	csv_file_name = "resizedLEUKSUBTYPES-grey.csv"
+	csv_file_name = "csv/resizedLEUKSUBTYPES-200x200.csv"
 	if os.path.exists(csv_file_name):
   		os.remove(csv_file_name)
 
 	with open(csv_file_name, 'w') as f:
 		writer = csv.writer(f, delimiter=' ', escapechar=' ', quoting=csv.QUOTE_NONE)
 		newline = '' 
-		for i in range(10000):
+		for i in range(40000):
 			newline += str(i)
-			if(i != 9999):
+			if(i != 39999):
 				newline += ","
 		writer.writerow([newline])
 
@@ -42,7 +42,7 @@ def data_to_CSV(myFileList):
 	    mode = img_file.mode
 
 	    # Format img (color or greyscale)
-	    img_format = img_file.convert('L') # parameter 'L' = greyscale , 'P' = color
+	    img_format = img_file.convert('P') # parameter 'L' = greyscale , 'P' = color
 	    #img_format.save('result.png')
 	    #img_format.show()
 
@@ -69,7 +69,7 @@ def resize_folder(directory):
 			image = image.convert('RGB')
 		x,y = image.size
 		print(x,y)
-		new_dimensions = (100, 100)
+		new_dimensions = (200, 200)
 		output = image.resize(new_dimensions, Image.ANTIALIAS)
 
 		output_file_name = os.path.join(directory, "small_" + file_name)
@@ -79,11 +79,11 @@ def resize_folder(directory):
 
 def main(): 
 	# Resize img folder
-	resize_folder("LEUK-SUBTYPES/im")
+	#resize_folder("LEUK-SUBTYPES/im")
 	
 	# Create CSV from img folder
-	#myFileList = createFileList('ALL_IDB1/resized_im_data_aug') 
-	#data_to_CSV(myFileList)
+	myFileList = createFileList('LEUK-SUBTYPES/resized_im_200x200') 
+	data_to_CSV(myFileList)
 
 	# get Y labels from the data 
 	#myFileListForY = createFileList('ALL_IDB1/im') 
