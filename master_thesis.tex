@@ -50,6 +50,9 @@
 \algdef{SE}[DOWHILE]{Do}{doWhile}{\algorithmicdo}[1]{\algorithmicwhile\ #1}
 %
 
+\usepackage{fourier}
+\usepackage[title]{appendix}
+
 \theoremstyle{definition}
 \newtheorem{defn}{Definition}[section]
 \newtheorem{conj}{Conjecture}[section]
@@ -93,9 +96,9 @@
     \vfill
 
     % Bottom of the page
-    {\large \textbf{Promotor :} Matthieu Defrance} \\
+    {\large \textbf{Supervisor:} Matthieu Defrance} \\
     \vspace{0.5cm}
-    Academic Year 2019-2020
+    Academic Year 2020-2021
 
   \end{center}
   \end{sffamily}
@@ -104,7 +107,7 @@
 
 \begin{abstract}
 
-In this document, the important computer vision problem called image classification is tackled. To introduce the problem, different applications of image recognition and classification are given and explained to prove its importance in our actual world,  especially in the medical field which will be focused in this paper. Furthermore, machine learning and deep learning methods are used to solve image classification problem. In 2012, convolutional neural networks (CNN) have significantly increase the performance of the previous learning methods. In addition to CNN, this document expounds support vector machines (SVM) which is a well-known method for classifying data into classes. Subsequently, these methods will be used to resolve medical images classification problems. In particular, the methodology following Regab et al.'s paper \cite{breast-cancer} to detect breast cancer by analysing mammogram images with an average accuracy of 80\%  makes subject of an entire chapter of the document.      
+In this document, the important computer vision problem called image classification is tackled. To introduce the problem, different applications of image recognition and classification are given and explained to prove its importance in our actual world,  especially in the medical field which will be focused in this paper. Furthermore, machine learning and deep learning methods are used to solve image classification problem. In 2012, convolutional neural networks (CNN) have significantly increase the performance of the previous learning methods. In addition to CNN, this document expounds support vector machines (SVM) which is a well-known method for classifying data into classes. Subsequently, these methods will be used to resolve medical images classification problems. In particular, the methodology following \textit{Regab et al.}'s paper \cite{breast-cancer} to detect breast cancer by analysing mammogram images with an average accuracy of 80\%  makes subject of an entire chapter of the document.      
 
 \end{abstract}
 
@@ -787,7 +790,7 @@ On the other hand, malignant tumors can invade nearby tissues. In the case of br
   \label{fig:tumor-types}
 \end{figure}
 
-Therefore, the purpose of the work of Ragab et al. \cite{breast-cancer} is to detect the masses and to classify benign and malignant tissues in mammograms. The methodology to do that is presented in the next section.  
+Therefore, the purpose of the work of \textit{Ragab et al.} \cite{breast-cancer} is to detect the masses and to classify benign and malignant tissues in mammograms. The methodology to do that is presented in the next section.  
 
 \section{Methodology for breast cancer detection}
 The methodology tackled in the paper \cite{breast-cancer} is divided into 5 main steps: (1) image enhancement, (2) image segmentation, (3) feature extraction, (4) feature classification, and finally, (5) an evaluation for the classifier. 
@@ -846,7 +849,7 @@ Region-based method divides an image into different regions based on pre-defined
 \end{itemize} 
 
 \subsubsection{Image segmentation summary}
-The methodology used by Ragab et al. is then summarized by these following steps combining CNN, threshold and region-based techniques \cite{breast-cancer}: 
+The methodology used by \textit{Ragab et al.} is then summarized by these following steps combining CNN, threshold and region-based techniques \cite{breast-cancer}: 
 \begin{enumerate}
 \item $\left[\text{Threshold}\right]$\footnote{The [] indicates the technique used for this step.} Convert the original mammogram grayscale image into a binary image. 
 \item $\left[\text{CNN}\right]$ Binary image objects are labelled and the number of pixels are counted. 
@@ -897,7 +900,7 @@ The breast cancer detection has obviously two different possible outputs regardi
 To do that, after the training step, the last fully connected layer is replaced by a new layer for the classification of these two classes: benign and malignant masses.
 
 \subsection{Evaluation}
-Finally, the last step of the classification is the evaluation. We have seen in \autoref{sec:evaluation} different tools and methods to evaluate a classifier. All these tools are appropriate to use in order to get an accurate classifier to make potential modification to enhance the model if necessary. The evaluation results of Ragab et al.'s model make subject of the next section. 
+Finally, the last step of the classification is the evaluation. We have seen in \autoref{sec:evaluation} different tools and methods to evaluate a classifier. All these tools are appropriate to use in order to get an accurate classifier to make potential modification to enhance the model if necessary. The evaluation results of \textit{Ragab et al.}'s model make subject of the next section. 
 
 A global summary of the methodology is presented in the \autoref{fig:summary-breast-cancer-methodology}.
 
@@ -906,7 +909,7 @@ A global summary of the methodology is presented in the \autoref{fig:summary-bre
 \begin{figure}[h]
   \centering
   \includegraphics[scale=0.375]{figures/summary-breast-cancer-methodology.png}
-  \caption{Summary of the breast cancer detection methodology of Regab et al.'s paper \cite{breast-cancer}.}
+  \caption{Summary of the breast cancer detection methodology of \textit{Regab et al.}'s paper \cite{breast-cancer}.}
   \label{fig:summary-breast-cancer-methodology}
 \end{figure}
 \vfill\hspace*{0mm}
@@ -958,7 +961,7 @@ In conclusion, the choice concerning the kernel function is unequivocal, the bes
 
 After discussing theoretically about the different methods and materials of image classification and recognition, this chapter is tackling a simple image classification model implementation for the non-medical dataset CIFAR-10 \cite{CIFAR10} based on the CNN implementation of Jason Brownlee \cite{CIFAR10-implementation-1} and Dan Nelson \cite{CIFAR10-implementation-2}. Henceforth we can determine the parameters which optimize the evaluation criteria of a predictive model and how it reacts to noise. 
 
-\section{The CIFAR10 dataset}
+\section{The CIFAR10 dataset} \label{sec:CIFAR10}
 The CIFAR (Canadian Institute For Advanced Research) created two versions of datasets: CIFAR-10 and CIFAR-100 which differs from the number of image classes that contains the respective datasets. In this work, we will use the CIFAR10 dataset whose involves a collection of images belonging to the following 10 classes: airplanes, cars, birds, cats, deer, dogs, frogs, horses, ships, and trucks illustrated in \autoref{fig:cifar10}.  
 
 The CIFAR-10 dataset consists of 60000 $32\times32$ colour images in these 10 classes, with 6000 images per class mutually exclusive. 50000 of these images are dedicated to the training phase and constitutes the training set while the 10000 remaining are dedicated to the evaluation and then shapes the test set (test batch). These 50000 training images are divided into batches of 10000 elements. The training batches contain the remaining images in random order, but some training batches may contain more images from one class than another. Between them, the training batches contain exactly 5000 images from each class.
@@ -1288,7 +1291,21 @@ In both cases, we see an improvement compared to the baseline results. Data augm
 \subsubsection{Experiment 6 - Adding Gaussian noise} \label{sec:noise-CIFAR10}
 Same as previous regularizers, choosing the right added noise rate is really important. As the training set is highly balanced, this can be well observed in the non-sampling case where we observe that the accuracy is decreasing a lot when adding too much noise. This can easily be explained same as experiment 3 with dropout, i.e. in the sampling case, we learn less then we already have missing information (underfitting), adding noise is then not benefit to increase the model accuracy.
 
-However, for the non-sampling case that the model is reacting well to noise since that the accuracy is not fluctuating at all and keep constant. This Gaussian noise has been added after the pooling layer by using \texttt{GaussianNoise(value)} from keras.   
+However, for the non-sampling case that the model is reacting well to noise since that the accuracy is not fluctuating at all and keep constant. This Gaussian noise has been added after the pooling layer by using \texttt{GaussianNoise(value)} from keras.  
+ 
+\begin{center}
+\begin{tabular}{|c|c|c|}
+  \hline
+  Noise value & Accuracy (no sampling) & Accuracy (with sampling) \\
+  \hline
+  0 & \textbf{76.13\%} &  63.490\% \\
+  0.1 & 75.520\% & \textbf{64.760\%} \\
+  0.2 & 75.960\% & 60.710\% \\
+  0.4 & 75.230\% & 62.080\% \\
+  \hline
+\end{tabular}
+\captionof{table}{Experiment 6 results table.}  
+\end{center}
 
 \begin{figure}[H]
   \centering
@@ -1299,7 +1316,29 @@ However, for the non-sampling case that the model is reacting well to noise sinc
 
 
 \subsection{Conclusion}
-When talking about image classification, the most popular model is a convolutional neural network. After creating a baseline CNN, several regularizers have been introduced and have been experimented to observe their impact on our model's accuracy. Following the results obtained, dropout regularizer and data augmentation seems to be the most efficient ones. After discussing about a simple non-medical case, we can henceforth tackle medical images using our knowledge about CNNs. 
+When talking about image classification, the most popular model is a convolutional neural network. After creating a baseline CNN, several regularizers have been introduced and have been experimented to observe their impact on our model's accuracy. The best results obtained by each experiment are summarized in the \autoref{table:summary-cifar-10} below. Following these results, dropout regularizer and data augmentation seems to be the most efficient ones. After discussing about a simple non-medical case, we can henceforth tackle medical images using our knowledge about CNNs. 
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+  \hline
+          & \textbf{ACC without sampling} & \textbf{ACC with sampling} \\
+  \hline
+  Exp 1 (epochs) & 65\% & 65\% \\
+  \hline
+  Exp 2 (optimizer) & \textcolor{red}{63.490\%} & \textcolor{red}{63.490\%}  \\ 
+  \hline
+  Exp 3 (dropout) & 78.140\% & \textcolor{red}{63.490\%} \\
+  \hline
+  Exp 4 (weight decay) & 77.490\% & 64.190\%  \\ 
+  \hline 
+  Exp 5 (data aug) & \textcolor{ForestGreen}{78.410\%} & \textcolor{ForestGreen}{64.810\%} \\
+  \hline
+  Exp 6 (noise) & 76.130\% & 64.760\% \\
+  \hline
+\end{tabular}
+\captionof{table}{Summary of the \textbf{best} results obtained for the experiments on CIFAR-10 dataset. These are corresponding to the following parameters : (Exp 1) betweeen 10 and 40 epochs ; (Exp 2) ADAGRAD ; (Exp 3) dropout=0.2, dropout=0 ; (Exp 4) weight decay = 0.001 ; (Exp 5) data aug = yes, (Exp 6) noise=0.1, noise=0. The result highlighted in \textcolor{ForestGreen}{green} is the best result obtained. The result highlighted in \textcolor{red}{red} is the worst result obtained.}
+\label{table:summary-cifar-10}
+\end{center}
 
 
 \chapter{Identification of Leukemia Subtypes from microscopic images}
@@ -1366,12 +1405,12 @@ The ALL-IDB dataset is divided into 2 sets of data: ALL-IDB1 and ALL-IDB2.
 
 \newpage
 \section{DEMIR-LEUKEMIA dataset} \label{sec:demir-leukemia}
-The DEMIR-LEUKEMIA dataset has been created by Ahmed et al. \cite{leukemia} from the The American Society of Hematology (ASH) Image Bank \cite{ASH}. Since ALL-IDB only deals with ALL leukemia subtype, the DEMIR-LEUKEMIA dataset is complementary to ALL-IDB by providing a collection of CLL, AML and CML leukemia subtypes images.  
+The DEMIR-LEUKEMIA dataset has been created by \textit{Ahmed et al.} \cite{leukemia} from the The American Society of Hematology (ASH) Image Bank \cite{ASH}. Since ALL-IDB only deals with ALL leukemia subtype, the DEMIR-LEUKEMIA dataset is complementary to ALL-IDB by providing a collection of CLL, AML and CML leukemia subtypes images.  
 
 ASH Image Bank is publicly available on the Web and includes a comprehensive collection of
-images related to a wide range of hematological topics. In this study, Ahmed et al. have selected all available blood cell images annotated with leukemia, including any of CLL, AML and CML subtypes. 
+images related to a wide range of hematological topics. In this study, \textit{Ahmed et al.} have selected all available blood cell images annotated with leukemia, including any of CLL, AML and CML subtypes. 
 
-DEMIR-LEUKEMIA contains 177 AML, 185 CLL and 185 CML images. It contains no healthy cases. The sizes of the images are very variables, it can goes from 200 x 200 to 1000 x 1000. As Ahmed et al. have chosen the images with no specific criteria except the leukemia subtype, the images are very disparate. When using this dataset, the preprocessing step is then mandatory. 
+DEMIR-LEUKEMIA contains 177 AML, 185 CLL and 185 CML images. It contains no healthy cases. The sizes of the images are very variables, it can goes from 200 x 200 to 1000 x 1000. As \textit{Ahmed et al.} have chosen the images with no specific criteria except the leukemia subtype, the images are very disparate. When using this dataset, the preprocessing step is then mandatory. 
 
 \autoref{table:datasets-leukemia} sums up the content of the two original datasets used for leukemia subtypes detection, i.e. the number of samples. 
 
@@ -1467,7 +1506,7 @@ All the datasets with their corresponding number of images per leukemia subtypes
 \section{Methodology}
 
 The methodology used is based on the article "Identification of Leukemia Subtypes from
-Microscopic Images Using Convolutional Neural Network" from Ahmed et al. \citep{leukemia}. As the article's statement indicates, the model used is a convolutional neural network and can easily be justified (cfr. \autoref{sec:why-cnn}). 
+Microscopic Images Using Convolutional Neural Network" from \textit{Ahmed et al.} \citep{leukemia}. As the article's statement indicates, the model used is a convolutional neural network and can easily be justified (cfr. \autoref{sec:why-cnn}). 
 
 
 \subsection{Preprocessing}
@@ -1480,7 +1519,7 @@ In the article \cite{leukemia}, no preprocessing phase was done to the images an
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.3]{figures/color_histogram_plot.png}
-  \caption{Histogram equalization principle. A color histogram of an image represents the number of pixels in each type of color component. We spread out the most frequent intensity values of each color channel. Image extracted from \cite{hist-eq-fig}.}
+  \caption{Histogram equalization principle. A color histogram of an image represents the number of pixels in each type of color component. We spread out the most frequent intensity values of each color channel. Figure extracted from \cite{hist-eq-fig}.}
   \label{fig:hist-eq}
 \end{figure}
 
@@ -1568,234 +1607,21 @@ In this section, the results of the experiments described in the previous sectio
 \item \textit{the evolution of the \textbf{accuracy} on \textbf{train set} along epochs:} this graph is used to visualise the speed at which the model learns and converges to 100\% accuracy (convergence state). 
 \end{itemize}
 
-In each result graph, the result of each run is drawn as well as the average of the 5 runs highlighted. 
-
-\subsection{Case A - ALL-IDB1}
-
-For the first case, we use the ALL-IDB1 dataset which contains a total of 108 images. We then use 86 images for training and 22 images for testing when not using data augmentation. Otherwise, we have 172 images for training and 44 images for testing. As reminder, ALL-IDB1 dataset contains only 2 classes: HEALTHY (label 0) vs ILL (label 1) and contains a large view of blood cells of the patient. ALL-IDB dataset is explained in details in \autoref{sec:all-idb}.    
-
-\subsubsection{Experiment A.1 - Baseline}
-
-This experiment consists of trying the simplest version of the CNN and observe how it reacts to the resized original dataset. To make a general idea about the efficiency of our model, we can refer to the results obtained by Ahmed et al on his work \cite{leukemia}. They obtained an average of 81.16\% accuracy on test set, 1.3093 for loss value and 99.55\% for train set without applying any image transformations. 
-
-Generally, the results obtained are not so far than the results obtained by the reference article \cite{leukemia} knowing that we have used images resized to 100x100 (= 10000 pixels). Thus, the images that we have used have \textbf{22 times less pixels} since the original images are sized of $\approx$ 1700x1300 (= 221000 pixels). 
-
-We can certainly assure that this resizing impacts the performance of our CNN model and can cause some troubles in its capacity to learn and retrieve the information. Nevertheless, despite this huge inconvenience, the CNN is still capable of learning some features otherwise we would have an average accuracy of 50\% in this type of binary classification.   
-We can observe that the CNN converges very quickly -- no more than 5 epochs, to its convergence state.  
-
-The general behaviour when looking to the results graphs on \autoref{fig:results-A1} is that the accuracy tends to increase slowly and stabilize at a certain time. Same for the loss value, it tends to decrease along time.  
-
-\vspace{1cm}
-
-
-\begin{center}
-\begin{tabular}{|l|c|c|c|c|c|c|}
-  \hline
-   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
-  \hline
-  ACC-TEST & 68.18\% & 63.63\% & 59.09\% & 63.63\% & 72.72\% & 65.45\% \\
-  LOSS-TEST & 3.53 & 5.86 & 6.55 & 0.55  & 0.82 & 3.46 \\ 
-  ACC-TRAIN & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% \\ 
-  \hline
-\end{tabular}
-\captionof{table}{Experiment A.1 (On ALL-IDB1, with Baseline) - Train set = 86 images, Test set = 22 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
-\label{table:results-A1}
-\end{center}
-
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.5]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB1/all_idb1-baseline.PNG}
-  \caption{Results of experiment A.1 (On ALL-IDB1, with Baseline) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{65.45\%} (2) Loss value on test set: \textbf{3.46} (3) Accuracy on train set: \textbf{100\%}}
-  \label{fig:results-A1}
-\end{figure}
-
-
-\subsubsection{Experiment A.2 - Filters}
-In this experiment, we keep the baseline CNN but we preprocess the images of the resized dataset by applying some filters \textbf{separately}. \\
-
-\textbf{Greyscale}
-
-First filter that we apply is transforming the images into greyscale. The results obtained when using greyscale images is very bad. It stucks to 50\% which means a totally random prediction. This issue can be due the fact that images are already very small and we suppress the color feature that seems to be important in such images. In fact, the original images (with color) of ALL-IDB1 dataset are at first sight very similar. One of the main feature that distinct them is color. Adding such greyscale filter transforms the images into "mirror" images that causes a total fuzziness whether for human eyes or the CNN model. \\ 
-
-\textbf{Contrast increased} 
-
-The second filter we apply is to increase the contrast of the images by an arbitrary value. In our case, we will increase the contrast by 4. As illustrated in \autoref{fig:preproc-leuk}(b), the color and the edges of blood cells are more highlighted. These features constitute important information for such classification. Bringing them to light can therefore only be a good idea. This affirmation is well confirmed by the results obtained. In average, we obtain an accuracy of 84.54\% after 25 epochs which is even more than the baseline result of the reference article presented in the previous section. Hence, the size of the images seems to not be the most important feature in such images as we obtain in average better results by increasing the images' contrast to highlight the blood cells color and edges on 100x100 images. However, we will take a look on the size feature on \autoref{sec:size-allidb1}. \\
-
-\textbf{Histogram equalization} 
-
-Finally, the last filter that we apply is a well-known image enhancement technique called \textit{histogram equalization} and previously explained in \autoref{sec:img-enhancement-breast}. In summary, what histogram equalization do is increasing the contrast of an image by effectively spreading out the most frequent intensity values of the histogram. This technique is known to be efficient in image recognition problems. This allows for areas of lower local contrast to gain a higher contrast. The results obtained (average of 90.9\%) do not betray the reputation for image enhancement of the histogram equalization technique. In contrary to the previous filter where we apply the same contrast increase on the entire image, here we only increase the contrast where it is needed. Therefore, we obtain clearer images that may highlight efficiently affected blood cells and help for the model's learning.  
-
-\vspace{1cm}
-
-\begin{center}
-\begin{tabular}{|l|c|c|c|}
-  \hline
-   & \textbf{Greyscale} & \textbf{Increased contrast} & \textbf{Histogram equalization} \\
-  \hline
-  Accuracy on test set & 51.81\% & 84.54\% & 90.9\% \\
-  Loss value on test set & 6.09 & 1.43 &  0.28\\ 
-  Accuracy on train set & 100\% & 100\% & 100\% \\ 
-  \hline
-\end{tabular}
-\captionof{table}{Experiment A.2 (On ALL-IDB1, with filters applied) - Train set = 86 images, Test set = 22 images - Average results for each filters applied separately after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
-\label{table:results-A2}
-\end{center}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.5]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB1/all_idb1-filters.PNG}
-  \caption{Results of experiment A.2 (On ALL-IDB1, with filters applied). The results presented are the average of 5 different runs for each filter applied.}
-  \label{fig:results-A2}
-\end{figure}
-
-\subsubsection{Experiment A.3 - Size 200x200} \label{sec:size-allidb1}
-The results that we have obtained using the baseline CNN and a resize of the images by 100x100 were not as good as the reference article \cite{leukemia} even though they were still correct. An hypothesis of this issue would have been the size of these images. This experiment aims to test the size feature for the learning of the model. To do that, we have then use the same baseline CNN as before but here with a preprocessing of 200x200. The images contains now 40000 pixels which is 4 times more than in experiment A.1.
-
-Nevertheless, what we can observe from the results is that it does not enhance the accuracy on test set and has lower results in average. These results thus does not allow to draw a positive conclusion about the effectiveness of using larger images. Looking to the graphs, we can observe that the accuracy has a continuous behaviour and the model seems not to learn more along epochs. This can be due to the number of images of our training set (86 images) which does not allow the model to learn efficiently larger images. 
-
 \newpage
-\begin{center}
-\begin{tabular}{|l|c|c|c|c|c|c|}
-  \hline
-   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
-  \hline
-  ACC-TEST & 63.63\% & 40.9\% & 54.54\% & 77.27\% & 59.09\% & 59.08\%\\
-  LOSS-TEST & 2.47 & 5.94 & 1.96 & 0.51  & 0.96 & 2.36 \\ 
-  ACC-TRAIN & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% \\ 
-  \hline
-\end{tabular}
-\captionof{table}{Experiment A.3 (On ALL-IDB1, with larger resize) - Train set = 86 images, Test set = 22 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
-\label{table:results-A3}
-\end{center}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.5]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB1/all_idb1-200x200.PNG}
-  \caption{Results of experiment A.3 (On ALL-IDB1, with larger resize 200x200) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{68.45\%} (2) Loss value on test set: \textbf{0.992} (3) Accuracy on train set: \textbf{100\%}}
-  \label{fig:results-A3}
-\end{figure}
-
-
-\subsubsection{Experiment A.4 - Noise} \label{sec:noise-allidb1}
-
-A recurrent question was about how the model reacts to noise. In this experiment, we try different level of gaussian noise added. Respectively, we try the following values of noise: [0.1,0.2,0.4,0.6,0.8]. In \autoref{sec:noise-cifar}, we have seen that noise can be used as regularization if used sparingly. Is that also valid for medical images? 
-
-Following the results, we can mention that this regularization effect is still valid if a very small value of noise is applied, not more than 0.2. From 0.4, we begin to see bad impact of noise such that the model is not even capable to reach 100\% accuracy on training set after 25 epochs. Moreover, on the third graph representing the learning speed of the model (accuracy on train set) we can observe the more noise applied, the slower the model is to converge. Thus, the threshold noise value to have a regularization effect should be 0.2. Above this, the value of cost function is increasing constantly which means that the model is making lot of error between predicted values and expected values. The model has wrong abilities to estimate the relationship between the label and the input. 
-
-This is also verified when looking to the accuracy results on test set. From \texttt{noise=0.4}, we approach to a prediction rate of 50\% the total prediction randomness.    
-
-\begin{center}
-\begin{tabular}{|l|c|c|c|c|c|c|}
-  \hline
-   & \textbf{noise=0.1} & \textbf{noise=0.2} & \textbf{noise=0.4} & \textbf{noise=0.6} & \textbf{noise=0.8}\\
-  \hline
-  ACC-TEST & 77.27\% & 63.63\% & 59.09\% & 59.09\% & 54.54\%\\
-  LOSS-TEST & 0.67 & 1.64 & 1.75 & 4.33  & 7.32\\ 
-  ACC-TRAIN & 100\% & 100\% & 97.67\% & 94.18\% & 84.88\% \\ 
-  \hline
-\end{tabular}
-\captionof{table}{Experiment A.4 (On ALL-IDB1, with different level of noise) - Train set = 86 images, Test set = 22 images - Average results depending on noise level. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
-\label{table:results-A4}
-\end{center}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.45]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB1/all_idb1-noise.PNG}
-  \caption{Results of experiment A.4 (On ALL-IDB1, with different level of noise). The results presented are the average of 5 different runs for each noise level.}
-  \label{fig:results-A4}
-\end{figure}
-
-
-\subsubsection{Experiment A.5 - Dropout}
-As reminder, dropout is a regularization technique that consists to drop some neurons during the training phase (see \autoref{sec:dropout-cifar} for more information). It is generally used to counter overfitting. When we have used it on CIFAR-10 dataset constituted of 50000 images for training, it had very good impact on the learning phase. Here, we have only 86 images for training which is very low, will it be as efficient as using it on large dataset such as CIFAR-10? Obviously no. On such a small dataset, the model does not suffer from overfitting but more about underfitting. Using dropout is then a very bad idea since it takes out neurons to the model and make it way more difficult to learn. The results obtained show it well. We have high losses values and bad accuracy rates. Looking to this last on test set graph, we observe a continuous behaviour around 50\% rate. Same for the accuracy on train set, it reaches in average 61.85\% accuracy after 25 epochs. That shows the disability for the model to learn correctly.  
-
-
-\begin{center}
-\begin{tabular}{|l|c|c|c|c|c|c|}
-  \hline
-   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
-  \hline
-  ACC-TEST & 59.09\% & 40.9\% & 50.00\% & 59.09\% & 63.63\% & 54.54\% \\
-  LOSS-TEST & 1.07 & 9.52 & 8.05 & 6.11  & 4.15 & 5.78 \\ 
-  ACC-TRAIN & 62.79\% & 58.13\% & 54.65\% & 60.46\% & 73.25\% & 61.85\% \\ 
-  \hline
-\end{tabular}
-\captionof{table}{Experiment A.5 (On ALL-IDB1, with dropout=0.1) - Train set = 86 images, Test set = 22 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
-\label{table:results-A5}
-\end{center}
-
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.4]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB1/all_idb1-dropout.PNG}
-  \caption{Results of experiment A.5 (On ALL-IDB1, with dropout=0.1) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{54.54\%} (2) Loss value on test set: \textbf{5.78} (3) Accuracy on train set: \textbf{61.85\%}}
-  \label{fig:results-A5}
-\end{figure}
-
-
-\subsubsection{Experiment A.6 - Data augmentation}
-
-In this experiment, we have used data augmentation in order to expand the dataset. The method used is explained in \autoref{sec:data-aug-leuk}. The results obtained are quite good and show well the efficiency of using data augmentation. In average, we gain 7\% accuracy and have low loss value when using data augmentation. The images' direction and sense seems to not disturb the model's learning and looks like it is not an impacting feature to determinate the label. 
-
-Nevertheless, some runs as run 4 show an unconvincing performance (63.63\%). This can be due to a type of image augmentation used: rotations. In fact, rotations create some black area and represents a considerable percentage of the image. Thus, the model could have taken it in account and considers it as a feature of the corresponding label which confuses the learning of the model. As data augmentation is done randomly between all the types of image augmentation explained previously, this run could have been implied by this issue and then impact negatively the learning and prediction.     
-
-\begin{center}
-\begin{tabular}{|l|c|c|c|c|c|c|}
-  \hline
-   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
-  \hline
-  ACC-TEST & 72.72\% & 81.81\% & 65.9\% & 63.63\% & 77.27\% & 72.26\% \\
-  LOSS-TEST & 1.17 & 0.46 & 1.25 & 2.76  & 0.91 & 1.31 \\ 
-  ACC-TRAIN & 98.83\% & 100\% & 100\% & 99.41\% & 100\% & 99.64\% \\ 
-  \hline
-\end{tabular}
-\captionof{table}{Experiment A.6 (On ALL-IDB1, with data augmentation) - Train set = 172 images, Test set = 44 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
-\label{table:results-A6}
-\end{center}
-
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.38]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB1/all_idb1-data_aug.PNG}
-  \caption{Results of experiment A.6 (On ALL-IDB1, with data augmentation) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{72.26\%} (2) Loss value on test set: \textbf{1.31} (3) Accuracy on train set: \textbf{99.64\%}}
-  \label{fig:results-A6}
-\end{figure}
-
-
-\subsubsection{Experiment A.7 - Dropout and data augmentation} \label{sec:drop-dataaug-allidb1}
-A problem of using dropout was the size of our training set. If we use larger dataset using data augmentation, will dropout be more efficient this time? In this experiment, we try to combine dropout and data augmentation. However, from what we can observe by the results, dropout is still counterproductive for the model's learning. Even if the results are more encouraging than experiment A.5 where we use only dropout, they are still not as good as using only data augmentation. That shows that the model is still not overfit and need way more data to suffer from it in order to have regularization effect while using dropout. 
-
-
-\begin{center}
-\begin{tabular}{|l|c|c|c|c|c|c|}
-  \hline
-   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
-  \hline
-  ACC-TEST & 54.54\% & 59.09\% & 77.27\% & 65.9\% & 72.72\% & 65.9\% \\
-  LOSS-TEST & 1.13 & 1.95 & 0.84 & 1.21 & 0.7 & 1.16 \\ 
-  ACC-TRAIN & 64.53\% & 65.11\% & 68.60\% & 58.72\% & 68.02\% & 64.99\% \\ 
-  \hline
-\end{tabular}
-\captionof{table}{Experiment A.7 (On ALL-IDB1, with data augmentation and dropout=0.1) - Train set = 172 images, Test set = 44 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
-\label{table:results-A7}
-\end{center}
-
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.4]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB1/all_idb1-data_aug_dropout.PNG}
-  \caption{Results of experiment A.7 (On ALL-IDB1, with data augmentation and dropout=0.1) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{65.9\%} (2) Loss value on test set: \textbf{1.16} (3) Accuracy on train set: \textbf{64.99\%}}
-  \label{fig:results-A7}
-\end{figure}
-
-
-\newpage
-\subsubsection{Summary and conclusion for ALL-IDB1 dataset experiments}
+\subsection{Case A - Results summary for ALL-IDB1 dataset experiments}
 % Tableau qui récapitule tous les résultats au dessus + conclusion
+
+\fbox{ %fbox est utilisé pour voir les bords de la minipage
+\begin{minipage}[c]{14.5cm}
+\danger  \textbf{The detailed results of the experiments for ALL-IDB1 dataset are available in the appendix \autoref{sec:appendix-case-A}.} It contains detailed graphics, table and description of the results of each experiment done on \textbf{ALL-IDB1 dataset}. Each parameter is approached one by one and interpreted concerning their efficiency and the impact on the model's accuracy. Therefore, note that this current section is a \textbf{summary} of all these interpretations on obtained results for the first dataset ALL-IDB1.  
+\end{minipage}
+}
+
+\vspace{0.5cm}
+
 To summarize the experiments done using ALL-IDB1 dataset, the \autoref{table:summary-allidb1} recapitulates the average results of each experiment for the accuracy on test and train set as well as the loss value for test set. 
 
-As the dataset is very small using small images, using the simplest CNN is the best way to learn efficiently. To make the significant features clearer, a preprocessing step using image enhancement (contrast increasing or histogram equalization) seems to be very efficient. Hence, the best result obtained uses the baseline CNN on enhanced images by histogram equalization. We obtain an average of 90.9\% accuracy on test set and a loss value of 0.28. 
+As the dataset is very small using small images, using parameters as dropout or noise looks like inefficient given the results obtained. Using the simplest CNN is then best way to learn efficiently. To make the significant features clearer, a preprocessing step using image enhancement (contrast increasing or histogram equalization) seems to be very efficient. Hence, the best result obtained uses the baseline CNN on enhanced images by histogram equalization. We obtain an average of 90.9\% accuracy on test set and a loss value of 0.28. 
 
 On the other hand, the worst result is obtained by adding a huge value of noise (0.8). We obtain an average of 54.54\% accuracy on test set and a loss value of 7.32. This average accuracy is also obtained when using dropout without data augmentation. This shows how much using dropout is bad when having such a small dataset (comparable to adding 0.8 of gaussian noise!).  
 
@@ -1831,211 +1657,24 @@ On the other hand, the worst result is obtained by adding a huge value of noise 
 \end{center}
 
 
-\subsection{Case B - ALL-IDB2}
-
-Compared to ALL-IDB1, ALL-IDB2 has been already preprocessed by image segmentation on the region of interest (ROI). This dataset contains 260 images that focus on an unique blood cell. We then have 208 images for training and 52 images for testing when not using data augmentation. Otherwise, we have 416 images for training and 104 for testing. Again, more information are described in \autoref{sec:all-idb}. We aim then to compare results without segmentation (ALL-IDB1) and results with segmentation (ALL-IDB2) to observe the efficiency of such preprocessing. To do that, we will do the same experiments as ALL-IDB1. The images of the dataset have also been resized to 100x100, their original sizes were 257x257.
-
-\subsubsection{Experiment B.1 - Baseline}
-When using baseline CNN on the original resized dataset, the results seems to be worse than when we use ALL-IDB1 but still around 62-65\% accuracy. At first sight, determinate if the patient is affected by the disease by using only an unique blood cell is more difficult as we use a more global view of multiple blood cells to determinate if the patient is affected by the disease or not. The features that determinates the label may be more accurate when the only information given is a blood cell, i.e blood cells are very similar to each other. Therefore, we need a larger dataset to obtain better results. Nevertheless can we make these features more impacting to the model? That is what we will observe in the next section by using some filters.  
-
-\begin{center}
-\begin{tabular}{|l|c|c|c|c|c|c|}
-  \hline
-   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
-  \hline
-  ACC-TEST & 63.46\% & 63.46\% & 67.3\% & 55.76\% & 59.61\% & 61.91\% \\
-  LOSS-TEST & 3.22 & 0.65 & 0.79 & 2.59  & 2.05 & 1.86 \\ 
-  ACC-TRAIN & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% \\ 
-  \hline
-\end{tabular}
-\captionof{table}{Experiment B.1 (On ALL-IDB2, with Baseline) - Train set = 208 images, Test set = 52 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
-\label{table:results-B1}
-\end{center}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.42]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB2/all_idb2-baseline.PNG}
-  \caption{Results of experiment B.1 (On ALL-IDB2, with Baseline) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{61.91\%} (2) Loss value on test set: \textbf{1.86} (3) Accuracy on train set: \textbf{100\%}}
-  \label{fig:results-B1}
-\end{figure}
-
-\subsubsection{Experiment B.2 - Filters}
-Same as ALL-IDB1, we will experiment 3 different filters: transforming images into greyscale, increasing images' contrast with an arbitrary value of 4 and using histogram equalization on the images. \\
-
-\textbf{Greyscale}
-
-In contrary to ALL-IDB1, here we obtain more convincing results. As we manage only one blood cell, transforming the images into greyscale allow the model to highlight the shapes/edges of the cell and its content more clearly. \\ 
-
-\textbf{Contrast increased}
-
-Same as ALL-IDB1, increase the contrast to the images seems to be a good image enhancement technique. Again, edges and shapes are highlighted and facilitates the model's learning. \\ 
-
-\textbf{Histogram equalization}
-
-This time, histogram equalization does not give the best results even though it still gives very good ones. Histogram equalization technique is then a safe method to enhance correctly the image without making it unreadable unlike if we put a too large contrast increase value.
-
-\vspace{1cm}
-
-\begin{center}
-\begin{tabular}{|l|c|c|c|}
-  \hline
-   & \textbf{Greyscale} & \textbf{Increased contrast} & \textbf{Histogram equalization} \\
-  \hline
-  Accuracy on test set & 71.53\% & 80.38\% & 73.84\% \\
-  Loss value on test set & 1.09 & 0.47 &  0.95\\ 
-  Accuracy on train set & 99.9\% & 100\% & 100\% \\ 
-  \hline
-\end{tabular}
-\captionof{table}{Experiment B.2 (On ALL-IDB2, with filters applied) - Train set = 208 images, Test set = 52 images - Average results for each filters applied separately after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
-\label{table:results-B2}
-\end{center}
 
 \newpage
-\hspace*{0mm}\vfill
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.5]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB2/all_idb2-filters.PNG}
-  \caption{Results of experiment B.2 (On ALL-IDB2, with filters applied). The results presented are the average of 5 different runs for each filter applied.}
-  \label{fig:results-B2}
-\end{figure}
-\vfill\hspace*{0mm}
+\subsection{Case B - Results summary for ALL-IDB2 dataset experiments}
 
-\newpage
-\subsubsection{Experiment B.3 - Size 200x200}
-The original images from ALL-IDB2 dataset have a size of 257x257. In this section, we will use 200x200 images and can then be considered as the original size. For ALL-IDB1, we have seen that enlarge the images was not the best method to increase the performance due to the very small numbers of samples contained in the dataset. Here for ALL-IDB2, we have 2 times more images and we use the original size of the dataset. So that, we can observe that we obtain slightly better results. Using larger images when having much samples seems then to be a good idea and constitutes a good asset to feature detection.    
+\fbox{ %fbox est utilisé pour voir les bords de la minipage
+\begin{minipage}[c]{14.5cm}
+\danger  \textbf{The detailed results of the experiments for ALL-IDB2 dataset are available in the appendix \autoref{sec:appendix-case-B}.} It contains detailed graphics, table and description of the results of each experiment done on \textbf{ALL-IDB2 dataset}. Each parameter is approached one by one and interpreted concerning their efficiency and the impact on the model's accuracy. Therefore, note that this current section is a \textbf{summary} of all these interpretations on obtained results for the second dataset ALL-IDB2.  
+\end{minipage}
+}
+
+\vspace{0.5cm}
 
 
-\begin{center}
-\begin{tabular}{|l|c|c|c|c|c|c|}
-  \hline
-   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
-  \hline
-  ACC-TEST & 69.23\% & 65.38\% & 75.00\% & 67.3\% & 57.69\% & 66.92\%\\
-  LOSS-TEST & 0.52 & 0.68 & 0.65 & 0.94  & 1.23 & 0.804 \\ 
-  ACC-TRAIN & 100\% & 100\% & 100\% & 99.51\% & 100\% & 99.902\% \\ 
-  \hline
-\end{tabular}
-\captionof{table}{Experiment B.3 (On ALL-IDB2, with larger resize) - Train set = 208 images, Test set = 52 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
-\label{table:results-B3}
-\end{center}
+To conclude the different experiments done using ALL-IDB2 dataset, the preprocessing step using image segmentation do not show a clear advantage in comparison with the experiments done using ALL-IDB1 with no segmentation. Overall, the results are quite equivalent. 
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.45]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB2/all_idb2-200x200.PNG}
-  \caption{Results of experiment B.3 (On ALL-IDB2, with larger resize 200x200) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{68.92\%} (2) Loss value on test set: \textbf{0.804} (3) Accuracy on train set: \textbf{99.902\%}}
-  \label{fig:results-B3}
-\end{figure}
+Using contrast augmentation (whether with arbitrary value or with histogram equalization) is the best image enhancement technique to have great performance. On the other hand, adding a huge value of noise still gets the worst results. This conclusion is then corresponding to using the non-segmented dataset (ALL-IDB1). 
 
-
-
-\subsubsection{Experiment B.4 - Noise}
-Overall, the results seems to have the same behaviour than the results when using ALL-IDB1 dataset. At first, we have a regularization effect when using small noise value. But when using a too large value -- here still 0.4, noise has a very bad impact on the model's learning. At this time, loss values are exploding and almost grow exponentially. The explanations from \autoref{sec:noise-allidb1} are also valid for ALL-IDB2.
-
-\begin{center}
-\begin{tabular}{|l|c|c|c|c|c|c|}
-  \hline
-   & \textbf{noise=0.1} & \textbf{noise=0.2} & \textbf{noise=0.4} & \textbf{noise=0.6} & \textbf{noise=0.8}\\
-  \hline
-  ACC-TEST & 71.15\% & 63.46\% & 50.00\% & 55.76\% & 46.13\%\\
-  LOSS-TEST & 1.41 & 2.34 & 3.60 & 6.45  & 7.12\\ 
-  ACC-TRAIN & 100\% & 99.5\% & 98.55\% & 97.55\% & 94.71\% \\ 
-  \hline
-\end{tabular}
-\captionof{table}{Experiment B.4 (On ALL-IDB2, with different level of noise) - Train set = 208 images, Test set = 52 images - Average results depending on noise level. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
-\label{table:results-B4}
-\end{center}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.5]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB2/all_idb2-noise.PNG}
-  \caption{Results of experiment B.4 (On ALL-IDB2, with different level of noise). The results presented are the average of 5 different runs for each noise level.}
-  \label{fig:results-B4}
-\end{figure}
-
-
-\subsubsection{Experiment B.5 - Dropout}
-Using dropout when your dataset is very small is a technique to forget: that is the conclusion that we have made after the experiment A.5 using dropout on ALL-IDB1 that contains only 108 images. Here we have a little bit much images on ALL-IDB2 and we can remark that overall it still has bad results but we can see a little augmentation on average training set accuracy results. That reinforces the idea that dropout begins to have a regularization effect when we have very large datasets. That is an additional proof of this assertion that we have done previously in experiment A.7 (see \autoref{sec:drop-dataaug-allidb1}). Of course, for this case, we are far from having a dataset size conductive to dropout as regularizer. That explains the bad results.  
-
-\begin{center}
-\begin{tabular}{|l|c|c|c|c|c|c|}
-  \hline
-   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
-  \hline
-  ACC-TEST & 55.76\% & 53.84\% & 48.07\% & 51.92\% & 67.30\% & 55.37\% \\
-  LOSS-TEST & 1.25 & 1.58 & 2.40 & 3.57  & 0.7 & 1.9 \\ 
-  ACC-TRAIN & 73.07\% & 70.67\% & 64.42\% & 62.5\% & 70.0\% & 68.12\% \\ 
-  \hline
-\end{tabular}
-\captionof{table}{Experiment B.5 (On ALL-IDB2, with dropout=0.1) - Train set = 208 images, Test set = 52 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
-\label{table:results-B5}
-\end{center}
-
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.45]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB2/all_idb2-dropout.PNG}
-  \caption{Results of experiment B.5 (On ALL-IDB2, with dropout=0.1) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{55.37\%} (2) Loss value on test set: \textbf{1.9} (3) Accuracy on train set: \textbf{68.12\%}}
-  \label{fig:results-B5}
-\end{figure}
-
-
-
-\subsubsection{Experiment B.6 - Data augmentation}
-
-One more time, data augmentation shows having a good impact on model's performance. These experiments give some indications about the efficiency of data augmentation especially when using small datasets like ALL-IDB1 or ALL-IDB2. This data augmentation techniques give many more samples to the dataset and allow the model to learn more in order to make better predictions. 
-
-Furthermore, the different image manipulations that we have done during this data augmentation seems to not be impacting negatively the feature detection step whether for segmented and non-segmented images. Thus, data augmentation constitutes a must-use asset to increase the performance of the model.  
-
-\begin{center}
-\begin{tabular}{|l|c|c|c|c|c|c|}
-  \hline
-   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
-  \hline
-  ACC-TEST & 64.42\% & 75.96\% & 72.11\% & 67.30\% & 79.80\% & 71.91\% \\
-  LOSS-TEST & 1.44 & 0.67 & 1.30 & 1.67 & 0.91 & 1.198 \\ 
-  ACC-TRAIN & 99.75\% & 99.75\% & 100\% & 100\% & 100\% & 99.9\% \\ 
-  \hline
-\end{tabular}
-\captionof{table}{Experiment B.6 (On ALL-IDB2, with data augmentation) - Train set = 416 images, Test set = 104 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
-\label{table:results-B6}
-\end{center}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.45]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB2/all_idb2-data_aug.PNG}
-  \caption{Results of experiment B.6 (On ALL-IDB2, with data augmentation) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{71.91\%} (2) Loss value on test set: \textbf{1.198} (3) Accuracy on train set: \textbf{99.9\%}}
-  \label{fig:results-B6}
-\end{figure}
-
-
-\subsubsection{Experiment B.7 - Dropout and data augmentation}
-
-Similarly to the experiments on dropout, we observe the same issue as usual when using dropout on small datasets. The model cannot learn correctly to the neurons removed and cannot reach more than 70\% accuracy on training set. As this issue was explained before, refer to experiments A.5, A.7 and B.5 for more explanations. 
-
-\begin{center}
-\begin{tabular}{|l|c|c|c|c|c|c|}
-  \hline
-   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
-  \hline
-  ACC-TEST & 66.34\% & 64.42\% & 58.65\% & 65.38\% & 68.26\% & 64.61\% \\
-  LOSS-TEST & 0.79 & 0.7 & 0.93 & 1.53 & 0.926 & 0.97 \\ 
-  ACC-TRAIN & 67.22\% & 66.74\% & 64.33\% & 62.16\% & 65.78\% & 65.24\% \\ 
-  \hline
-\end{tabular}
-\captionof{table}{Experiment B.7 (On ALL-IDB2, with data augmentation and dropout=0.1) - Train set = 416 images, Test set = 104 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
-\label{table:results-B7}
-\end{center}
-
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.5]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB2/all_idb2-data_aug_dropout.PNG}
-  \caption{Results of experiment B.7 (On ALL-IDB2, with data augmentation and dropout=0.1) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{65.9\%} (2) Loss value on test set: \textbf{1.16} (3) Accuracy on train set: \textbf{64.99\%}}
-  \label{fig:results-B7}
-\end{figure}
-
-\subsubsection{Summary and conclusion for ALL-IDB2 dataset experiments}
-To conclude the different experiments done using ALL-IDB2 dataset, the preprocessing step using image segmentation do not show a clear advantage in comparison with the experiments done using ALL-IDB1 with no segmentation. Overall, the results are quite equivalent. Using contrast augmentation (whether with arbitrary value or with histogram equalization) is the best image enhancement technique to have great performance. On the other hand, adding a huge value of noise still gets the worst results. However, some clear differences can be observed on some experiments such as the experiment A.2 or A.3 which demonstrate way more good performances by using segmentation.  
+However, some clear differences can be observed on some experiments such as the experiment A.2 or A.3 which demonstrate way more good performances by using segmentation. Indeed, the images of ALL-IDB1 are containing more edges and details to highlight as we don't segment them. Therefore, using the experiment 2 (which brings out these edges) or using the experiment 3 (that enlarges these images and then makes the details more visible) are more efficient for the non-segmented dataset ALL-IDB1. 
 
 The \autoref{table:summary-allidb2} summarizes all the average results obtained during the experiments done with ALL-IDB2. 
 
@@ -2070,193 +1709,21 @@ The \autoref{table:summary-allidb2} summarizes all the average results obtained 
 \end{center}
 
 
-\subsection{Case C - ALL-IDB and DEMIR-LEUKEMIA datasets}
 
-The last case deals with ALL-IDB and DEMIR-LEUKEMIA datasets which involves 5 classes: HEALTHY (0), ALL (1), AML (2), CLL (3), CML (4). When not using data augmentation, we consider 732 images for training set and 183 for test set. Otherwise, we have 1464 images for training set and 366 for test set. That makes way more samples than two previous cases but here we also have 3 more classes to predict. The prediction accuracy rate that defines the randomness of the model is then 20\% (not 50\% like a binary classification). In the reference article \cite{leukemia}, they have obtained in average an accuracy of 81.74\% for test set, 1.14 of loss value and 99.34\% for train set after 25 epochs using data augmentation and dropout, with SGD optimizer and no preprocessing step (no resize, no filter).    
+\newpage
+\subsection{Case C - Results summary for ALL-IDB and DEMIR-LEUKEMIA datasets experiments}
 
-\subsubsection{Experiment C.1 - Baseline}
-Compared to the reference article \cite{leukemia} results mentioned above, we are far from the results obtained. As matter of fact, we only obtain 49.61\% accuracy on test set. Nevertheless, we have to keep in mind that the reference result is obtained with no resizing. When processing a large amount of images and labelled with 5 classes, size matter a lot and allow the model to learn more. Moreover, the images provided in DEMIR-LEUKEMIA dataset contains a lot of variety of images such that some of them contain features that may confuse the learning of the model such as watermarks or bad resolution. Thus, the results obtained with our images resized at 100x100 is not that bad as it is very far from a totally random prediction. It means that the model learns well even if we use very small images. To enhance those results, are more preprocessing steps necessary or do we have to use more images? That is the subject of the next sections.      
+\fbox{ %fbox est utilisé pour voir les bords de la minipage
+\begin{minipage}[c]{14.5cm}
+\danger  \textbf{The detailed results of the experiments for ALL-IDB and DEMIR-LEUKEMIA datasets are available in the appendix \autoref{sec:appendix-case-C}.} It contains detailed graphics, table and description of the results of each experiment done on \textbf{ALL-IDB and DEMIR LEUKEMIA datasets}. Each parameter is approached one by one and interpreted concerning their efficiency and the impact on the model's accuracy. Therefore, note that this current section is a \textbf{summary} of all these interpretations on obtained results for the datasets ALL-IDB1 and DEMIR-LEUKEMIA.  
+\end{minipage}
+}
 
-\begin{center}
-\begin{tabular}{|l|c|c|c|c|c|c|}
-  \hline
-   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
-  \hline
-  ACC-TEST & 56.83\% & 39.89\% & 44.8\% & 51.36\% & 55.19\% & 49.61\% \\
-  LOSS-TEST & 2.38 & 6.59 & 2.32 & 2.14  & 1.26 & 2.93 \\ 
-  ACC-TRAIN & 99.59\% & 99.72\% & 99.72\% & 99.86\% & 99.59\% & 99.69\% \\ 
-  \hline
-\end{tabular}
-\captionof{table}{Experiment C.1 (On ALL-IDB+DEMIR, with Baseline) - Train set = 732 images, Test set = 183 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
-\label{table:results-C1}
-\end{center}
+\vspace{0.5cm}
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.42]{Code/ch6-LeukemiaSubtypes/figures_result/LEUK-SUBTYPES/leukSub-baseline.PNG}
-  \caption{Results of experiment C.1 (On ALL-IDB+DEMIR, with Baseline) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{49.61\%} (2) Loss value on test set: \textbf{2.93} (3) Accuracy on train set: \textbf{99.69\%}}
-  \label{fig:results-C1}
-\end{figure}
+The \autoref{table:summary-allidb-demir} summarizes the results obtained for the identification of leukemia subtypes experiments. This time, the results obtained by using data augmentation get the highest performance. Nevertheless, the experiments using image enhancement are also efficient whether by adding filters (greyscale, contrast increase or histogram equalization) or by increasing the size of the images. One more time, it is the experiment B.4 where we add a large noise value that shows the worst performance. Moreover, it seems that the dataset is still not big enough for dropout to be an efficient technique.
 
-
-\subsubsection{Experiment C.2 - Filters}
-
-As we have seen for experiments done for ALL-IDB dataset, image enhancement using filters like greyscale or contrast enhancement seemed like an efficient technique to increase the performance of our model. This observation is confirmed while looking to the results obtained. We really have convincing results and the image enhancement step looks like being mandatory to gain accuracy rate. In this case, the three filters tested achieve quite similar results even if histogram equalization still have slightly better results.  
-
-\begin{center}
-\begin{tabular}{|l|c|c|c|}
-  \hline
-   & \textbf{Greyscale} & \textbf{Increased contrast} & \textbf{Histogram equalization} \\
-  \hline
-  Accuracy on test set & 59.01\% & 58.68\% & 61.74\% \\
-  Loss value on test set & 2.29 & 2.05 &  1.63\\ 
-  Accuracy on train set & 99.86\% & 99.72\% & 99.72\% \\ 
-  \hline
-\end{tabular}
-\captionof{table}{Experiment C.2 (On ALL-IDB+DEMIR, with filters applied) - Train set = 732 images, Test set = 183 images - Average results for each filters applied separately after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
-\label{table:results-C2}
-\end{center}
-
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.5]{Code/ch6-LeukemiaSubtypes/figures_result/LEUK-SUBTYPES/leukSub-filters.PNG}
-  \caption{Results of experiment C.2 (On ALL-IDB+DEMIR, with filters applied). The results presented are the average of 5 different runs for each filter applied.}
-  \label{fig:results-C2}
-\end{figure}
-
-
-\subsubsection{Experiment C.3 - Size 200x200}
-
-To have an idea about the importance of using larger images in a case where we have more than 2 classes and more images, we do an experiment with the images of the dataset resized to 200x200. We observe a better performance in average and also a very low loss value. That shows the efficiency of using larger images and explain the very good results obtained by the authors of the reference article \cite{leukemia}. Moreover, we can observe that the model arrives to a convergence state as fast as using 100x100 images which means that it is not really constraining for the model's learning. However, the huge drawback of using larger images is the execution time that grow exponentially depending to the images' sizes.  
-
-\begin{center}
-\begin{tabular}{|l|c|c|c|c|c|c|}
-  \hline
-   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
-  \hline
-  ACC-TEST & 65.02\% & 67.75\% & 56.28\% & 54.09\% & 56.83\% & 59.99\%\\
-  LOSS-TEST & 0.97 & 1.36 & 1.65 & 1.45  & 1.04 & 1.29 \\ 
-  ACC-TRAIN & 99.72\% & 99.86\% & 99.31\% & 99.72\% & 99.86\% & 99.69\% \\ 
-  \hline
-\end{tabular}
-\captionof{table}{Experiment C.3 (On ALL-IDB+DEMIR, with larger resize) - Train set = 732 images, Test set = 183 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
-\label{table:results-C3}
-\end{center}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.45]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB2/all_idb2-200x200.PNG}
-  \caption{Results of experiment C.3 (On ALL-IDB+DEMIR, with larger resize 200x200) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{59.99\%} (2) Loss value on test set: \textbf{1.29} (3) Accuracy on train set: \textbf{99.69\%}}
-  \label{fig:results-C3}
-\end{figure}
-
-\subsubsection{Experiment C.4 - Noise}
-
-When testing the ability of the model to learn when noise is added, the previous experiments on ALL-IDB dataset have shown that the performance decreases drastically when adding more than 20\% of noise. In this case, we see that this performance is badly affected already at 20\% of noise added. Indeed, as we have way more classes and then way more features to learn, the model's ability to learn is more impacted. That is well illustrated in the third graph showing the evolution of accuracy rate on training set where we can observe that more noise added, more the model takes time to  reach convergence. Of course, that proportionality impact the accuracy on test set and the cost of loss function that increases depending of noise added which means that the model is getting harder and harder to make the link between the input image and its label.  
-
-\begin{center}
-\begin{tabular}{|l|c|c|c|c|c|c|}
-  \hline
-   & \textbf{noise=0.1} & \textbf{noise=0.2} & \textbf{noise=0.4} & \textbf{noise=0.6} & \textbf{noise=0.8}\\
-  \hline
-  ACC-TEST & 51.36\% & 32.78\% & 28.41\% & 25.68\% & 14.75\%\\
-  LOSS-TEST & 2.83 & 4.23 & 4.92 &  5.64 & 8.80 \\ 
-  ACC-TRAIN & 99.59\% & 98.22\% & 97.81\% & 96.17\% & 94.67\% \\ 
-  \hline
-\end{tabular}
-\captionof{table}{Experiment C.4 (On ALL-IDB+DEMIR, with different level of noise) - Train set = 732 images, Test set = 183 images - Average results depending on noise level. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
-\label{table:results-C4}
-\end{center}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.45]{Code/ch6-LeukemiaSubtypes/figures_result/LEUK-SUBTYPES/leukSub-noise.PNG}
-  \caption{Results of experiment C.4 (On ALL-IDB+DEMIR, with different level of noise). The results presented are the average of 5 different runs for each noise level.}
-  \label{fig:results-C4}
-\end{figure}
-
-
-\subsubsection{Experiment C.5 - Dropout}
-
-The conclusion that arise from the previous experiments on dropout efficiency were that it does not make sense to use it when we have so few samples in our dataset. Here we can think that as we have more images, dropout will show a regularization effect. But here we also have 3 more classes. Having 3 times more images therefore amounts to the same conclusion than previous experiments. Thus, this assertion is verified by the results obtained in this experiment. In average we obtain 25.89\% accuracy on test set which is very near from the total randomness prediction. Moreover, this is also observed by the third graph showing the evolution of accuracy on train set which is almost constant and does not evolve along epochs. That shows the difficulty of the model to learn. The results show then the same behaviour as experiments A.5 and B.5. The conclusion on dropout done previously is then also valid for this case.    
-
-\begin{center}
-\begin{tabular}{|l|c|c|c|c|c|c|}
-  \hline
-   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
-  \hline
-  ACC-TEST & 18.57\% & 23.49\% & 21.85\% & 28.96\% & 36.61\% & 25.89\% \\
-  LOSS-TEST & 4.77 & 5.63 & 4.75 & 2.23  & 1.36 & 3.74 \\ 
-  ACC-TRAIN & 46.03\% & 45.62\% & 51.63\% & 53.27\% & 51.36\% & 49.58\% \\ 
-  \hline
-\end{tabular}
-\captionof{table}{Experiment C.5 (On ALL-IDB+DEMIR, with dropout=0.1) - Train set = 732 images, Test set = 183 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
-\label{table:results-C5}
-\end{center}
-
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.4]{Code/ch6-LeukemiaSubtypes/figures_result/LEUK-SUBTYPES/leukSub-dropout.PNG}
-  \caption{Results of experiment C.5 (On ALL-IDB+DEMIR, with dropout=0.1) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{25.89\%} (2) Loss value on test set: \textbf{3.74} (3) Accuracy on train set: \textbf{49.58\%}}
-  \label{fig:results-C5}
-\end{figure}
-
-
-\subsubsection{Experiment C.6 - Data augmentation}
-
-The good results obtained by the authors of \citep{leukemia} were obtained using data augmentation. Does data augmentation really make the performance of the model increasing? Theoretically from what we have experiment with ALL-IDB dataset and from the results of \cite{leukemia}, it is one of the must-use technique to have great performance. The results from this experiment do not make exception of this assertion. Even if we use resized images, we nearly obtain the same results as if we have use the original size of the images. Indeed, we have obtained an average of 71.91\% accuracy on test set while the result obtained by the reference article \cite{leukemia} with the original size was about 81\%. That really show the efficiency of data augmentation in this type of experiment. 
-
-\begin{center}
-\begin{tabular}{|l|c|c|c|c|c|c|}
-  \hline
-   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
-  \hline
-  ACC-TEST & 77.04\% & 66.66\% & 62.56\% & 55.19\% & 68.30\% & 71.91\% \\
-  LOSS-TEST & 0.74 & 2.75 & 1.26 & 1.64 & 1.39 & 1.556 \\ 
-  ACC-TRAIN & 97.33\% & 96.92\% & 93.98\% & 98.01\% & 99.79\% & 97.20\% \\ 
-  \hline
-\end{tabular}
-\captionof{table}{Experiment C.6 (On ALL-IDB+DEMIR, with data augmentation) - Train set = 1464 images, Test set = 266 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
-\label{table:results-C6}
-\end{center}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.45]{Code/ch6-LeukemiaSubtypes/figures_result/LEUK-SUBTYPES/leukSub-data_aug.PNG}
-  \caption{Results of experiment C.6 (On ALL-IDB+DEMIR, with data augmentation) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{71.91\%} (2) Loss value on test set: \textbf{1.556} (3) Accuracy on train set: \textbf{97.20\%}}
-  \label{fig:results-C6}
-\end{figure}
-
-\subsubsection{Experiment C.7 - Dropout and data augmentation}
-Last experiment is testing dropout with the data augmented dataset. As experiments A.7 and B.7,  we see a little improvement compared to the respective experiments of using dropout without data augmentation. That demonstrates one more time that dropout needs to be use with a larger dataset and/or with larger images to counter overfitting. If we only make conclusion from our own experiments, we see that dropout is to avoid but this is generally not the case. Indeed, when having a large dataset with large images, using dropout allows the model to counter overfitting and then increase the performance of the model such as the reference article \cite{leukemia} that have used this configuration. 
-
-\begin{center}
-\begin{tabular}{|l|c|c|c|c|c|c|}
-  \hline
-   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
-  \hline
-  ACC-TEST & 42.62\% & 22.4\% & 28.96\% & 34.42\% & 28.68\% & 31.41\% \\
-  LOSS-TEST & 1.35 & 2.76 & 1.88 & 1.36 & 2.02 & 1.874 \\ 
-  ACC-TRAIN & 57.44\% & 44.60\% & 55.19\% & 52.09\% & 59.63\% & 53.79\% \\ 
-  \hline
-\end{tabular}
-\captionof{table}{Experiment C.7 (On ALL-IDB+DEMIR, with data augmentation and dropout=0.1) - Train set = 1464 images, Test set = 266 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
-\label{table:results-C7}
-\end{center}
-
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.45]{Code/ch6-LeukemiaSubtypes/figures_result/LEUK-SUBTYPES/leukSub-data_aug_dropout.PNG}
-  \caption{Results of experiment C.7 (On ALL-IDB+DEMIR, with data augmentation and dropout=0.1) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{31.41\%} (2) Loss value on test set: \textbf{1.87} (3) Accuracy on train set: \textbf{53.79\%}}
-  \label{fig:results-C7}
-\end{figure}
-
-\subsubsection{Summary and conclusion for ALL-IDB and DEMIR-LEUKEMIA datasets experiments}
-
-The \autoref{table:summary-allidb-demir} summarizes the results obtained for the identification of leukemia subtypes experiments. This time, the results obtained by using data augmentation get the highest performance. Nevertheless, the experiments using image enhancement are also efficient whether by adding filters (greyscale, contrast increase or histogram equalization) or by increasing the size of the images. One more time, it is the experiment B.4 where we add a large noise value that shows the worst performance. Overall there is no real difference that we can observe from the experiments done on ALL-IDB (binary classification) and the identification of leukemia subtypes (5 classes). In both cases, data augmentation and image enhancement are the techniques that show the best performances.    
+Thus, overall there is no real difference that we can observe from the experiments done on ALL-IDB (binary classification) and the identification of leukemia subtypes (5 classes). In both cases, data augmentation and image enhancement are the techniques that show the best performances.    
 
 \begin{center}
 \begin{tabular}{|c|c|c|c|}
@@ -2295,11 +1762,832 @@ To conclude the study of identification of leukemia subtypes from the multiple e
 
 Nevertheless, even if our datasets were not perfectly cleaned and formatted, we have obtained some convincing and motivating results referring to the results obtained by the authors of the article \cite{leukemia}. Overall, the experiments that performed best were obtained by using image enhancement and data augmentation. These techniques were used to highlight the edges and important features of the images or even to increase the number of samples of the dataset. These experiments were one more time some processing on the dataset and not on the model. It reinforces again the assertions on the importance of having a good dataset made previously. In contrary to this, the worst performance were obtained when using dropout on the CNN model. But again, it was due to the dataset that were not conform to the use of dropout regularization and not due to the technique itself (for example, we have seen that dropout was one of the best regularization technique on CIFAR-10 dataset constituted of 60000 images). \\ 
 
-Finally, what we can conclude from all these experiments is that the architecture of the CNN constitutes in the end a low impact on the total performance. Of course, it is still important to have an architecture that suits well with the type of dataset. But the impact of the structure and the content of the dataset dominates and constitutes a huge percentage of the factors that make the model performing good.  
+Finally, what we can conclude from all these experiments is that the architecture of the CNN constitutes in the end a low impact on the total performance. Of course, it is still important to have an architecture that suits well with the type of dataset but the impact of the structure and the content of the dataset dominates and constitutes a huge percentage of the factors that make the model performing good.  
 
+
+\chapter{Interactive Image Labelling and Active Learning}
+
+% Introduction: parler que pour l'instant image classification est seulement utilisée en tant que computer-aided mais qu'il faut l'avis d'un expert -> on va utiliser ça pour améliorer notre modèle 
+% http://burrsettles.com/pub/settles.activelearning.pdf 
+% http://proceedings.mlr.press/v16/settles11a/settles11a.pdf
+% https://e-archivo.uc3m.es/bitstream/handle/10016/28068/visually_ijgi_2018.pdf?sequence=1&isAllowed=y
+
+Nowadays in the medical field, image recognition is mostly used as computer-aided detection in addition to an expert point-of-view. Nevertheless, the final goal is that the computer detection can be used independently and actually it constitutes a big challenge. The idea is that we use the professional expertise to enhance the model abilities to recognize images. We then introduce the concept of \textit{Interactive Image Labelling} and its relative method called \textit{Active Learning}. In this chapter, we will then first define those concepts and its relative areas. We will also discuss about how it works and the methodology of active learning. Finally, we will describe how it actually performs and what are the limitations of such techniques. 
+
+
+\section{What is interactive labelling?}
+
+In the image classification field, we know that the the tasks of image labelling constitutes the basis of the machine learning model as it performs with supervised learning. However, we need this labelled data and it can become a real difficulty to obtain it (and sufficiently). Interactive labelling and active learning allows us to use unlabelled data combined to labelled data. This type of learning is called \textit{semi-supervised learning}. This combination of data is basically used to reinforce the learning of the model via the interaction with the experts. Active learning is then fully-related to \textit{Reinforcement Learning}. In this section, we will then describe the concepts of active learning, semi-supervised learning and reinforcement learning.   
+
+
+\subsection{Active learning definition}
+Basically, Active Learning is a machine learning subfield where the learning method can \textbf{interactively} query an \textit{oracle} which can be any type of information source (human or machine) to annotate new data that are not labelled. More formally, following \textit{Settles} \cite{AL-Survey}: 
+
+\begin{defn}
+\textit{Active learning} (sometimes called “query learning” or “optimal experimental design” in the statistics literature) is a subfield of machine learning and, more generally, artificial intelligence. The key hypothesis is that if the learning algorithm is allowed to \textbf{choose the data} from which it learns, it will perform better with less training. \cite{AL-Survey}
+\end{defn} 
+
+The efficiency of active learning can then be explained by the fact that it uses less labelled training data (that are difficult to gather in large amount) and is compensated by the oracle information. This can be easily illustrated by an example. Let's take the breast cancer case that we have tackled in \autoref{chap:breast-cancer}. When studying this case, the training set was composed of multiple types of images from different sort of patients. By filtering the data thanks to the oracle information -- which can be for instance the age or the general health state of the patient -- we can select patients based on certain criteria and focus the training data on which the model has difficulty to learn. For example, if the model has difficulty to learn and predict the disease on old patients then we will focus on giving more old patients samples to the model so that he can improves its learning of this case. From the information of the oracle about the age, we can then improve the model.   \\
+
+The process of active learning is illustrated by the \autoref{fig:AL-process}. This process is called the pool-based active learning cycle. We start from labelled data to initially train the machine learning model then the oracle (also called annotator) select queries/criteria (step explained \autoref{sec:AL-queries}) on unlabelled data and provides it to the labelled data to allows the model to learn on the new labelled dataset.    
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.45]{figures/AL-process.png}
+  \caption{The pool-based active learning cycle. Figure extracted from \cite{AL-figure}}
+  \label{fig:AL-process}
+\end{figure}
+
+\subsection{Semi-supervised learning} \label{sec:SSL}
+Following the definition of \textit{Chapelle et al.} \cite{book-SSL}, 
+
+\begin{defn}
+Semi-supervised learning (SSL) is halfway between supervised and unsupervised learning. In addition to unlabeled data, the algorithm is provided with some supervision information – but not necessarily for all examples \cite{book-SSL}. 
+\end{defn}
+
+As we use labelled and unlabelled data, active learning is then in a semi-supervised learning case. Semi-supervised learning requires an external information (i.e. the oracle) in addition to the labelled data. Active learning and semi-supervised learning techniques are then quite similar and we may even consider active learning as a special case of semi-supervised learning. Nevertheless, some differences can be considered between both cases. While semi-supervised methods exploit what the learner thinks it knows about the unlabelled data, active methods attempt to explore the unknown aspects \cite{AL-Survey}.  It means that the objective of active learning is to try to find out labelling which small number of them will get much better performance (e.g. the age criteria on our breast cancer detection example) while general semi-supervised learning techniques focus on the knowledge of the remaining unlabelled data to enhance the performance.
+
+But why does semi-supervised learning techniques work? Following the survey of \textit{van Engelen et al.} \cite{SSL-survey},  there exists three assumptions of semi-supervised learning (and then active learning) that can proves the efficiency of such techniques. These assumptions are illustrated in \autoref{fig:assumptions-ssl}. We consider that a point in the 2D-area is representing an image for the image classification problem. 
+
+\begin{itemize}
+\item \textbf{Smoothness assumption:} for two input points $x, x' \in X$ that are close by in
+the input space, the corresponding labels $y, y'$ should be the same. \cite{SSL-survey} That means that unlabelled points near a labelled point should have the same label as the labelled point.    
+\item \textbf{Low-density assumption:} (can be considered as the counterpart of the smoothness assumption) the decision boundary of a classifier should preferably pass through low-density regions in the input space \cite{SSL-survey}. 
+\item \textbf{Manifold assumption:} first, manifold are topological spaces that are locally Euclidean. This assumption states that the data lie approximately on a manifold of much lower dimension than the input space \cite{wiki-ssl}.  For instance, when we consider a 3-dimensional input space where all points lie on the surface of a sphere, the data can be said to lie on a 2-dimensional manifold \cite{SSL-survey}. 
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.7]{figures/ssl-assumptions.png}
+  \caption{Illustration of semi-supervised learning assumptions. (a) Smoothness and low-density assumptions (b) Manifold assumption. The filled line represents the classification of a supervised learning algorithm while the dotted line represents the classification of a optimal decision boundary that approximately represents a semi-supervised learning algorithm. The \textbf{\textcolor{blue}{+}} represents labelled data of blue class while \textbf{\textcolor{orange}{$\bigtriangledown$}} represents labelled data of orange class. Circle symbols represents unlabelled data from respective classes regarding its color. Figure extracted from \cite{SSL-survey}.  }
+  \label{fig:assumptions-ssl}
+\end{figure} 
+
+\subsection{Reinforcement Learning}
+In active learning, the model interacts with an oracle to reinforce its decisions. That sounds a lot like \textit{Reinforcement Learning} where the learner (i.e. agents) interacts with the world via "actions" and tries to find an optimal policy of behaviour with respect to "rewards" it receives from the environment. The objective in active learning is somehow to gain "rewards" via the interaction with the oracle to learn based on the unknown criteria to gain more information and then make better decisions and predictions. In parallel, the reinforcement learner take risks and try out actions for which it is uncertain about the outcome (corresponding to the active learning that requests labels on the unknown). This process is illustrated in \autoref{fig:reinf-process}. This method is called "exploration-exploitation" and is applied by multiple reinforcement learning algorithms such as Q-learning or Monte Carlo. Reinforcement learning and active learning are then related as the learner \textbf{must be proactive} in order to perform well. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.45]{figures/reinf-process.png}
+  \caption{Reinforcement learning cycle. Figure extracted from \cite{reinf-process-fig}}
+  \label{fig:reinf-process}
+\end{figure} 
+
+ 
+
+\section{Methodology of Active Learning}
+% How does Active Learning work? https://www.kdnuggets.com/2018/10/introduction-active-learning.html 
+% https://www.datacamp.com/community/tutorials/active-learning --> Putting it all together section 
+% https://towardsdatascience.com/active-learning-tutorial-57c3398e34d = pseudo-code
+In this section, we present the methodology of active learning and how does it work. More precisely, the scenarios where active learning acts are covered as well as the different query strategies.  
+
+\subsection{Active learning scenarios}
+
+Three typical scenarios are known in active learning in which the learner will query the labels of instances. These three scenarios are called "Membership Query Synthesis", "Stream-Based Selective Sampling" and "Pool-Based sampling". Each scenario will be illustrated with an image classification problem example. 
+
+\subsubsection{Membership Query Synthesis}
+In this scenario, to make a query about the label of an unlabelled data sample (i.e. an image), the learner will generate an instance of this data sample and send it to the oracle so that he can label it. This is basically the most simple scenario where the learner asks directly the label of an unlabelled data to the oracle. For example, if the problem treats about the CIFAR10 dataset presented in \autoref{sec:CIFAR10} and the learner has an image of car that is unlabelled, the model will generate a similar image (a generalization of this car image) that will be sent to the oracle in order to label it. So that, the model has henceforth the label for such images. The problem that can be encountered in such scenario is that the model cannot generate well a similar image and then the query images generated by the learner are not recognizable for the oracle. This problem is due to the efficiency and capabilities of the model to first recognize the features of the image and in a second step to generate them.   
+
+
+\subsubsection{Stream-Based Selective Sampling}
+From the instance selected \textbf{one by one} from the unlabelled data pool, the learner here determines whether he wants to query the label of the instance or not regarding the information that he knows about this. Indeed, the main purpose of active learning is to focus on the unknown to learn more about it in order to have a more reliable model on each case. Thus, if the model has already a good knowledge and has enough learned about the instance's data, the decision of not querying the label to the oracle is more relevant and optimized. The informativeness of a query is determined by \textbf{query strategies} tackled in \autoref{sec:AL-queries}. Following the same example than the previous scenario, if the pool of unlabelled data contains car and airplanes images, knowing that the model has enough information about airplanes, the model will discard the instance when the model encounters an instance of airplane image and then will make queries when the instance is covering an unlabelled car image.    
+
+
+\subsubsection{Pool-Based sampling}
+Similarly to the Stream-Based Selective Sampling scenario, we assume that we have a large pool of unlabelled data. Here we make a ranking on \textbf{all} the instances of the pool according to the informativeness of each instance and we simply select the instances that are best ranked. In contrary to Stream-Based Selective Sampling scenario, the main difference lays in the fact that pool-based sampling evaluates and ranks the entire collection before selecting the best whereas the former scans through the data sequentially in and makes query decisions individually \cite{AL-Survey} in the previous scenario. Pool-Based sampling seems then to be the most common scenario but Stream-Based selective sampling can be a good alternative in some situations where memory or processing are limited. Discussing about the same examples then previous scenarios, if images with cars/airplanes/birds appear in the top of the informativeness ranking, we will then pick the related images and make label queries on it. 
+
+The \autoref{fig:summary-AL-scenarios} summarizes the three scenarios discussed above. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.55]{figures/summary-AL-scenarios.png}
+  \caption{Diagram illustrating the three main active learning scenarios. Figure extracted from \cite{AL-Survey}}
+  \label{fig:summary-AL-scenarios}
+\end{figure}
+
+\subsection{Query Strategies} \label{sec:AL-queries}
+%Label+attribute elicitation for image annotation? https://tel.archives-ouvertes.fr/tel-00752022v2/document section 4.5
+As discussed in the scenarios, the learner needs to determine the relevance of making queries to the oracle. This is based on the informativeness given by querying the label such that we pick the most informative queries to label. To measure this informativeness and to determine whether or not it is relevant to query the unlabelled data, we need to use query strategies. Multiple query strategies exist and most of them are covered by the works of \textit{Settle} \cite{AL-Survey} or \textit{Akusok et al.} \cite{AL-queries-2}. In the context of this section, some popular query strategies are presented below.
+
+\subsubsection{Uncertainty Sampling}
+% Entropy sampling + least confident + margin sampling 
+In this strategy, the measure of the information rate of the query is based on the uncertainty of   the data. As we want to learn more on unknown data, this approach allows to make label queries on the least uncertain instances. The uncertainty measure used is the \textbf{entropy} which is the most popular measure in information theory developed by \textit{Shannon}. Entropy is defined by
+
+$$ E(S) = - \sum_{j=1}^{k} p_j log_{2}(p_j) $$ 
+
+where $S$ is the source that produces $k$ messages (i.e. labels), $p_j$ is the probability that that the $j^{th}$ element appears in the dataset. 
+
+The uncertainty sampling strategy can also consider the \textbf{least confident} where the learner selects the instance for which it has the least confidence in its most likely label. The least confident instance is defined by the class label with the highest posterior probability\footnote{Following \textit{Wikipedia}, the posterior probability of a random event or an uncertain proposition is the conditional probability that is assigned after the relevant evidence or background is taken into account.} under the model. 
+
+However, using the least confident strategy may be too poor since it only takes in consideration the most probable label and disregards the other label probabilities. To overcome this problem, the uncertainty sampling strategy can also be based on \textbf{margin} that selects the instance that has the smallest difference between the first (i.e. the one found by the least confident strategy) and second most probable labels. 
+
+
+\subsubsection{Query-by-committee}
+The Query-by-committee strategy is aptly named since it involves training multiple models (called the committee), and selecting samples that this committee disagree about the most. The committee is trained on the same current labelled set but chooses different hypothesis where each member of the committee votes and disagrees for these hypothesis and the relevance on the labellings of query candidates.  The most informative query is considered to be the instance about which they most disagree. The Query-by-committee strategy is known to have less computation than other query strategies.
+
+Moreover, to create the committee, we can also use \textit{query-by-boosting} and \textit{query-by-bagging} which use ensemble learning methods "boosting" and "bagging" in order to have diversity among committee members. Indeed, the strategy is most efficient when the models are varied and diversified to have different hypothesis. To make it more clear, an analogy about a survey about "the frequency of sport performed by people" can be done where we obtain more relevant and reliable results when we collect the opinions of different types of person (young, old, ...). Otherwise, if we only collect information with young people (similar models), the results may be biased and are relatively high while if we collect results on young and old people (diversified models) the results should be more accurate and representative.       
+
+\subsubsection{Expected model change}
+% un mot sur expected error reduction
+This strategy is based on the changes that would impact the model if the label of the query is found. Then this is the instance in which the label found would lead to the greatest positive change in the model that is chosen to query. This strategy has a huge computational cost since you need to uses methods to compute the gradients for a loss function that is averaged over all label possibilities for the given instance \cite{AL-theory}. The cost of using this strategy is then very high since you need to try every combinations of label to the instance to see its expected impact on the model. 
+
+Similarly to it, it exists an alternative strategy that observe the model's generalization error instead of the model's changes. That strategy is called \textit{Expected error reduction}. To decide the instance to query, we take the one that reduce the most the generalization error of the model. It uses the same principle than expected model change strategy by computing the change in the validation error averaged over the class labels. It has even more computational cost and then is not recommended to use. 
+
+\section{Performance and limitations of Active Learning}
+% http://www.cs.cmu.edu/~tom/10709_fall09/readings/CVPR08.pdf 
+%  https://www.kdnuggets.com/2018/10/introduction-active-learning.html : performance section
+
+
+\subsection{Performances of AL: hands-on experiments} \label{sec:AL-perf}
+To evaluate the performance of the active learning technique, multiple researchers did experiments and have written papers on it. In this section, we will be based on a paper written by \textit{Guo-Jun Qi et al.} named \textit{"Two-Dimensional Active Learning for Image Classification"} \cite{AL-perf}.  
+
+In this paper, the authors consider a variant of the traditional active learning method called the \textit{two-dimensional active learning}\footnote{For more information and details about the 2D active learning method, take a look on the section 2 of the main paper \cite{AL-perf}.}. This method considers the sample dimension but also the label dimension in particular to compute uncertainty. This new AL method as well as the traditional AL (1DAL) will be performed on image classification problems to compare them with a classical supervised learning strategy (random selection), more precisely on natural scene dataset (with beach, sunset, foliage, fields, ... images) and gene dataset (with genes images belonging to 14 different functional classes). Concerning the query strategies, the authors use the \textit{maximum entropy model} and the \textit{expected model change} variant, both explained in \autoref{sec:AL-queries}. 
+
+The results obtained using active learning methods on the described datasets are illustrated by  the \autoref{fig:results-AL}. The left graph is the performance on the natural scene dataset and the right graph is the performance on the genes dataset. 
+
+We can observe that the behaviour of the curves are quite the same for both datasets and show the efficiency of active learning methods (blue and green lines) compared to a supervised learning method with random selection. In average, the F1-score for the first dataset does not exceed 0.7 using random strategy while it can reach over 0.8 using simple active learning (1DAL) and even 0.92 using the improved AL strategy submitted by the authors of the paper. For the second dataset, the results are less significant but show the same trends. 
+
+Thus, what the results prove is that the \textbf{selection of samples to label} has an important weight on the performance of the model by enhancing it as expected. Moreover, the authors of this paper provide added value on the traditional active learning method by also considering the label (and not only the sample) to compute the uncertainty which allows us to \textbf{query the most reliable samples}. That points out that multiple variant of active learning exist which demonstrates the wide range of the active learning technique which can still be improved.    
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.9]{figures/results-AL.png}
+  \caption{Performance of active learning methods on image classification problem. The y-axis corresponds to the F1-score and the x-axis to the number of selected sample pairs. 2DAL (\textcolor{blue}{blue line}) = two dimensional AL, 1DAL (\textcolor{green}{green pointed line}) = one-dimensional AL, RND (\textcolor{red}{red pointed line}) = random strategy. (a) left: natural scene dataset ; (b) right: gene dataset. Figure extracted from \cite{AL-perf}}
+  \label{fig:results-AL}
+\end{figure}
+
+\newpage
+\subsection{Summary and conclusion: what are the limitations of active learning?}
+
+\subsubsection{Performance}
+% performance 
+In the last chapter approaching the identification of Leukemia Subtypes, what we had conclude is the importance of having a clean and reliable dataset first in order to correctly perform our model on it. Thus, we have introduced the concept of active learning which is a technique that allow us to improve the labelling of our dataset samples. The experiments done by the authors of the paper \cite{AL-perf} \footnote{cfr. \autoref{sec:AL-perf}\label{note1}}  shows motivating results concerning active learning techniques to procure better labelled datasets and then reinforces the idea of the importance of the dataset. All that confirms that \textbf{data labelling} is the central core of a good model performance for an image classification problem. In this situation, we are then not talking about a problem of labelling speed but more about the intelligence of labelling. Of course it goes hand in hand: the smarter the labelling, the faster it will be done. 
+
+The \autoref{fig:AL-expected} from \textit{Jennifer Prendki} \cite{AL-kdnuggets} shows the expected efficiency of active learning on the model's performance. When comparing the results obtained by \textit{Guo-Jun Qi et al.} \cite{AL-perf} on image classification problems\textsuperscript{\ref{note1}}, we can observe the same curves' behaviour when using active learning against using the supervised learning.  
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=1]{figures/AL-expected.png}
+  \caption{Expected results using active learning compared to supervised learning. With Active Learning, a given accuracy can be reached with significantly less data; in this example, a 80\% accuracy can be achieved with only 45\% of the total volume of available data as opposed to 70\% in the case of regular supervised learning. Figure extracted from \cite{AL-kdnuggets}}
+  \label{fig:AL-expected}
+\end{figure}
+
+\subsubsection{Limitations}
+Active learning seems flawless but in reality this is a concept that is not totally understood. Previously we have seen that there exists multiple variants of active learning such as Two-Dimensional Active Learning \cite{AL-perf} which means that other variants may exists and probably not even discovered. 
+
+Moreover, we have related active learning to semi-supervised learning which is a category of algorithms that is \textbf{vulnerable to biases} since it is based on assumptions which are in fact not always verified\footnote{cfr. \autoref{sec:SSL}}. % http://www.cs.toronto.edu/~tl/papers/lumastersthesis.pdf 
+% Unless the learner is absolutely sure of an assumption that holds on the relationship between labels and the unlabeled data structure (if no assumptions are made then we refer to it as the no-prior-knowledge setting) then one cannot hope to obtain a significant advantage in the sample complexity1 of semi-supervised learning over that of supervised learning
+
+Last but not least, active learning requires the intervention of an annotator to label the data which is \textbf{expensive}.
+
+Nevertheless, it is important to remind that results that have been obtained by multiple researchers are very encouraging for the future of active learning technology. 
+
+
+
+% BIBLIOGRAPHY
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \bibliographystyle{unsrt}
 \nocite{*}
 \bibliography{bibliography}
+
+
+
+% APPENDIX 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\appendix
+% or try \arabic{section}
+
+\chapter{Detailed results of Leukemia Subtypes identification experiments (chapter 5)}
+
+This appendix contains all the results of the chapter 5 experiments concerning the identification of Leukemia Subtypes. These results are structured by a detailed description and interpretation, the table containing the values results obtained and their corresponding graphs. In each result graph, the result of each run is drawn as well as the average of the 5 runs highlighted. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DATASET 1 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DATASET 1 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DATASET 1 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DATASET 1 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DATASET 1 
+
+\section{Case A - ALL-IDB1} \label{sec:appendix-case-A}
+
+For the first case, we use the ALL-IDB1 dataset which contains a total of 108 images. We then use 86 images for training and 22 images for testing when not using data augmentation. Otherwise, we have 172 images for training and 44 images for testing. As reminder, ALL-IDB1 dataset contains only 2 classes: HEALTHY (label 0) vs ILL (label 1) and contains a large view of blood cells of the patient. ALL-IDB dataset is explained in details in \autoref{sec:all-idb}.    
+
+\subsection{Experiment A.1 - Baseline}
+
+This experiment consists of trying the simplest version of the CNN and observe how it reacts to the resized original dataset. To make a general idea about the efficiency of our model, we can refer to the results obtained by Ahmed et al on his work \cite{leukemia}. They obtained an average of 81.16\% accuracy on test set, 1.3093 for loss value and 99.55\% for train set without applying any image transformations. 
+
+Generally, the results obtained are not so far than the results obtained by the reference article \cite{leukemia} knowing that we have used images resized to 100x100 (= 10000 pixels). Thus, the images that we have used have \textbf{22 times less pixels} since the original images are sized of $\approx$ 1700x1300 (= 221000 pixels). 
+
+We can certainly assure that this resizing impacts the performance of our CNN model and can cause some troubles in its capacity to learn and retrieve the information. Nevertheless, despite this huge inconvenience, the CNN is still capable of learning some features otherwise we would have an average accuracy of 50\% in this type of binary classification.   
+We can observe that the CNN converges very quickly -- no more than 5 epochs, to its convergence state.  
+
+The general behaviour when looking to the results graphs on \autoref{fig:results-A1} is that the accuracy tends to increase slowly and stabilize at a certain time. Same for the loss value, it tends to decrease along time.  
+
+\vspace{1cm}
+
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+  \hline
+   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
+  \hline
+  ACC-TEST & 68.18\% & 63.63\% & 59.09\% & 63.63\% & 72.72\% & 65.45\% \\
+  LOSS-TEST & 3.53 & 5.86 & 6.55 & 0.55  & 0.82 & 3.46 \\ 
+  ACC-TRAIN & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% \\ 
+  \hline
+\end{tabular}
+\captionof{table}{Experiment A.1 (On ALL-IDB1, with Baseline) - Train set = 86 images, Test set = 22 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
+\label{table:results-A1}
+\end{center}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB1/all_idb1-baseline.PNG}
+  \caption{Results of experiment A.1 (On ALL-IDB1, with Baseline) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{65.45\%} (2) Loss value on test set: \textbf{3.46} (3) Accuracy on train set: \textbf{100\%}}
+  \label{fig:results-A1}
+\end{figure}
+
+
+\subsection{Experiment A.2 - Filters}
+In this experiment, we keep the baseline CNN but we preprocess the images of the resized dataset by applying some filters \textbf{separately}. \\
+
+\textbf{Greyscale}
+
+First filter that we apply is transforming the images into greyscale. The results obtained when using greyscale images is very bad. It stucks to 50\% which means a totally random prediction. This issue can be due the fact that images are already very small and we suppress the color feature that seems to be important in such images. In fact, the original images (with color) of ALL-IDB1 dataset are at first sight very similar. One of the main feature that distinct them is color. Adding such greyscale filter transforms the images into "mirror" images that causes a total fuzziness whether for human eyes or the CNN model. \\ 
+
+\textbf{Contrast increased} 
+
+The second filter we apply is to increase the contrast of the images by an arbitrary value. In our case, we will increase the contrast by 4. As illustrated in \autoref{fig:preproc-leuk}(b), the color and the edges of blood cells are more highlighted. These features constitute important information for such classification. Bringing them to light can therefore only be a good idea. This affirmation is well confirmed by the results obtained. In average, we obtain an accuracy of 84.54\% after 25 epochs which is even more than the baseline result of the reference article presented in the previous section. Hence, the size of the images seems to not be the most important feature in such images as we obtain in average better results by increasing the images' contrast to highlight the blood cells color and edges on 100x100 images. However, we will take a look on the size feature on \autoref{sec:size-allidb1}. \\
+
+\textbf{Histogram equalization} 
+
+Finally, the last filter that we apply is a well-known image enhancement technique called \textit{histogram equalization} and previously explained in \autoref{sec:img-enhancement-breast}. In summary, what histogram equalization do is increasing the contrast of an image by effectively spreading out the most frequent intensity values of the histogram. This technique is known to be efficient in image recognition problems. This allows for areas of lower local contrast to gain a higher contrast. The results obtained (average of 90.9\%) do not betray the reputation for image enhancement of the histogram equalization technique. In contrary to the previous filter where we apply the same contrast increase on the entire image, here we only increase the contrast where it is needed. Therefore, we obtain clearer images that may highlight efficiently affected blood cells and help for the model's learning.  
+
+\vspace{1cm}
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+  \hline
+   & \textbf{Greyscale} & \textbf{Increased contrast} & \textbf{Histogram equalization} \\
+  \hline
+  Accuracy on test set & 51.81\% & 84.54\% & 90.9\% \\
+  Loss value on test set & 6.09 & 1.43 &  0.28\\ 
+  Accuracy on train set & 100\% & 100\% & 100\% \\ 
+  \hline
+\end{tabular}
+\captionof{table}{Experiment A.2 (On ALL-IDB1, with filters applied) - Train set = 86 images, Test set = 22 images - Average results for each filters applied separately after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
+\label{table:results-A2}
+\end{center}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB1/all_idb1-filters.PNG}
+  \caption{Results of experiment A.2 (On ALL-IDB1, with filters applied). The results presented are the average of 5 different runs for each filter applied.}
+  \label{fig:results-A2}
+\end{figure}
+
+\subsection{Experiment A.3 - Size 200x200} \label{sec:size-allidb1}
+The results that we have obtained using the baseline CNN and a resize of the images by 100x100 were not as good as the reference article \cite{leukemia} even though they were still correct. An hypothesis of this issue would have been the size of these images. This experiment aims to test the size feature for the learning of the model. To do that, we have then use the same baseline CNN as before but here with a preprocessing of 200x200. The images contains now 40000 pixels which is 4 times more than in experiment A.1.
+
+Nevertheless, what we can observe from the results is that it does not enhance the accuracy on test set and has lower results in average. These results thus does not allow to draw a positive conclusion about the effectiveness of using larger images. Looking to the graphs, we can observe that the accuracy has a continuous behaviour and the model seems not to learn more along epochs. This can be due to the number of images of our training set (86 images) which does not allow the model to learn efficiently larger images. 
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+  \hline
+   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
+  \hline
+  ACC-TEST & 63.63\% & 40.9\% & 54.54\% & 77.27\% & 59.09\% & 59.08\%\\
+  LOSS-TEST & 2.47 & 5.94 & 1.96 & 0.51  & 0.96 & 2.36 \\ 
+  ACC-TRAIN & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% \\ 
+  \hline
+\end{tabular}
+\captionof{table}{Experiment A.3 (On ALL-IDB1, with larger resize) - Train set = 86 images, Test set = 22 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
+\label{table:results-A3}
+\end{center}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB1/all_idb1-200x200.PNG}
+  \caption{Results of experiment A.3 (On ALL-IDB1, with larger resize 200x200) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{68.45\%} (2) Loss value on test set: \textbf{0.992} (3) Accuracy on train set: \textbf{100\%}}
+  \label{fig:results-A3}
+\end{figure}
+
+\newpage
+\subsection{Experiment A.4 - Noise} \label{sec:noise-allidb1}
+
+A recurrent question was about how the model reacts to noise. In this experiment, we try different level of gaussian noise added. Respectively, we try the following values of noise: [0.1,0.2,0.4,0.6,0.8]. In \autoref{sec:noise-cifar}, we have seen that noise can be used as regularization if used sparingly. Is that also valid for medical images? 
+
+Following the results, we can mention that this regularization effect is still valid if a very small value of noise is applied, not more than 0.2. From 0.4, we begin to see bad impact of noise such that the model is not even capable to reach 100\% accuracy on training set after 25 epochs. Moreover, on the third graph representing the learning speed of the model (accuracy on train set) we can observe the more noise applied, the slower the model is to converge. Thus, the threshold noise value to have a regularization effect should be 0.2. Above this, the value of cost function is increasing constantly which means that the model is making lot of error between predicted values and expected values. The model has wrong abilities to estimate the relationship between the label and the input. 
+
+This is also verified when looking to the accuracy results on test set. From \texttt{noise=0.4}, we approach to a prediction rate of 50\% the total prediction randomness.    
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+  \hline
+   & \textbf{noise=0.1} & \textbf{noise=0.2} & \textbf{noise=0.4} & \textbf{noise=0.6} & \textbf{noise=0.8}\\
+  \hline
+  ACC-TEST & 77.27\% & 63.63\% & 59.09\% & 59.09\% & 54.54\%\\
+  LOSS-TEST & 0.67 & 1.64 & 1.75 & 4.33  & 7.32\\ 
+  ACC-TRAIN & 100\% & 100\% & 97.67\% & 94.18\% & 84.88\% \\ 
+  \hline
+\end{tabular}
+\captionof{table}{Experiment A.4 (On ALL-IDB1, with different level of noise) - Train set = 86 images, Test set = 22 images - Average results depending on noise level. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
+\label{table:results-A4}
+\end{center}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB1/all_idb1-noise.PNG}
+  \caption{Results of experiment A.4 (On ALL-IDB1, with different level of noise). The results presented are the average of 5 different runs for each noise level.}
+  \label{fig:results-A4}
+\end{figure}
+
+\newpage
+\subsection{Experiment A.5 - Dropout}
+As reminder, dropout is a regularization technique that consists to drop some neurons during the training phase (see \autoref{sec:dropout-cifar} for more information). It is generally used to counter overfitting. When we have used it on CIFAR-10 dataset constituted of 50000 images for training, it had very good impact on the learning phase. Here, we have only 86 images for training which is very low, will it be as efficient as using it on large dataset such as CIFAR-10? Obviously no. On such a small dataset, the model does not suffer from overfitting but more about underfitting. Using dropout is then a very bad idea since it takes out neurons to the model and make it way more difficult to learn. The results obtained show it well. We have high losses values and bad accuracy rates. Looking to this last on test set graph, we observe a continuous behaviour around 50\% rate. Same for the accuracy on train set, it reaches in average 61.85\% accuracy after 25 epochs. That shows the disability for the model to learn correctly.  
+
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+  \hline
+   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
+  \hline
+  ACC-TEST & 59.09\% & 40.9\% & 50.00\% & 59.09\% & 63.63\% & 54.54\% \\
+  LOSS-TEST & 1.07 & 9.52 & 8.05 & 6.11  & 4.15 & 5.78 \\ 
+  ACC-TRAIN & 62.79\% & 58.13\% & 54.65\% & 60.46\% & 73.25\% & 61.85\% \\ 
+  \hline
+\end{tabular}
+\captionof{table}{Experiment A.5 (On ALL-IDB1, with dropout=0.1) - Train set = 86 images, Test set = 22 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
+\label{table:results-A5}
+\end{center}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.4]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB1/all_idb1-dropout.PNG}
+  \caption{Results of experiment A.5 (On ALL-IDB1, with dropout=0.1) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{54.54\%} (2) Loss value on test set: \textbf{5.78} (3) Accuracy on train set: \textbf{61.85\%}}
+  \label{fig:results-A5}
+\end{figure}
+
+\newpage
+\subsection{Experiment A.6 - Data augmentation}
+
+In this experiment, we have used data augmentation in order to expand the dataset. The method used is explained in \autoref{sec:data-aug-leuk}. The results obtained are quite good and show well the efficiency of using data augmentation. In average, we gain 7\% accuracy and have low loss value when using data augmentation. The images' direction and sense seems to not disturb the model's learning and looks like it is not an impacting feature to determinate the label. 
+
+Nevertheless, some runs as run 4 show an unconvincing performance (63.63\%). This can be due to a type of image augmentation used: rotations. In fact, rotations create some black area and represents a considerable percentage of the image. Thus, the model could have taken it in account and considers it as a feature of the corresponding label which confuses the learning of the model. As data augmentation is done randomly between all the types of image augmentation explained previously, this run could have been implied by this issue and then impact negatively the learning and prediction.     
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+  \hline
+   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
+  \hline
+  ACC-TEST & 72.72\% & 81.81\% & 65.9\% & 63.63\% & 77.27\% & 72.26\% \\
+  LOSS-TEST & 1.17 & 0.46 & 1.25 & 2.76  & 0.91 & 1.31 \\ 
+  ACC-TRAIN & 98.83\% & 100\% & 100\% & 99.41\% & 100\% & 99.64\% \\ 
+  \hline
+\end{tabular}
+\captionof{table}{Experiment A.6 (On ALL-IDB1, with data augmentation) - Train set = 172 images, Test set = 44 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
+\label{table:results-A6}
+\end{center}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.38]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB1/all_idb1-data_aug.PNG}
+  \caption{Results of experiment A.6 (On ALL-IDB1, with data augmentation) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{72.26\%} (2) Loss value on test set: \textbf{1.31} (3) Accuracy on train set: \textbf{99.64\%}}
+  \label{fig:results-A6}
+\end{figure}
+
+\newpage
+\subsection{Experiment A.7 - Dropout and data augmentation} \label{sec:drop-dataaug-allidb1}
+A problem of using dropout was the size of our training set. If we use larger dataset using data augmentation, will dropout be more efficient this time? In this experiment, we try to combine dropout and data augmentation. However, from what we can observe by the results, dropout is still counterproductive for the model's learning. Even if the results are more encouraging than experiment A.5 where we use only dropout, they are still not as good as using only data augmentation. That shows that the model is still not overfit and need way more data to suffer from it in order to have regularization effect while using dropout. 
+
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+  \hline
+   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
+  \hline
+  ACC-TEST & 54.54\% & 59.09\% & 77.27\% & 65.9\% & 72.72\% & 65.9\% \\
+  LOSS-TEST & 1.13 & 1.95 & 0.84 & 1.21 & 0.7 & 1.16 \\ 
+  ACC-TRAIN & 64.53\% & 65.11\% & 68.60\% & 58.72\% & 68.02\% & 64.99\% \\ 
+  \hline
+\end{tabular}
+\captionof{table}{Experiment A.7 (On ALL-IDB1, with data augmentation and dropout=0.1) - Train set = 172 images, Test set = 44 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
+\label{table:results-A7}
+\end{center}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.4]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB1/all_idb1-data_aug_dropout.PNG}
+  \caption{Results of experiment A.7 (On ALL-IDB1, with data augmentation and dropout=0.1) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{65.9\%} (2) Loss value on test set: \textbf{1.16} (3) Accuracy on train set: \textbf{64.99\%}}
+  \label{fig:results-A7}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DATASET 2 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DATASET 2 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DATASET 2 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DATASET 2 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DATASET 2 
+
+\section{Case B - ALL-IDB2} \label{sec:appendix-case-B}
+
+Compared to ALL-IDB1, ALL-IDB2 has been already preprocessed by image segmentation on the region of interest (ROI). This dataset contains 260 images that focus on an unique blood cell. We then have 208 images for training and 52 images for testing when not using data augmentation. Otherwise, we have 416 images for training and 104 for testing. Again, more information are described in \autoref{sec:all-idb}. We aim then to compare results without segmentation (ALL-IDB1) and results with segmentation (ALL-IDB2) to observe the efficiency of such preprocessing. To do that, we will do the same experiments as ALL-IDB1. The images of the dataset have also been resized to 100x100, their original sizes were 257x257.
+
+\subsection{Experiment B.1 - Baseline}
+When using baseline CNN on the original resized dataset, the results seems to be worse than when we use ALL-IDB1 but still around 62-65\% accuracy. At first sight, determinate if the patient is affected by the disease by using only an unique blood cell is more difficult as we use a more global view of multiple blood cells to determinate if the patient is affected by the disease or not. The features that determinates the label may be more accurate when the only information given is a blood cell, i.e blood cells are very similar to each other. Therefore, we need a larger dataset to obtain better results. Nevertheless can we make these features more impacting to the model? That is what we will observe in the next section by using some filters.  
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+  \hline
+   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
+  \hline
+  ACC-TEST & 63.46\% & 63.46\% & 67.3\% & 55.76\% & 59.61\% & 61.91\% \\
+  LOSS-TEST & 3.22 & 0.65 & 0.79 & 2.59  & 2.05 & 1.86 \\ 
+  ACC-TRAIN & 100\% & 100\% & 100\% & 100\% & 100\% & 100\% \\ 
+  \hline
+\end{tabular}
+\captionof{table}{Experiment B.1 (On ALL-IDB2, with Baseline) - Train set = 208 images, Test set = 52 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
+\label{table:results-B1}
+\end{center}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.42]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB2/all_idb2-baseline.PNG}
+  \caption{Results of experiment B.1 (On ALL-IDB2, with Baseline) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{61.91\%} (2) Loss value on test set: \textbf{1.86} (3) Accuracy on train set: \textbf{100\%}}
+  \label{fig:results-B1}
+\end{figure}
+
+\subsection{Experiment B.2 - Filters}
+Same as ALL-IDB1, we will experiment 3 different filters: transforming images into greyscale, increasing images' contrast with an arbitrary value of 4 and using histogram equalization on the images. \\
+
+\textbf{Greyscale}
+
+In contrary to ALL-IDB1, here we obtain more convincing results. As we manage only one blood cell, transforming the images into greyscale allow the model to highlight the shapes/edges of the cell and its content more clearly. \\ 
+
+\textbf{Contrast increased}
+
+Same as ALL-IDB1, increase the contrast to the images seems to be a good image enhancement technique. Again, edges and shapes are highlighted and facilitates the model's learning. \\ 
+
+\textbf{Histogram equalization}
+
+This time, histogram equalization does not give the best results even though it still gives very good ones. Histogram equalization technique is then a safe method to enhance correctly the image without making it unreadable unlike if we put a too large contrast increase value.
+
+\vspace{1cm}
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+  \hline
+   & \textbf{Greyscale} & \textbf{Increased contrast} & \textbf{Histogram equalization} \\
+  \hline
+  Accuracy on test set & 71.53\% & 80.38\% & 73.84\% \\
+  Loss value on test set & 1.09 & 0.47 &  0.95\\ 
+  Accuracy on train set & 99.9\% & 100\% & 100\% \\ 
+  \hline
+\end{tabular}
+\captionof{table}{Experiment B.2 (On ALL-IDB2, with filters applied) - Train set = 208 images, Test set = 52 images - Average results for each filters applied separately after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
+\label{table:results-B2}
+\end{center}
+
+\hspace*{0mm}\vfill
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB2/all_idb2-filters.PNG}
+  \caption{Results of experiment B.2 (On ALL-IDB2, with filters applied). The results presented are the average of 5 different runs for each filter applied.}
+  \label{fig:results-B2}
+\end{figure}
+\vfill\hspace*{0mm}
+
+\newpage
+\subsection{Experiment B.3 - Size 200x200}
+The original images from ALL-IDB2 dataset have a size of 257x257. In this section, we will use 200x200 images and can then be considered as the original size. For ALL-IDB1, we have seen that enlarge the images was not the best method to increase the performance due to the very small numbers of samples contained in the dataset. Here for ALL-IDB2, we have 2 times more images and we use the original size of the dataset. So that, we can observe that we obtain slightly better results. Using larger images when having much samples seems then to be a good idea and constitutes a good asset to feature detection.    
+
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+  \hline
+   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
+  \hline
+  ACC-TEST & 69.23\% & 65.38\% & 75.00\% & 67.3\% & 57.69\% & 66.92\%\\
+  LOSS-TEST & 0.52 & 0.68 & 0.65 & 0.94  & 1.23 & 0.804 \\ 
+  ACC-TRAIN & 100\% & 100\% & 100\% & 99.51\% & 100\% & 99.902\% \\ 
+  \hline
+\end{tabular}
+\captionof{table}{Experiment B.3 (On ALL-IDB2, with larger resize) - Train set = 208 images, Test set = 52 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
+\label{table:results-B3}
+\end{center}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.45]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB2/all_idb2-200x200.PNG}
+  \caption{Results of experiment B.3 (On ALL-IDB2, with larger resize 200x200) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{68.92\%} (2) Loss value on test set: \textbf{0.804} (3) Accuracy on train set: \textbf{99.902\%}}
+  \label{fig:results-B3}
+\end{figure}
+
+
+
+\subsection{Experiment B.4 - Noise}
+Overall, the results seems to have the same behaviour than the results when using ALL-IDB1 dataset. At first, we have a regularization effect when using small noise value. But when using a too large value -- here still 0.4, noise has a very bad impact on the model's learning. At this time, loss values are exploding and almost grow exponentially. The explanations from \autoref{sec:noise-allidb1} are also valid for ALL-IDB2.
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+  \hline
+   & \textbf{noise=0.1} & \textbf{noise=0.2} & \textbf{noise=0.4} & \textbf{noise=0.6} & \textbf{noise=0.8}\\
+  \hline
+  ACC-TEST & 71.15\% & 63.46\% & 50.00\% & 55.76\% & 46.13\%\\
+  LOSS-TEST & 1.41 & 2.34 & 3.60 & 6.45  & 7.12\\ 
+  ACC-TRAIN & 100\% & 99.5\% & 98.55\% & 97.55\% & 94.71\% \\ 
+  \hline
+\end{tabular}
+\captionof{table}{Experiment B.4 (On ALL-IDB2, with different level of noise) - Train set = 208 images, Test set = 52 images - Average results depending on noise level. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
+\label{table:results-B4}
+\end{center}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB2/all_idb2-noise.PNG}
+  \caption{Results of experiment B.4 (On ALL-IDB2, with different level of noise). The results presented are the average of 5 different runs for each noise level.}
+  \label{fig:results-B4}
+\end{figure}
+
+
+\subsection{Experiment B.5 - Dropout}
+Using dropout when your dataset is very small is a technique to forget: that is the conclusion that we have made after the experiment A.5 using dropout on ALL-IDB1 that contains only 108 images. Here we have a little bit much images on ALL-IDB2 and we can remark that overall it still has bad results but we can see a little augmentation on average training set accuracy results. That reinforces the idea that dropout begins to have a regularization effect when we have very large datasets. That is an additional proof of this assertion that we have done previously in experiment A.7 (see \autoref{sec:drop-dataaug-allidb1}). Of course, for this case, we are far from having a dataset size conductive to dropout as regularizer. That explains the bad results.  
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+  \hline
+   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
+  \hline
+  ACC-TEST & 55.76\% & 53.84\% & 48.07\% & 51.92\% & 67.30\% & 55.37\% \\
+  LOSS-TEST & 1.25 & 1.58 & 2.40 & 3.57  & 0.7 & 1.9 \\ 
+  ACC-TRAIN & 73.07\% & 70.67\% & 64.42\% & 62.5\% & 70.0\% & 68.12\% \\ 
+  \hline
+\end{tabular}
+\captionof{table}{Experiment B.5 (On ALL-IDB2, with dropout=0.1) - Train set = 208 images, Test set = 52 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
+\label{table:results-B5}
+\end{center}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.45]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB2/all_idb2-dropout.PNG}
+  \caption{Results of experiment B.5 (On ALL-IDB2, with dropout=0.1) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{55.37\%} (2) Loss value on test set: \textbf{1.9} (3) Accuracy on train set: \textbf{68.12\%}}
+  \label{fig:results-B5}
+\end{figure}
+
+
+
+\subsection{Experiment B.6 - Data augmentation}
+
+One more time, data augmentation shows having a good impact on model's performance. These experiments give some indications about the efficiency of data augmentation especially when using small datasets like ALL-IDB1 or ALL-IDB2. This data augmentation techniques give many more samples to the dataset and allow the model to learn more in order to make better predictions. 
+
+Furthermore, the different image manipulations that we have done during this data augmentation seems to not be impacting negatively the feature detection step whether for segmented and non-segmented images. Thus, data augmentation constitutes a must-use asset to increase the performance of the model.  
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+  \hline
+   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
+  \hline
+  ACC-TEST & 64.42\% & 75.96\% & 72.11\% & 67.30\% & 79.80\% & 71.91\% \\
+  LOSS-TEST & 1.44 & 0.67 & 1.30 & 1.67 & 0.91 & 1.198 \\ 
+  ACC-TRAIN & 99.75\% & 99.75\% & 100\% & 100\% & 100\% & 99.9\% \\ 
+  \hline
+\end{tabular}
+\captionof{table}{Experiment B.6 (On ALL-IDB2, with data augmentation) - Train set = 416 images, Test set = 104 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
+\label{table:results-B6}
+\end{center}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.45]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB2/all_idb2-data_aug.PNG}
+  \caption{Results of experiment B.6 (On ALL-IDB2, with data augmentation) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{71.91\%} (2) Loss value on test set: \textbf{1.198} (3) Accuracy on train set: \textbf{99.9\%}}
+  \label{fig:results-B6}
+\end{figure}
+
+
+\subsection{Experiment B.7 - Dropout and data augmentation}
+
+Similarly to the experiments on dropout, we observe the same issue as usual when using dropout on small datasets. The model cannot learn correctly to the neurons removed and cannot reach more than 70\% accuracy on training set. As this issue was explained before, refer to experiments A.5, A.7 and B.5 for more explanations. 
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+  \hline
+   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
+  \hline
+  ACC-TEST & 66.34\% & 64.42\% & 58.65\% & 65.38\% & 68.26\% & 64.61\% \\
+  LOSS-TEST & 0.79 & 0.7 & 0.93 & 1.53 & 0.926 & 0.97 \\ 
+  ACC-TRAIN & 67.22\% & 66.74\% & 64.33\% & 62.16\% & 65.78\% & 65.24\% \\ 
+  \hline
+\end{tabular}
+\captionof{table}{Experiment B.7 (On ALL-IDB2, with data augmentation and dropout=0.1) - Train set = 416 images, Test set = 104 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
+\label{table:results-B7}
+\end{center}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB2/all_idb2-data_aug_dropout.PNG}
+  \caption{Results of experiment B.7 (On ALL-IDB2, with data augmentation and dropout=0.1) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{65.9\%} (2) Loss value on test set: \textbf{1.16} (3) Accuracy on train set: \textbf{64.99\%}}
+  \label{fig:results-B7}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DATASET 3 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DATASET 3 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DATASET 3 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DATASET 3 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DATASET 3
+
+
+\section{Case C - ALL-IDB and DEMIR-LEUKEMIA datasets} \label{sec:appendix-case-C}
+
+The last case deals with ALL-IDB and DEMIR-LEUKEMIA datasets which involves 5 classes: HEALTHY (0), ALL (1), AML (2), CLL (3), CML (4). When not using data augmentation, we consider 732 images for training set and 183 for test set. Otherwise, we have 1464 images for training set and 366 for test set. That makes way more samples than two previous cases but here we also have 3 more classes to predict. The prediction accuracy rate that defines the randomness of the model is then 20\% (not 50\% like a binary classification). In the reference article \cite{leukemia}, they have obtained in average an accuracy of 81.74\% for test set, 1.14 of loss value and 99.34\% for train set after 25 epochs using data augmentation and dropout, with SGD optimizer and no preprocessing step (no resize, no filter).    
+
+\subsection{Experiment C.1 - Baseline}
+Compared to the reference article \cite{leukemia} results mentioned above, we are far from the results obtained. As matter of fact, we only obtain 49.61\% accuracy on test set. Nevertheless, we have to keep in mind that the reference result is obtained with no resizing. When processing a large amount of images and labelled with 5 classes, size matter a lot and allow the model to learn more. Moreover, the images provided in DEMIR-LEUKEMIA dataset contains a lot of variety of images such that some of them contain features that may confuse the learning of the model such as watermarks or bad resolution. Thus, the results obtained with our images resized at 100x100 is not that bad as it is very far from a totally random prediction. It means that the model learns well even if we use very small images. To enhance those results, are more preprocessing steps necessary or do we have to use more images? That is the subject of the next sections.      
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+  \hline
+   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
+  \hline
+  ACC-TEST & 56.83\% & 39.89\% & 44.8\% & 51.36\% & 55.19\% & 49.61\% \\
+  LOSS-TEST & 2.38 & 6.59 & 2.32 & 2.14  & 1.26 & 2.93 \\ 
+  ACC-TRAIN & 99.59\% & 99.72\% & 99.72\% & 99.86\% & 99.59\% & 99.69\% \\ 
+  \hline
+\end{tabular}
+\captionof{table}{Experiment C.1 (On ALL-IDB+DEMIR, with Baseline) - Train set = 732 images, Test set = 183 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
+\label{table:results-C1}
+\end{center}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.42]{Code/ch6-LeukemiaSubtypes/figures_result/LEUK-SUBTYPES/leukSub-baseline.PNG}
+  \caption{Results of experiment C.1 (On ALL-IDB+DEMIR, with Baseline) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{49.61\%} (2) Loss value on test set: \textbf{2.93} (3) Accuracy on train set: \textbf{99.69\%}}
+  \label{fig:results-C1}
+\end{figure}
+
+
+\subsection{Experiment C.2 - Filters}
+
+As we have seen for experiments done for ALL-IDB dataset, image enhancement using filters like greyscale or contrast enhancement seemed like an efficient technique to increase the performance of our model. This observation is confirmed while looking to the results obtained. We really have convincing results and the image enhancement step looks like being mandatory to gain accuracy rate. In this case, the three filters tested achieve quite similar results even if histogram equalization still have slightly better results.  
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+  \hline
+   & \textbf{Greyscale} & \textbf{Increased contrast} & \textbf{Histogram equalization} \\
+  \hline
+  Accuracy on test set & 59.01\% & 58.68\% & 61.74\% \\
+  Loss value on test set & 2.29 & 2.05 &  1.63\\ 
+  Accuracy on train set & 99.86\% & 99.72\% & 99.72\% \\ 
+  \hline
+\end{tabular}
+\captionof{table}{Experiment C.2 (On ALL-IDB+DEMIR, with filters applied) - Train set = 732 images, Test set = 183 images - Average results for each filters applied separately after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
+\label{table:results-C2}
+\end{center}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Code/ch6-LeukemiaSubtypes/figures_result/LEUK-SUBTYPES/leukSub-filters.PNG}
+  \caption{Results of experiment C.2 (On ALL-IDB+DEMIR, with filters applied). The results presented are the average of 5 different runs for each filter applied.}
+  \label{fig:results-C2}
+\end{figure}
+
+
+\subsection{Experiment C.3 - Size 200x200}
+
+To have an idea about the importance of using larger images in a case where we have more than 2 classes and more images, we do an experiment with the images of the dataset resized to 200x200. We observe a better performance in average and also a very low loss value. That shows the efficiency of using larger images and explain the very good results obtained by the authors of the reference article \cite{leukemia}. Moreover, we can observe that the model arrives to a convergence state as fast as using 100x100 images which means that it is not really constraining for the model's learning. However, the huge drawback of using larger images is the execution time that grow exponentially depending to the images' sizes.  
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+  \hline
+   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
+  \hline
+  ACC-TEST & 65.02\% & 67.75\% & 56.28\% & 54.09\% & 56.83\% & 59.99\%\\
+  LOSS-TEST & 0.97 & 1.36 & 1.65 & 1.45  & 1.04 & 1.29 \\ 
+  ACC-TRAIN & 99.72\% & 99.86\% & 99.31\% & 99.72\% & 99.86\% & 99.69\% \\ 
+  \hline
+\end{tabular}
+\captionof{table}{Experiment C.3 (On ALL-IDB+DEMIR, with larger resize) - Train set = 732 images, Test set = 183 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
+\label{table:results-C3}
+\end{center}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.45]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB2/all_idb2-200x200.PNG}
+  \caption{Results of experiment C.3 (On ALL-IDB+DEMIR, with larger resize 200x200) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{59.99\%} (2) Loss value on test set: \textbf{1.29} (3) Accuracy on train set: \textbf{99.69\%}}
+  \label{fig:results-C3}
+\end{figure}
+
+\subsection{Experiment C.4 - Noise}
+
+When testing the ability of the model to learn when noise is added, the previous experiments on ALL-IDB dataset have shown that the performance decreases drastically when adding more than 20\% of noise. In this case, we see that this performance is badly affected already at 20\% of noise added. Indeed, as we have way more classes and then way more features to learn, the model's ability to learn is more impacted. That is well illustrated in the third graph showing the evolution of accuracy rate on training set where we can observe that more noise added, more the model takes time to  reach convergence. Of course, that proportionality impact the accuracy on test set and the cost of loss function that increases depending of noise added which means that the model is getting harder and harder to make the link between the input image and its label.  
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+  \hline
+   & \textbf{noise=0.1} & \textbf{noise=0.2} & \textbf{noise=0.4} & \textbf{noise=0.6} & \textbf{noise=0.8}\\
+  \hline
+  ACC-TEST & 51.36\% & 32.78\% & 28.41\% & 25.68\% & 14.75\%\\
+  LOSS-TEST & 2.83 & 4.23 & 4.92 &  5.64 & 8.80 \\ 
+  ACC-TRAIN & 99.59\% & 98.22\% & 97.81\% & 96.17\% & 94.67\% \\ 
+  \hline
+\end{tabular}
+\captionof{table}{Experiment C.4 (On ALL-IDB+DEMIR, with different level of noise) - Train set = 732 images, Test set = 183 images - Average results depending on noise level. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
+\label{table:results-C4}
+\end{center}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.45]{Code/ch6-LeukemiaSubtypes/figures_result/LEUK-SUBTYPES/leukSub-noise.PNG}
+  \caption{Results of experiment C.4 (On ALL-IDB+DEMIR, with different level of noise). The results presented are the average of 5 different runs for each noise level.}
+  \label{fig:results-C4}
+\end{figure}
+
+
+\subsection{Experiment C.5 - Dropout}
+
+The conclusion that arise from the previous experiments on dropout efficiency were that it does not make sense to use it when we have so few samples in our dataset. Here we can think that as we have more images, dropout will show a regularization effect. But here we also have 3 more classes. Having 3 times more images therefore amounts to the same conclusion than previous experiments. Thus, this assertion is verified by the results obtained in this experiment. In average we obtain 25.89\% accuracy on test set which is very near from the total randomness prediction. Moreover, this is also observed by the third graph showing the evolution of accuracy on train set which is almost constant and does not evolve along epochs. That shows the difficulty of the model to learn. The results show then the same behaviour as experiments A.5 and B.5. The conclusion on dropout done previously is then also valid for this case.    
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+  \hline
+   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
+  \hline
+  ACC-TEST & 18.57\% & 23.49\% & 21.85\% & 28.96\% & 36.61\% & 25.89\% \\
+  LOSS-TEST & 4.77 & 5.63 & 4.75 & 2.23  & 1.36 & 3.74 \\ 
+  ACC-TRAIN & 46.03\% & 45.62\% & 51.63\% & 53.27\% & 51.36\% & 49.58\% \\ 
+  \hline
+\end{tabular}
+\captionof{table}{Experiment C.5 (On ALL-IDB+DEMIR, with dropout=0.1) - Train set = 732 images, Test set = 183 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
+\label{table:results-C5}
+\end{center}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.4]{Code/ch6-LeukemiaSubtypes/figures_result/LEUK-SUBTYPES/leukSub-dropout.PNG}
+  \caption{Results of experiment C.5 (On ALL-IDB+DEMIR, with dropout=0.1) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{25.89\%} (2) Loss value on test set: \textbf{3.74} (3) Accuracy on train set: \textbf{49.58\%}}
+  \label{fig:results-C5}
+\end{figure}
+
+
+\subsection{Experiment C.6 - Data augmentation}
+
+The good results obtained by the authors of \citep{leukemia} were obtained using data augmentation. Does data augmentation really make the performance of the model increasing? Theoretically from what we have experiment with ALL-IDB dataset and from the results of \cite{leukemia}, it is one of the must-use technique to have great performance. The results from this experiment do not make exception of this assertion. Even if we use resized images, we nearly obtain the same results as if we have use the original size of the images. Indeed, we have obtained an average of 71.91\% accuracy on test set while the result obtained by the reference article \cite{leukemia} with the original size was about 81\%. That really show the efficiency of data augmentation in this type of experiment. 
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+  \hline
+   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
+  \hline
+  ACC-TEST & 77.04\% & 66.66\% & 62.56\% & 55.19\% & 68.30\% & 71.91\% \\
+  LOSS-TEST & 0.74 & 2.75 & 1.26 & 1.64 & 1.39 & 1.556 \\ 
+  ACC-TRAIN & 97.33\% & 96.92\% & 93.98\% & 98.01\% & 99.79\% & 97.20\% \\ 
+  \hline
+\end{tabular}
+\captionof{table}{Experiment C.6 (On ALL-IDB+DEMIR, with data augmentation) - Train set = 1464 images, Test set = 266 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
+\label{table:results-C6}
+\end{center}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.45]{Code/ch6-LeukemiaSubtypes/figures_result/LEUK-SUBTYPES/leukSub-data_aug.PNG}
+  \caption{Results of experiment C.6 (On ALL-IDB+DEMIR, with data augmentation) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{71.91\%} (2) Loss value on test set: \textbf{1.556} (3) Accuracy on train set: \textbf{97.20\%}}
+  \label{fig:results-C6}
+\end{figure}
+
+\subsection{Experiment C.7 - Dropout and data augmentation}
+Last experiment is testing dropout with the data augmented dataset. As experiments A.7 and B.7,  we see a little improvement compared to the respective experiments of using dropout without data augmentation. That demonstrates one more time that dropout needs to be use with a larger dataset and/or with larger images to counter overfitting. If we only make conclusion from our own experiments, we see that dropout is to avoid but this is generally not the case. Indeed, when having a large dataset with large images, using dropout allows the model to counter overfitting and then increase the performance of the model such as the reference article \cite{leukemia} that have used this configuration. 
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+  \hline
+   & \textbf{Run 1} & \textbf{Run 2} & \textbf{Run 3} & \textbf{Run 4} & \textbf{Run 5} & \textbf{AVG}\\
+  \hline
+  ACC-TEST & 42.62\% & 22.4\% & 28.96\% & 34.42\% & 28.68\% & 31.41\% \\
+  LOSS-TEST & 1.35 & 2.76 & 1.88 & 1.36 & 2.02 & 1.874 \\ 
+  ACC-TRAIN & 57.44\% & 44.60\% & 55.19\% & 52.09\% & 59.63\% & 53.79\% \\ 
+  \hline
+\end{tabular}
+\captionof{table}{Experiment C.7 (On ALL-IDB+DEMIR, with data augmentation and dropout=0.1) - Train set = 1464 images, Test set = 266 images - Detailed results of each run after 25 epochs. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set.}
+\label{table:results-C7}
+\end{center}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.45]{Code/ch6-LeukemiaSubtypes/figures_result/LEUK-SUBTYPES/leukSub-data_aug_dropout.PNG}
+  \caption{Results of experiment C.7 (On ALL-IDB+DEMIR, with data augmentation and dropout=0.1) - The average result of the 5 runs after 25 epochs: (1) Accuracy on test set: \textbf{31.41\%} (2) Loss value on test set: \textbf{1.87} (3) Accuracy on train set: \textbf{53.79\%}}
+  \label{fig:results-C7}
+\end{figure}
+
+
 
 \end{document}
