@@ -107,7 +107,12 @@
 
 \begin{abstract}
 
-In this document, the important computer vision problem called image classification is tackled. To introduce the problem, different applications of image recognition and classification are given and explained to prove its importance in our actual world,  especially in the medical field which will be focused in this paper. Furthermore, machine learning and deep learning methods are used to solve image classification problem. In 2012, convolutional neural networks (CNN) have significantly increase the performance of the previous learning methods. In addition to CNN, this document expounds support vector machines (SVM) which is a well-known method for classifying data into classes. Subsequently, these methods will be used to resolve medical images classification problems. In particular, the methodology following \textit{Regab et al.}'s paper \cite{breast-cancer} to detect breast cancer by analysing mammogram images with an average accuracy of 80\%  makes subject of an entire chapter of the document.      
+In this document, the important computer vision problem called image classification is tackled. To introduce the problem, different applications of image recognition and classification are given and explained to prove its importance in our actual world,  especially in the medical field which will be focused in this paper. Furthermore, machine learning and deep learning methods are used to solve image classification problem. In 2012, convolutional neural networks (CNN) have significantly increase the performance of the previous learning methods. In addition to CNN, this document expounds support vector machines (SVM) which is a well-known method for classifying data into classes. Subsequently, these methods will be used to resolve medical images classification problems. In particular, the methodology following \textit{Regab et al.}'s paper \cite{breast-cancer} to detect breast cancer by analysing mammogram images with an average accuracy of 80\%  makes subject of an entire chapter of the document. 
+
+In a second phase, some experiments were done by implementing a CNN from scratch on the well-known dataset CIFAR-10 containing non-medical images. This is realized to manipulate parameters in order to perceive variations in the model accuracy and results. The parameters approached are the epochs number, optimizer used, dropout value, weight decay, presence of noise and the use of data augmentation such as flips or enhanced edges. What we have observed from the result is that the use of dropout and data augmentation seems to be the most efficient parameters with the accuracy approaching respectively 78.140\% and 78.410\%.    
+Then, the CNN was used for the purpose of a medical problem: the identification of leukemia subtypes from microscopic images. The experiments were realised using ALL-IDB and DEMIR-LEUKEMIA datasets. The process is based on the same parameters and the same CNN architecture than the experiments on CIFAR-10 dataset. The results obtained show that data augmentation and images enhancements techniques are overall the most valuable parameters to optimise the CNN model. Using either one of these parameters, the accuracy can go up to 91\% for ALL-IDB1, 80.38\% for ALL-IDB2 and 71.91\% using ALL-IDB and DEMIR-LEUKEMIA datasets. In addition to this, we have also demonstrated by these experiments the importance of having a compliant dataset.
+
+Afterwards, we discuss about the concept of interactive image labelling and active learning which are techniques that can bring forward the use of AI more than a computer-aided detection tool. These techniques are based on the presence of an oracle that helps the model to collect and annotate new informations. In this chapter, the methodology of active learning such as the query strategies are tackled as well as the performance and limitations of such techniques. Finally, the discussion continues by introducing the approach of a neural network extension which consists of mixing data types in addition of images. 
 
 \end{abstract}
 
@@ -115,13 +120,14 @@ In this document, the important computer vision problem called image classificat
 \tableofcontents
 
 
-\chapter{Introduction}
+\chapter{Introduction} \label{chap:intro}
+The thesis is structured into 3 distinct sections. The first one is the \textbf{state-of-the-art} containing the context of the classification problem (\autoref{chap:intro}), the general concepts of AI (\autoref{chap:AI}), the existing material and methods used to solve this problem (\autoref{chap:methods}) and a review of a well-known application of image classification for biomedical data (\autoref{chap:breast-cancer}). The second one is dedicated to my \textbf{own experiments} creating and using a classification model, first on classical images dataset (\autoref{chap:CIFAR10-exp}) and then on biomedical data (\autoref{chap:leuk}). Finally, the last section of the thesis is the \textbf{discussion} part where we are approaching further methods that can enhance the existing classification methods (\autoref{chap:active} and \autoref{chap:conclusion}).
 
 \section{Context and birth of the classification problem}
 
 \subsection{Context}
 
-In our days, countless numbers of pictures are taken of everything and anything due to the exponential growing of photography and digital photo cameras. Whether it is thanks to the built-in camera of your smartphone or your faithful travel companion, taking a picture has become a disconcerting ease. All these pictures are inevitably shared and searched on the internet. Without any classification, it would be a really laborious task to find a particular picture over the millions (even billions actually!) photos taken by users worldwide. This classification problem can be extended in a large panel of fields: it can go from your personal use to a more impacting field such as medical images analysis. Overall, this problem can be generalized and divided into an image processing and recognition sub-problems. More applications are presented in the next section.  \\
+In our days, countless numbers of pictures are taken of everything and anything due to the exponential growing of photography and digital photo cameras. Whether it is thanks to the built-in camera of your smartphone or your faithful travel companion, taking a picture has become a disconcerting ease. All these pictures are inevitably shared and searched on the internet. Without any classification, it would be a really laborious task to find a particular picture over the millions (even billions actually!) photos taken by users worldwide. This classification problem can be extended in a large panel of fields: it can go from your personal use to a more impacting field such as medical images analysis. Overall, this problem can be generalized and divided into an image processing and recognition sub-problems.  \\
 
 Thereby, fast and efficient methods have to be found to realize a reliable classification of big data. It is in the 50's, when the artificial intelligence (AI) has begun to take shape, that image recognition becomes a more serious problem to manage. As Marvin Minsky, co-founder of the Massachusetts Institute of Technology's (MIT) AI laboratory, defines: 
 \begin{quote}
@@ -200,7 +206,7 @@ More generally, what is applied to music can also be applied to recognize sounds
 \end{figure}
 
 
-\subsection{Medical images analysis}
+\section{The thesis' purpose application: medical images analysis}
 % Faire une grosse paranthèse sur le domaine médical % faire un lien avec facial recognition, on peut voir les diseases en fonction du visage
 In the medical field, different techniques of medical images exist which make the use of images quite abundant. The most popular one are radiography or ultrasounds scan, but much more imaging techniques exist such as magnetic resonance imaging (MRI) or histological images observed under a microscope. This huge amount of images generated is a precious source of information and constitutes an important training dataset to help to extract important and redundant features for future analysis. Thus, the existing methods for image classification can also used for medical image analysis. The main goal of these methods is to highlight anomalies that may help to detect diseases. Deep learning excels in perceptual tasks such as detection and segmentation. Here are some examples of different types of medical images analysis and their reason for being used.
 
@@ -224,7 +230,6 @@ Usually, healthy brain tissue consists of three parts: gray matter, white matter
   \label{fig:brain-example}
 \end{figure}
 
-\newpage
 \item \textbf{diabetic retinopathy (DR) classification :} DR is an eye deficiency created by diabetes and can lead to blindness. The main purposes of this deficiency is due to the high-level of sugar in your blood which can lead to the blockage of the tiny blood vessels that nourish the retina, cutting off its blood supply. Classification methods and pattern recognition are tried to help analysing color fundus photographies (which is represented in the figure) to detect DR automatically and are actually in good progress. These classifying models are capable of quantifying the different features as blood vessels, fluid drip, exudates, hemorrhages and micro aneurysms\footnote{A micro aneurysm is a small swelling that forms in the wall of tiny blood vessels. These small swellings may break and allow blood to leak into nearby tissue.} into different classes. All these features are signs of DR, especially micro aneurysms which is usually the first visible sign of diabetic retinopathy. \\
 Many filters are used to highlight these features such as edges detection which is the one of the feature extraction methods where the boundaries of the features are highlighted (i.e., the edges of the blood clots, white lesions, veins) are detected based on the sudden change in the pixel values with the neighborhood pixel intensity \cite{DR-1}.
 
@@ -237,9 +242,13 @@ Many filters are used to highlight these features such as edges detection which 
 
 \end{enumerate}
 
-However, the outcomes of these methods of image processing is not sufficient to give complete information about the image. The computer has not yet the knowledge of scientists and doctors which means that a human's intervention is necessary to complete the information given by the computer's outcomes. That is why the deep learning methods used are rather called \textbf{computer aided detection} (CAD) which is defined as systems that assist doctors in the interpretation of medical images. 
+\newpage
+However, the outcomes of these methods of image processing is not sufficient to give complete information about the image. The computer has not yet the knowledge of scientists and doctors which means that a human's intervention is necessary to complete the information given by the computer's outcomes. That is why the deep learning methods used are rather called \textbf{computer aided detection} (CAD) which is defined as systems that assist doctors in the interpretation of medical images. \\
 
-\chapter{General concepts of AI}
+All these image classification problems are mainly solved by AI methods. But what is exactly AI and what are the main concepts of AI? The next chapter presents the general concepts to understand AI methodology to solve such problems. 
+
+\chapter{General concepts of AI} \label{chap:AI}
+This chapter presents the key concepts of AI such as Machine Learning (ML) and Deep Learning (DL) as well as how it is related to the image classification problem. 
 
 \section{Machine learning and deep learning}
 We know that image classification is a problem resolvable by AI methods such as machine learning and especially deep learning. These methods are usually used to resolve data science problems such as image classification. Let's introduce and define them.
@@ -283,7 +292,7 @@ If $x = 10$, the computer will output $y = 100$ by learning the pattern of squar
 \end{center}
 \end{exmp}
 
-Note that in supervised learning, machine learning cannot be used without a good dataset. Before using machine learning to models and evaluates new data, we need to give him a relevant and useful set of data to allow him to learn correctly. If what we are interested for is a specific feature, the data should be adapted to highlight and label this specific feature to ease the learning of the machine. Once data are correctly pretreated, the machine will use this dataset called \textbf{training set} to learn from it and acquire knowledge about the data to apply it to new data.
+Note that in supervised learning, machine learning cannot be used without a good dataset. Before using machine learning to models and evaluates new data, a relevant and useful set of data is needed to allow him to learn correctly. If what we are interested for is a specific feature, the data should be adapted to highlight and label this specific feature to ease the learning of the machine. Once data are correctly pretreated, the machine will use this dataset called \textbf{training set} to learn from it and acquire knowledge about the data to apply it to new data.
 
 \begin{figure}[h]
   \centering
@@ -323,7 +332,7 @@ When the set of possible outcomes is composed by only two elements, such as retu
 \end{defn}
 
 \begin{defn}
-\textit{Regression} is useful for predicting outputs that are continuous. That means the answer to the question is represented by a quantity that can be flexibly determined based on the inputs of the model rather than being confined to a set of possible labels \cite{class-regression-1}. We are trying to map input variables to some continuous functions. 
+\textit{Regression} is useful for predicting outputs that are continuous. That means the answer to the question is represented by a quantity that can be flexibly determined based on the inputs of the model rather than being confined to a set of possible labels \cite{class-regression-1}. The objective is to map input variables to some continuous functions. 
 \end{defn}
 
 \begin{defn}
@@ -337,7 +346,7 @@ As its name said, \textit{dimensionality reduction} is a process where its main 
 \begin{figure}[h]
   \centering
   \includegraphics[scale=0.8]{figures/classification-regression.png}
-  \caption{Difference between classification and regression on a weather example. For classification, we are doing a clear separation between two classes : hot and cold. For regression, we are trying to mean the degrees values given on input by a certain function. Figure adapted from \cite{fig_class_regression}}
+  \caption{Difference between classification and regression on a weather example. For classification, a clear separation between two classes is done: hot and cold. For regression, the objective is to mean the degrees values given on input by a certain function. Figure adapted from \cite{fig_class_regression}}
   \label{fig:classification-regression}
 \end{figure}
 
@@ -392,13 +401,13 @@ Basically, \textbf{image classification is the task of categorizing images into 
 \subsection{Which methods should we use?}
 % présenter les différents cas quand on utilise supervisé, pareil pour non supervisés et présneter les avantages de l'un par rapport à l'autre
 % https://www.mathworks.com/discovery/machine-learning.html
-It exists different methods whether for supervised or unsupervised learning and all of them are useful. There exists no method better than an other one. Choosing the method depends of different criteria whose information missed, size of data, the insights you want to get from the data, etc. Generally, supervised learning is used to train a model to \textbf{make a prediction}. It can be used for instance for weather forecast and more generally for continuous and linear variables. On the other hand, unsupervised learning is employed to explore data and train a model to \textbf{find clusters} into the data. Some of the most familiar methods are \textit{Support Vector Machine} (SVM), nearest neighbour, maximum likelihood, decision tree classifier for supervised learning. Concerning unsupervised learning, K-means clustering algorithm or neural networks are the most common methods. 
+It exists different methods whether for supervised or unsupervised learning and all of them are useful. There exists no method better than an other one. Choosing the method depends of different criteria whose information missed, size of data, the insights you want to get from the data, etc. Generally, supervised learning is used to train a model to \textbf{make a prediction}. It can be used for instance for weather forecast and more generally for continuous and linear variables. On the other hand, unsupervised learning is employed to explore data and train a model to \textbf{find clusters} into the data. Some of the most familiar methods are \textit{Support Vector Machine} (SVM), nearest neighbour, maximum likelihood, decision tree classifier for supervised learning. Concerning unsupervised learning, K-means clustering algorithm or neural networks are the most common methods. To decide which method is more adapted to which situation, it is necessary to define them. This is the purpose of the next chapter. 
 % All these methods will be tackled later.. 
 
 
 
 
-\chapter{Materials and Methods} % etat de l'art
+\chapter{Materials and Methods} \label{chap:methods}% etat de l'art
 % Cas particulier -> reconnaissance d'image facile comme les lettres  
 % https://arxiv.org/pdf/1705.02680.pdf
 % example lettres : https://www.youtube.com/watch?v=mmXB636p_E8
@@ -407,7 +416,7 @@ It exists different methods whether for supervised or unsupervised learning and 
 
 %\textit{\textbf{Plan du chapitre:} état de l'art - présentation des méthodes utilisés dans les références traités ainsi que des résultats (comparaison). Focus sur le cas du cancer du sein selon l'article : "Breast cancer detection using deep convolutional neural networks and support vector machines". Les deux premières sections introduisent CNN et SVM : les deux méthodes de classification principales utilisés dans l'article. S'en suit la méthodologie complète présentée dans l'article ainsi que les résultats obtenus.} 
 
-In this chapter, different methods of learning are introduce and presented. In particular, neural networks is the main and most known method for images classification especially convolutional neural networks (CNN). In a second time, support vector machines (SVM) models are presented to associate learning algorithms that analyse data used for classification and regression analysis. Finally, we take interested of the evaluation methods: how do we evaluate the classification? From which percentage is the evaluation correct? Therefore, this evaluation leads to a question of validation to define how do we validate a prediction.
+In this chapter, different methods of learning are introduce and presented. In particular, neural networks is the main and most known method for images classification especially convolutional neural networks (CNN). In a second time, support vector machines (SVM) models are presented to associate learning algorithms that analyse data used for classification and regression analysis. Finally, we take interested of the evaluation methods: how do we evaluate the classification? From which percentage is the evaluation correct? Therefore, this evaluation leads to a question of validation to define how do a prediction is validated.
 
 
 \section{Neural networks} \label{sec:neural-networks}
@@ -424,7 +433,7 @@ When speaking about deep learning, the most known technique is probably neural n
 
 % https://www.researchgate.net/publication/262936797_ARTIFICIAL_NEURAL_NETWORK_PART_1
 This definition is somehow explaining how a human's brain work and this is mostly why a ANN is inspired of to recognize patterns. To imitate the behaviour of a human's brain, let's see first how does a brain works. Basically, the biological neural network is composed of four main elements:
-somas, dendrites, axons and synapses. For a better understanding, we have to define their respective functions to create elements that will act similarly in our ANN.
+somas, dendrites, axons and synapses. For a better understanding, their respective functions to create elements that will act similarly in our ANN have to be defined.
 \begin{itemize}
 \item \textbf{Soma:} central part of a neuron, contains the cell nucleus which mainly contains all of the cell's genome (DNA). In ANN, this should correspond to the neurons. 
 \item \textbf{Dendrite:} projection of a neuron that receive signals (information) from other neurons. In ANN, this should correspond to the inputs. 
@@ -432,7 +441,7 @@ somas, dendrites, axons and synapses. For a better understanding, we have to def
 \item \textbf{Synapse:} transfer electric activity (information) from one cell to another.  In ANN, this should correspond to the links between every neuron and their respective weights which correspond to the strength or amplitude of a connection between two nodes. Besides, that's why this weight is also called \textit{synaptic weight}. 
 \end{itemize} 
 
-To sum up, we can associate these biological elements to artificial ones following \autoref{table:bio-ANN}. The representation of both neural networks are shown in \autoref{fig:bio-ANN}. 
+To sum up, an association between these biological elements and artificial ones following \autoref{table:bio-ANN} can be done. The representation of both neural networks are shown in \autoref{fig:bio-ANN}. 
 
 \begin{center}
     \begin{tabular}{|c|c|}
@@ -460,7 +469,7 @@ To sum up, we can associate these biological elements to artificial ones followi
 \end{figure}
 
 \subsection{How does neural network works?} \label{sec:nn-work}
-Typically, a neural network is initially trained or fed large amounts of data. Training consists of providing input and telling the network what the output should be. The objective is to obtain a neural network that is trained and generalizes well that should behaves correctly on new instances of the learning task. To do that, we need an architecture of neural network composed by a set of neurons and links connecting neurons such that each link has a synaptic weight. Multiple neural network architectures exist such as single-layer or multi-layer perceptron. Inevitably, we need a learning algorithm to learn. Linear regression, logistic regression, decision tree or SVM are some examples of learning algorithms. The last one cited make object of \autoref{sec:svm}. 
+Typically, a neural network is initially trained or fed large amounts of data. Training consists of providing input and telling the network what the output should be. The objective is to obtain a neural network that is trained and generalizes well that should behaves correctly on new instances of the learning task. To do that, an architecture of neural network composed by a set of neurons and links connecting neurons such that each link has a synaptic weight is needed. Multiple neural network architectures exist such as single-layer or multi-layer perceptron. Inevitably, a learning algorithm to learn is needed. Linear regression, logistic regression, decision tree or SVM are some examples of learning algorithms. The last one cited make object of \autoref{sec:svm}. 
 
 Generally, a neural network is represented by the scheme presented below in \autoref{fig:nn-scheme}.
 
@@ -472,7 +481,7 @@ Generally, a neural network is represented by the scheme presented below in \aut
 \end{figure}
 
 \newpage
-Firstly, input values are given to the neural network. In the case of an image processing, the input will be given by each pixel of the image. For instance, if we try to process an image of 200x200 pixels, the input values will be defined by the set $\{x_{1}, x_{2}, ... , x_{39999}, x_{40000}\}$ where $x_{i}$ is a value that describes the level of a certain property (luminosity, contrast, ...) on the pixel. All these informations are given to \textbf{neurons}.
+Firstly, input values are given to the neural network. In the case of an image processing, the input will be given by each pixel of the image. For instance, to process an image of 200x200 pixels, the input values will be defined by the set $\{x_{1}, x_{2}, ... , x_{39999}, x_{40000}\}$ where $x_{i}$ is a value that describes the level of a certain property (luminosity, contrast, ...) on the pixel. All these informations are given to \textbf{neurons}.
 
 Neurons are functions consisting of a set of links described by synaptic weights which are computed by a summing (adder) function: 
 $$ v_{j} = \sum_{i=1}^{n} x_{i} w_{ij} $$ where $n$ is the input number, $x_{i}$ the value of neuron $i$ and $w_{ij}$ the weight between neuron $i$ and neuron $j$. $v_{j}$ is called the local induced field of the neuron. 
@@ -488,9 +497,9 @@ $$ \phi'(x) = \phi(x)[1-\phi(x)] $$
 The reason that sigmoid is one of the most used activation function is that it is a non-linear function which allow then to stack layers and to treat non-binary activations. Moreover, the output of the activation function is always going to be in range (0,1) compared to (-$\infty$, $\infty$) of linear function. Thus, an output with a value approaching 1 means that the prediction is most likely focused on this solution. 
 
 \section{Convolutional neural networks} \label{sec:CNN}
-Concerning image classification and recognition, traditional multilayer perceptron (MLP) models were a successfully method used. Nevertheless, due to the full connectivity between nodes they suffer from the curse of dimensionality, and thus do not scale well to higher resolution images. For example, a 1000×1000-pixel image with RGB color channels has 3 million weights, which is too high to feasibly process efficiently at scale with full connectivity \cite{wiki-cnn}. For this reason, scientists had to find an efficient solution to remedy this situation. That's why in the end of the 80's, convolutional neural network (CNN) were created. 
+Concerning image classification and recognition, traditional multilayer perceptron (MLP) models were a successfully method used. Nevertheless, due to the full connectivity between nodes they suffer from the curse of dimensionality, and thus do not scale well to higher resolution images. If we take the example of a 1000x1000-pixel image with RGB color channels, we obtain 3 million weights which is a too large amount to process efficiently at scale with full connectivity. For this reason, scientists had to find an efficient solution to remedy this situation. That's why in the end of the 80's, convolutional neural network (CNN) were created. 
 
-CNN is a type of neural network mostly applied for visual tasks such as image or video recognition.  A convolution is the simple application of a filter to an input that results in an activation. Thus, we are applying a filter of a fixed size $N \times N$ to every window of size $N \times N$ of the input image a number of times needed to filter the whole image. This filter is used to highlight the feature that we are interested in. CNN basically uses the same structure as a basic neural network: input, hidden and output layers. However, several difference occur especially for hidden layers. Indeed, the hidden layers of a CNN typically consist of convolutional layers, pooling layers and fully connected layers as shown in \autoref{fig:cnn-architecture} and detailed in the next sections. 
+CNN is a type of neural network mostly applied for visual tasks such as image or video recognition.  A convolution is the simple application of a filter to an input that results in an activation. Thus, a filter of a fixed size $N \times N$ is applied to every window of size $N \times N$ of the input image a number of times needed to filter the whole image. This filter is used to highlight the feature that we are interested in. CNN basically uses the same structure as a basic neural network: input, hidden and output layers. However, several difference occur especially for hidden layers. Indeed, the hidden layers of a CNN typically consist of convolutional layers, pooling layers and fully connected layers as shown in \autoref{fig:cnn-architecture} and detailed in the next sections. 
 
 \begin{figure}[h]
   \centering
@@ -505,7 +514,7 @@ The objective of convolutional layers is to extract the high-level features such
 0 & 1 & 0 \\
 1 & 0 & 1 
 \end{bmatrix}$ 
-is shown in \autoref{fig:cnn-ex1} where we are applying the filter to every window of size 3x3 of the 5x5 image. Thus, the filter will be applied and shifted 9 times. 
+is shown in \autoref{fig:cnn-ex1} where the filter to every window of size 3x3 of the 5x5 image is applied. Thus, the filter will be applied and shifted 9 times. 
 
 \begin{figure}[h]
   \centering
@@ -539,7 +548,7 @@ Therefore, there is no pooling method better than an other. The choice of poolin
 
 \newpage
 \subsection{Fully connected layers} \label{sec:fully-connected-layer}
-Now that we can detect these high level features thanks to the convolutional and pooling layers, the fully connected layer follows to interpret these feature representations. The structure of the fully connected layer is the same as a MLP: every neuron in one layer is connected to every neuron in another layer. The way this fully connected layer works is that it looks at the output of the previous layer (which as we remember should represent the activation maps of high level features) and determines which features most correlate to a particular class by mostly using the \textit{Softmax} classification technique.
+Now that these high level features are detected thanks to the convolutional and pooling layers, the fully connected layer follows to interpret these feature representations. The structure of the fully connected layer is the same as a MLP: every neuron in one layer is connected to every neuron in another layer. The way this fully connected layer works is that it looks at the output of the previous layer (which should represent the activation maps of high level features) and determines which features most correlate to a particular class by mostly using the \textit{Softmax} classification technique.
 The softmax classifier is defined: 
 $$ L = \frac{1}{N} \sum_{i=1} L_{i} =  \frac{1}{N} \sum_{i = 1} - log \left(  \frac{e^{f_{yi}}}{\sum_{j=1}^K e^{f_{j}}}  \right) $$ 
 where $x_{i}$ is the $i$th input feature with corresponding label $y_{i}$, $K$ the number of classes, $N$ the amount of training datas and $f$ the softmax function defined by: 
@@ -561,10 +570,10 @@ Therefore, it is at fully connected layers that the model is classifying the ima
 Support vector machines (SVM) are supervised learning models that are efficient to resolve classification problems or regression problems\footnote{Defined in \autoref{sec:categories-ML}}. Basically, in the first case, we talk about \textit{support vector classification} (SVC) while we talk about \textit{support vector regression} (SVR) in the second case. SVM is based on the idea of finding an \textbf{hyperplane} that best separates the features into different domains. 
 
 \subsection{Data structure and linearity}
-The most known type of SVM is the \textit{linear kernel SVM} which the separation between the different domains is a straight line (or hyperplane if working in multidimensional plans). Nevertheless, it is the very basic case which is only usable for data which are linearly separable (as the example shown in \autoref{fig:classification-regression}) but not for non-linear data. In this case, in 1992, Bernhard E. Boser, Isabelle M. Guyon and Vladimir N. Vapnik suggested a way to create nonlinear classifiers by applying the \textbf{kernel trick} to \textbf{maximum-margin hyperplanes} \cite{wiki-svm}. 
+The most known type of SVM is the \textit{linear kernel SVM} which the separation between the different domains is a straight line (or hyperplane if working in multidimensional plans). Nevertheless, it is the very basic case which is only usable for data which are linearly separable (as the example shown in \autoref{fig:classification-regression}) but not for non-linear data. In this case, in 1992, Bernhard E. Boser, Isabelle M. Guyon and Vladimir N. Vapnik suggested a way to create nonlinear classifiers by applying the \textbf{kernel trick} to \textbf{maximum-margin hyperplanes} \cite{svm-margin}. 
 
 \subsubsection{Margin maximisation}
-Maximising the margin, which corresponds to the distance between the closest points (also called \textit{support vector points}) and the hyperplane, can be interpreted as maximising the confidence of the model. In other words, more the SV points is far from the hyperplane, more is the probability of correctly classifying the points in their respective region or classes. Therefore, we can denote the importance of the SV points positions which has an direct impact to the hyperplane. 
+Maximising the margin, which corresponds to the distance between the closest points (also called \textit{support vector points}) and the hyperplane, can be interpreted as maximising the confidence of the model. In other words, more the SV points is far from the hyperplane, more is the probability of correctly classifying the points in their respective region or classes. Therefore, it denotes the importance of the SV points positions which has an direct impact to the hyperplane. 
 
 As a reminder for the simplest case, given $a \in \mathbb{R}$ the slope and $b \in \mathbb{R}$ the $y$-intercept, the equation form of a linear separation $y$ is:  
 \begin{align} \label{eq:1}
@@ -576,30 +585,30 @@ Concerning the hyperplane $\pi$, given $x$ an input vector, $w$ the margin width
 \pi \equiv w^\top x + b = 0
 \end{align}
 
-Moreover, we can define $\pi_{1}$ as the hyperplane of the first class $y^{-}$ (green) parallel to the decision border hyperplane $\pi$ and $\pi_{2}$ as the hyperplane crossing the SV point of the second class $y^{+}$ (red) parallel to $\pi$. The margin is then defined by $\pi_{2}-\pi_{1}$. Knowing the hyperplane defined by \autoref{eq:2}, we can define $\pi_{1}$ and $\pi_{2}$ as: 
+Moreover, $\pi_{1}$ defines the hyperplane of the first class $y^{-}$ (green) parallel to the decision border hyperplane $\pi$ and $\pi_{2}$ as the hyperplane crossing the SV point of the second class $y^{+}$ (red) parallel to $\pi$. The margin is then defined by $\pi_{2}-\pi_{1}$. Knowing the hyperplane defined by \autoref{eq:2}, $\pi_{1}$ and $\pi_{2}$ are defined as: 
 \begin{align} \label{eq:3}
 \pi_{1} \equiv w^\top x + b = -1 \\
 \pi_{2} \equiv w^\top x + b = 1
 \end{align}
 
-By solving algebraically $\pi_{2}-\pi_{1}$, we obtain:
+By solving algebraically $\pi_{2}-\pi_{1}$, it concludes on:
 \begin{align}
 \pi_{2}-\pi_{1} &= (w^\top x + b - 1) - (w^\top x + b + 1)\nonumber  \\ 
  				&= \frac{2}{\mid w \mid} \nonumber
 \end{align} 
 
-Thus, to increase the margin, we have to minimize $\mid w \mid$. In other words, with the condition that there are no datapoints between $\pi_{1}$ and $\pi_{2}$:
+Thus, to increase the margin, $\mid w \mid$ has to be minimized. In other words, with the condition that there are no datapoints between $\pi_{1}$ and $\pi_{2}$:
 \begin{center}
 $ x_{i} \cdot w + b \geq +1 \Rightarrow y_{i} = +1 \Rightarrow y^{+} $ \\
 $ x_{i} \cdot w + b \leq -1 \Rightarrow y_{i} = -1 \Rightarrow y^{-} $
 \end{center}
 
-The following pseudo-code sums up the procedure, so either we save the $w$ and $b$ values and keep going or we adjust the parameters, which corresponds to a convex optimization problem which surely gives us global minimum value, and keep going. Moreover, \autoref{fig:margin-svm} illustrates the problem and all the variables. 
+The following pseudo-code sums up the procedure, so either $w$ and $b$ values are saved and keep going or the parameters are adjusted, which corresponds to a convex optimization problem which surely gives us global minimum value, and keep going. Moreover, \autoref{fig:margin-svm} illustrates the problem and all the variables. 
  
 \begin{algorithm} 
   \caption{Margin Maximization - Finding the best hyperplane} \label{alg:max-margin}
   \begin{algorithmic}[1]
-  \ForAll {point $x_{i}$ we check:}
+  \ForAll {point $x_{i}$ check:}
   \If {$y_{i} \cdot (w \cdot x_{i} + b) = 1$}
   \State $x_{i} =$ SV point
   \State Correctly classified $\Rightarrow$ Save parameters $b$ and $w$ 
@@ -628,7 +637,7 @@ The following pseudo-code sums up the procedure, so either we save the $w$ and $
 \subsubsection{Kernel trick}
 Let's now define the kernel trick and how does it work. Basically, the kernel trick is used by a \textit{radial basis function} (RBF) SVM where this trick will allow us to use a linear classifier to resolve a non-linear problem by transforming data into another higher dimension (potentially infinite) that has a clear dividing margin between classes of data. The kernel trick is then a way of computing the scalar product of two vectors $x$ and $y$ in some (very high dimensional) feature space. \\
 
-More formally, given an input vector $x$ labelled by $y$. We apply a non-linear transformation $\phi : \mathbb{R} \rightarrow H$ to the data where $H$ is an \textit{Hilbert space}\footnote{An \textit{Hilbert space} is a real vectorial space including a scalar product, which allow us to measure lengths, angles and to define an orthogonality.}. After this transformation, the procedure only depends of the scalar product $\phi(x) \cdot \phi(y)$  but computing this scalar product in a high-dimensional space is somehow complicated. The idea of the kernel trick is then to use a kernel function $K$ of the form: $K(x,y) = \phi(x) \cdot \phi(y)$. Simply, applying kernel trick means just to the replace scalar product of two vectors by the kernel function.\\ 
+More formally, given an input vector $x$ labelled by $y$. A non-linear transformation $\phi : \mathbb{R} \rightarrow H$ is applied to the data where $H$ is an \textit{Hilbert space}\footnote{An \textit{Hilbert space} is a real vectorial space including a scalar product, which allow us to measure lengths, angles and to define an orthogonality.}. After this transformation, the procedure only depends of the scalar product $\phi(x) \cdot \phi(y)$  but computing this scalar product in a high-dimensional space is somehow complicated. The idea of the kernel trick is then to use a kernel function $K$ of the form: $K(x,y) = \phi(x) \cdot \phi(y)$. Simply, applying kernel trick means just to the replace scalar product of two vectors by the kernel function.\\ 
        
 % est-ce que je dois expliquer comment ça marche ?
 
@@ -640,9 +649,11 @@ where $\gamma$ defines how far the influence of a single training example reache
 \begin{figure}[h]
   \centering
   \includegraphics[scale=0.65]{figures/kernel-trick.png}
-  \caption{A training example of SVM with kernel given by $\phi((a, b)) = (a, b, a^{2} + b^{2})$ and thus goes from a 2D space to a 3D space defined by $K(x, y) = x \cdot y + x^2 y^2$. The training points are mapped to a 3-dimensional space where a separating hyperplane can be easily found. Figure extracted from \cite{wiki-svm}.}
+  \caption{A training example of SVM with kernel given by $\phi((a, b)) = (a, b, a^{2} + b^{2})$ and thus goes from a 2D space to a 3D space defined by $K(x, y) = x \cdot y + x^2 y^2$. The training points are mapped to a 3-dimensional space where a separating hyperplane can be easily found. Figure extracted from \textit{Shiyu Ji}'s work\protect\footnotemark.}
   \label{fig:kernel-trick}
 \end{figure}
+
+\footnotetext{\url{https://commons.wikimedia.org/wiki/User:Shiyu\_ Ji\#/media/File:Kernel\_ trick\_ idea.svg}}
 
 \newpage
 \section{Evaluation and validation} \label{sec:evaluation}
@@ -651,12 +662,12 @@ where $\gamma$ defines how far the influence of a single training example reache
 % Confusion matrix -> TP, FP etc 
 % ROC Curves
  
-Once classification models are done, it is mandatory to evaluate the prediction to determine potential errors that should falsify the obtained results.  To do that, it is useful to know which type of error exist and how are we computing the performance of a classification model to finally validate the prediction or not. More precisely, we call the statistical measures of the performance of a binary classification test "sensitivity" and "specificity". 
+Once classification models are done, it is mandatory to evaluate the prediction to determine potential errors that should falsify the obtained results.  To do that, it is useful to know which type of error exist and how the performance of a classification model is computed to finally validate the prediction or not. More precisely, the statistical measures of the performance of a binary classification test are called  "sensitivity" and "specificity". 
 
 \subsection{Sensitivity, specificity and confusion matrix}
 A confusion matrix is an $N \times N$ matrix that is often used to summarize the performance of a classification model. The confusion matrix gives information about what the model is predicting right and what error it did. These two informations are separated in 4 categories: True Positive (TP), True Negative (TN), False Positive (FP) and False Negative (FN). The two first one are the results where reality is in favor with the model predictions while FP and FN define the two types of errors that the model can encounter.
 
-Given the confusion matrix, we can compute the accuracy of the model to show how often the classifier was correct following this formula: 
+Given the confusion matrix, the accuracy of the model can be computed to show how often the classifier was correct following this formula: 
 $$ accuracy = \frac{TP + TN}{TP + TN + FP + FN} $$
 A variant of accuracy is the Positive Predicted Value (PPV), also called \textit{precision}, that computes how often the model was correct when it predicted positively: 
 $$ precision = \frac{TP}{TP + FP} $$ 
@@ -686,7 +697,7 @@ To illustrate these terms and the use of the confusion matrix, let's take an exa
 
 Taking a sample of 100 people, the current model predicts 20 people to have the disease but only 15 people have actually disease and among those 15 people, the model predicted 12 correctly. These results put in the confusion matrix gives what is illustrated in \autoref{fig:confusion-matrix}. 
 
-Moreover, we can compute the different values tackled previously to evaluate the model. 
+Moreover, here are the different values tackled previously computed to evaluate the model. 
 
 \begin{center}
     \begin{tabular}{|c|c|}
@@ -713,7 +724,7 @@ Moreover, we can compute the different values tackled previously to evaluate the
 \subsection{ROC curves}
 The \textit{Receiver Operating Characteristic} curve (ROC curve) is a plot of the true positive rate (TPR, sensitivity) against the false positive rate (FPR, corresponding to 1-specificity) for different classification thresholds. In other words, ROC curves can be used to select a threshold for a classifier which maximizes the TP while minimizing the FP. A perfect ROC curve would follow the two axes. In general, real-life classification rules produce ROC curves which lie between these two extremes. 
 
-Given a ROC curve, it is interesting to compute what we call the \textit{Area Under The Curve} (AUC) which represents the degree or measure of separability, i.e. how much the model is capable of distinguishing between classes. If $AUC = 1$, it means that the test has perfect accuracy. 
+Given a ROC curve, it is interesting to compute the \textit{Area Under The Curve} (AUC) which represents the degree or measure of separability, i.e. how much the model is capable of distinguishing between classes. If $AUC = 1$, it means that the test has perfect accuracy. 
 
 For instance, in the example tackled above in \autoref{sec:appli-confusion-matrix} , higher the AUC is, better the model is at distinguishing between patients with disease and patients with no disease.
 
@@ -740,7 +751,7 @@ A frequent problem in model training is when the fitting is too low or too high 
 Generally, more you learn, the better it is. But in case of learning to predict, it can cause troubles. Why would learn a large number of information/features be a bad thing? 
 The objective is to find a model that \textbf{generalizes} well certain patterns to finally apply these generalisations to new data. Therefore, while learning too much data, the model may save too much superfluous and too detailed information which are only specific to the images that the model is currently learning. In other words, the predictive model will capture the generalizable correlations and the \textbf{noise} produced by the data.
 
-In summary, we can define overfitting as a model that is too specialized on training set data and that will not generalize well. That implies that the model will predict very well on training set data but bad on new datasets. Therefore, to detect overfitting, we see if the model predict much better on the training set (used to learn) than on the test set (that is never touched before prediction), if it is the case, then we are likely overfitting.
+In summary, overfitting is defined as a model that is too specialized on training set data and that will not generalize well. That implies that the model will predict very well on training set data but bad on new datasets. Therefore, to detect overfitting, we observe if the model predict much better on the training set (used to learn) than on the test set (that is never touched before prediction), if it is the case, then we are likely overfitting.
 
 
 \subsubsection{Underfitting}
@@ -748,7 +759,7 @@ Underfitting problem is more meaningful to everyone. This is exactly the contrar
 
 
 \subsubsection{Cross-validation}
-To prevent those problems, cross-validation (fully called \textit{k-fold cross-validation}) is one of the most known method which is estimating the skill of machine learning models. In standard $k$-fold cross-validation, we partition the data into $k$ subsets, called folds. Then, we iteratively train the algorithm on $k-1$ folds while using the remaining fold as the test set. In other words, one round of cross-validation involves partitioning a sample of data into complementary subsets, performing the analysis on one subset (called the training set), and validating the analysis on the other subset (called the validation set or testing set) \cite{wiki-cross-validation}. This way, we generate multiple mini train-test splits (then, the training tests number) from the initial training data to multiply the chance to detect and prevent from over or underfitting.
+To prevent those problems, cross-validation (fully called \textit{k-fold cross-validation}) is one of the most known method which is estimating the skill of machine learning models. In standard $k$-fold cross-validation, the data is partitioned into $k$ subsets, called folds. Then, the algorithm is iteratively trained on $k-1$ folds while using the remaining fold as the test set. In other words, one round of cross-validation involves partitioning a sample of data into complementary subsets, performing the analysis on one subset (called the training set), and validating the analysis on the other subset (called the validation set or testing set) \cite{wiki}. This way, multiple mini train-test splits are generated (then, the training tests number) from the initial training data to multiply the chance to detect and prevent from over or underfitting.
 
 The choice of $k$ is usually 5 or 10. But as $k$ gets larger, the difference in size between the training set and the resampling subsets decreases which implies the reduction of the bias of the technique.
 
@@ -764,7 +775,7 @@ Of course, cross-validation is not the only way to prevent from over and underfi
 
 
 \chapter{A well-known application: breast cancer detection} \label{chap:breast-cancer}
-One of the most recurrent serious disease which is one of the leading for women globally is breast cancer. To overcome this disease, mammography is one of the important methods which use medical imaging to detect breast cancer. This chapter is devoted to the state-of-the-art of the article "Breast cancer detection using deep convolutional neural networks and support vector machines" \cite{breast-cancer} written by Dina A. Ragab, Maha Sharkas, Stephen Marshall and Jinchang Ren published recently in January 2019. We will study the methodology adopted by the authors to detect breast cancer through magnetic resonance imaging and present the results that they have obtained. These results are obtained using the digital database for screening mammography (\textbf{DDSM}) and the Curated Breast Imaging Subset of DDSM (\textbf{CBIS-DDSM}) that are publicly available datasets.
+Now that multiple methods of ML and DL are defined, let's see how are they applied in a concrete and significant situation such as a medical problem. One of the most recurrent serious disease which is one of the leading for women globally is breast cancer. To overcome this disease, mammography is one of the important methods which use medical imaging to detect breast cancer. This chapter is devoted to the state-of-the-art of the article "Breast cancer detection using deep convolutional neural networks and support vector machines" \cite{breast-cancer} written by Dina A. Ragab, Maha Sharkas, Stephen Marshall and Jinchang Ren published recently in January 2019. We will study the methodology adopted by the authors to detect breast cancer through magnetic resonance imaging and present the results that they have obtained. These results are obtained using the digital database for screening mammography (\textbf{DDSM}) and the Curated Breast Imaging Subset of DDSM (\textbf{CBIS-DDSM}) that are publicly available datasets.
 
 \section{Biological features}
 % voir page 5 du 2e article sur breast cancer 
@@ -804,9 +815,8 @@ The CLAHE technique is characterized by these following steps \cite{breast-cance
 \begin{enumerate}
 \item Divide the original image into contextual regions of equal size. \\
 	  $\rightarrow$ \textit{Contextual regions} are relevant regions depending on neighbourhood pixels. For example, if we take a region of size 2x2, it is quite hard to extract information from that. The difficulty is then to find regions' sizes which may help.   
-
-\newpage	  
-\item Apply the histogram\footnote{An \textit{histogram} is an accurate representation of the distribution of numerical data. (Wikipedia)} equalization on each region \\ 
+  
+\item Apply the histogram\footnote{An \textit{histogram} is an accurate representation of the distribution of numerical data. (via \textit{Wikipedia} \cite{wiki} definition)} equalization on each region \\ 
 	  $\rightarrow$ \textit{Histogram equalization} is a method in image processing of contrast adjustment using the image's histogram characterized by the following equation \cite{book-digital-processing}: 
 	  $$ g_{i,j} = floor((L-1) \sum_{n=0}^{f_{i,j}} p_{n}) $$ where $g$ is the histogram equalized image, $L$ is the number of possible intensity values, $f$ the image and $p$ the normalized histogram computed by $p_{n} = \frac{\text{pixel numbers with intensity n}}{\text{total number of pixels}}$. 
 	  
@@ -957,9 +967,9 @@ In conclusion, the choice concerning the kernel function is unequivocal, the bes
 % 								MA2 							 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter{Model prototype} \label{sec:CIFAR10-exp}
+\chapter{My experiments: a model prototype} \label{chap:CIFAR10-exp}
 
-After discussing theoretically about the different methods and materials of image classification and recognition, this chapter is tackling a simple image classification model implementation for the non-medical dataset CIFAR-10 \cite{CIFAR10} based on the CNN implementation of Jason Brownlee \cite{CIFAR10-implementation-1} and Dan Nelson \cite{CIFAR10-implementation-2}. Henceforth we can determine the parameters which optimize the evaluation criteria of a predictive model and how it reacts to noise. 
+After discussing theoretically about the different existing methods and materials of image classification and recognition, this chapter is tackling a simple image classification model implementation for the non-medical dataset CIFAR-10 \cite{CIFAR10} based on the CNN implementation of Jason Brownlee \cite{CIFAR10-implementation-1} and Dan Nelson \cite{CIFAR10-implementation-2}. Henceforth we can determine the parameters which optimize the evaluation criteria of a predictive model and how it reacts to noise. 
 
 \section{The CIFAR10 dataset} \label{sec:CIFAR10}
 The CIFAR (Canadian Institute For Advanced Research) created two versions of datasets: CIFAR-10 and CIFAR-100 which differs from the number of image classes that contains the respective datasets. In this work, we will use the CIFAR10 dataset whose involves a collection of images belonging to the following 10 classes: airplanes, cars, birds, cats, deer, dogs, frogs, horses, ships, and trucks illustrated in \autoref{fig:cifar10}.  
@@ -1181,6 +1191,7 @@ Here under are the experiments that have been done in order to encompass all the
 \item \textit{Experiment 6 - Adding Gaussian noise:} 3 runs with the following Gaussian noise rate: $[0.1, 0.2, 0.4]$.
 \end{itemize}
 
+\newpage
 \subsection{Results} 
 
 \textit{N.B.: As we use sampling to avoid multiple large execution times, the results may be quite lower compared to if we have used the whole dataset. Nevertheless, these results can be more significant since the training set is highly imbalanced.}    
@@ -1191,7 +1202,7 @@ What we can see from the results presented in \autoref{fig:cifar_epoch_res} is t
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.6]{Code/ch5-ModelPrototype/figures_result/40epochs_sample_withoutoptimisation.PNG}
-  \caption{Experiment 1 result: model accuracy and lost over epochs.}
+  \caption{Experiment 1 result: model accuracy and lost over epochs. The blue line is the experiment on train set and the orange line on test set.}
   \label{fig:cifar_epoch_res}
 \end{figure}
  
@@ -1319,6 +1330,7 @@ However, for the non-sampling case that the model is reacting well to noise sinc
 When talking about image classification, the most popular model is a convolutional neural network. After creating a baseline CNN, several regularizers have been introduced and have been experimented to observe their impact on our model's accuracy. The best results obtained by each experiment are summarized in the \autoref{table:summary-cifar-10} below. Following these results, dropout regularizer and data augmentation seems to be the most efficient ones. After discussing about a simple non-medical case, we can henceforth tackle medical images using our knowledge about CNNs. 
 
 \begin{center}
+
 \begin{tabular}{|c|c|c|}
   \hline
           & \textbf{ACC without sampling} & \textbf{ACC with sampling} \\
@@ -1336,14 +1348,23 @@ When talking about image classification, the most popular model is a convolution
   Exp 6 (noise) & 76.130\% & 64.760\% \\
   \hline
 \end{tabular}
-\captionof{table}{Summary of the \textbf{best} results obtained for the experiments on CIFAR-10 dataset. These are corresponding to the following parameters : (Exp 1) betweeen 10 and 40 epochs ; (Exp 2) ADAGRAD ; (Exp 3) dropout=0.2, dropout=0 ; (Exp 4) weight decay = 0.001 ; (Exp 5) data aug = yes, (Exp 6) noise=0.1, noise=0. The result highlighted in \textcolor{ForestGreen}{green} is the best result obtained. The result highlighted in \textcolor{red}{red} is the worst result obtained.}
+\captionof{table}{Summary table of the \textbf{best} results obtained for the experiments on CIFAR-10 dataset. These are corresponding to the following parameters : (Exp 1) betweeen 10 and 40 epochs ; (Exp 2) ADAGRAD ; (Exp 3) dropout=0.2, dropout=0 ; (Exp 4) weight decay = 0.001 ; (Exp 5) data aug = yes, (Exp 6) noise=0.1, noise=0. The result highlighted in \textcolor{ForestGreen}{green} is the best result obtained. The result highlighted in \textcolor{red}{red} is the worst result obtained.}
 \label{table:summary-cifar-10}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.45]{Code/ch5-ModelPrototype/figures_result/bar-graph_cifar10_res.png}
+    \caption{Summary graph of the \textbf{best} results obtained for the experiments on CIFAR-10 dataset. The \textcolor{blue}{blue} bars correspond to the results without sampling and the \textcolor{red}{red} bars to the results with sampling.}
+  \label{fig:bar-graph_cifar10_res}
+\end{figure}
+
 \end{center}
 
 
-\chapter{Identification of Leukemia Subtypes from microscopic images}
+\chapter{My experiments: Identification of Leukemia Subtypes from microscopic images} \label{chap:leuk}
 
-Leukemia is a malignant progressive disease that results in high numbers of abnormal blood cells in the bone marrow and other blood-forming organs. These abnormal blood cells suppress the production of normal blood cells leading to multiple symptoms. The main method to detect these abnormal blood cells is from microscopic images of blood's content. Moreover, leukemia is subdivided into a variety of large group which can also be detected by these microscopic images. In this chapter, we first tackle the detection of leukemia as a binary classification (ill/healthy) using the ALL-IDB dataset \cite{ALL-IDB}. In a second step, the different types of leukemia make object of a multi-class image classification problem. Experiments on these different types of leukemia will use the DEMIR-LEUKEMIA dataset \cite{leukemia}. This allows us to distinguish the difference between medical and non-medical images previously studied (CIFAR10). Are the methods the same? Are the regularizers used for non-medical images relevant for the medical ones? This chapter is based on the work of Ahmed et al \cite{leukemia}. 
+After experimenting the created model on a non-medical dataset, this chapter approaches the second main part of the thesis: \textbf{the application on biomedical data}. The following experiments are done on the identification of different leukemia subtypes. 
+Leukemia is a malignant progressive disease that results in high numbers of abnormal blood cells in the bone marrow and other blood-forming organs. These abnormal blood cells suppress the production of normal blood cells leading to multiple symptoms. The main method to detect these abnormal blood cells is from microscopic images of blood's content. Moreover, leukemia is subdivided into a variety of large group which can also be detected by these microscopic images. In this chapter, we first tackle the detection of leukemia as a binary classification (ill/healthy) using the ALL-IDB dataset \cite{ALL-IDB}. In a second step, the different types of leukemia make object of a multi-class image classification problem. Experiments on these different types of leukemia will use the DEMIR-LEUKEMIA dataset \cite{leukemia}. This allows us to \textbf{distinguish the difference between medical and non-medical images} previously studied (CIFAR10). Are the methods the same? Are the regularizers used for non-medical images relevant for the medical ones? This chapter is based on the work of Ahmed et al \cite{leukemia}. 
 
 
 \section{Subtypes of leukemia}
@@ -1356,8 +1377,8 @@ The two main subdivisions of leukemia are acute and chronic forms and can be def
 Acute and chronic leukemia can be subdivided into 2 more classes regarding which kind of blood cells is affected. These 2 classes are called lymphocitic and myelogenous leukemias. 
 
 \begin{itemize}
-\item \textbf{Lymphocitic} leukemia: A type of cancer in which the bone marrow makes too many lymphocytes (white blood cells) \cite{NCI}. 
-\item \textbf{Myelogenous} leukemia: the cancerous change takes place in a type of marrow cell that normally goes on to form red blood cells, some other types of white cells, and platelets \cite{wiki-leukemia}. 
+\item \textbf{Lymphocitic} leukemia: A type of cancer in which the bone marrow makes too many lymphocytes (white blood cells). - following the NCI \cite{NCI} definition. 
+\item \textbf{Myelogenous} leukemia: the cancerous change takes place in a type of marrow cell that normally goes on to form red blood cells, some other types of white cells, and platelets. - following \textit{Wikipedia} \cite{wiki} definition. 
 \end{itemize} 
 
 There exists many more specific leukemia types but we will only approach these 4 main subtypes in the context of this document. These 4 subtypes of leukemia are summed up on \autoref{table:leukemia-subtypes} and illustrated by \autoref{fig:leukemia-subtypes}. 
@@ -1536,15 +1557,14 @@ Moreover, multiple questions are raised from this preprocessing:
 
 \begin{figure}[H]
   \centering
-  \includegraphics[scale=0.5]{figures/preproc-leuk.PNG}
+  \includegraphics[scale=0.6]{figures/preproc-leuk.PNG}
   \caption{Example of preprocessing to an image of the dataset ALL-IDB1 and ALL-IDB2. (a) Image resized to 100x100 pixels, (b) grey-scale applied to the resized image, (c) image contrast increased, (d) histogram equalization applied.}
   \label{fig:preproc-leuk}
 \end{figure}
 
-\newpage
 \subsection{CNN architecture}
 As reminder, CNN is composed of convolution layers, pooling layers, flattening, and
-multilayer perceptron. The number of layers and its respective parameters are chosen based on our previous study on CIFAR10 dataset done in \autoref{sec:CIFAR10-exp} and the article cited above \cite{leukemia}. Here below are described the choices done in the further experiments: 
+multilayer perceptron. The number of layers and its respective parameters are chosen based on our previous study on CIFAR10 dataset done in \autoref{chap:CIFAR10-exp} and the article cited above \cite{leukemia}. Here below are described the choices done in the further experiments: 
 
 \begin{itemize}
 \item \textbf{Convolutional layers:} only 2 convolutional layers as the images are very small, 32 and 64 filters of size 3x3 with ReLU as activation function.  
@@ -1558,7 +1578,7 @@ multilayer perceptron. The number of layers and its respective parameters are ch
 
 $\rightarrow$ Each layer is followed by a Batch normalization. 
 
-
+\newpage
 \section{Experiments and results}
 
 The following experiments are mainly based on the experiments done by Ahmed et al in their article \cite{leukemia}. However, some additional experiments are done to understand better how the model reacts and what are the best configuration to learn and predict better. In addition to my own results, when similar experiments were done, the results obtained by the authors of this article are also taken over in order to compare them and see the impact of the preprocessing. 
@@ -1613,7 +1633,7 @@ In this section, the results of the experiments described in the previous sectio
 
 \fbox{ %fbox est utilisé pour voir les bords de la minipage
 \begin{minipage}[c]{14.5cm}
-\danger  \textbf{The detailed results of the experiments for ALL-IDB1 dataset are available in the appendix \autoref{sec:appendix-case-A}.} It contains detailed graphics, table and description of the results of each experiment done on \textbf{ALL-IDB1 dataset}. Each parameter is approached one by one and interpreted concerning their efficiency and the impact on the model's accuracy. Therefore, note that this current section is a \textbf{summary} of all these interpretations on obtained results for the first dataset ALL-IDB1.  
+\textcolor{BrickRed}{\danger  \textbf{The detailed results of the experiments for ALL-IDB1 dataset are available in the appendix \autoref{sec:appendix-case-A}.}} It contains detailed graphics, table and description of the results of each experiment done on \textbf{ALL-IDB1 dataset}. Each parameter is approached one by one and interpreted concerning their efficiency and the impact on the model's accuracy. Therefore, note that this current section is a \textbf{summary} of all these interpretations on obtained results for the first dataset ALL-IDB1.  
 \end{minipage}
 }
 
@@ -1621,9 +1641,16 @@ In this section, the results of the experiments described in the previous sectio
 
 To summarize the experiments done using ALL-IDB1 dataset, the \autoref{table:summary-allidb1} recapitulates the average results of each experiment for the accuracy on test and train set as well as the loss value for test set. 
 
-As the dataset is very small using small images, using parameters as dropout or noise looks like inefficient given the results obtained. Using the simplest CNN is then best way to learn efficiently. To make the significant features clearer, a preprocessing step using image enhancement (contrast increasing or histogram equalization) seems to be very efficient. Hence, the best result obtained uses the baseline CNN on enhanced images by histogram equalization. We obtain an average of 90.9\% accuracy on test set and a loss value of 0.28. 
+As the dataset is very small using small images, using parameters as dropout or noise looks like inefficient given the results obtained. Using the simplest CNN is then best way to learn efficiently. To make the significant features clearer, a preprocessing step using image enhancement (contrast increasing or histogram equalization) seems to be very efficient. It highlights well the edges of the blood cell which is the main feature of these images. Hence, the best result obtained uses the baseline CNN on enhanced images by histogram equalization. We obtain an average of 90.9\% accuracy on test set and a loss value of 0.28. 
 
-On the other hand, the worst result is obtained by adding a huge value of noise (0.8). We obtain an average of 54.54\% accuracy on test set and a loss value of 7.32. This average accuracy is also obtained when using dropout without data augmentation. This shows how much using dropout is bad when having such a small dataset (comparable to adding 0.8 of gaussian noise!).  
+On the other hand, the worst result is obtained by using greyscale filter which means that color feature is quite important to detect specificities of blood cells. We obtain an average accuracy of 51.81\%. This worst result is followed by the experiment where we add a huge value of noise (0.8). We obtain an average of 54.54\% accuracy on test set and a loss value of 7.32. When using that large amount of noise, the model cannot detect well the different features and then has a large error rate. This average accuracy is also obtained when using dropout without data augmentation. This shows how much using dropout is bad when having such a small dataset (comparable to adding 0.8 of gaussian noise!).  
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.3]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB1/all_idb1-best_worst}
+  \caption{Accuracy evolution on test set of the best and the worst result for ALL-IDB1. The worst result is the experiment using greyscale filter (\textcolor{blue}{blue} line). The best result is the experiment using histogram equalizer (\textcolor{ForestGreen}{green} line).}
+  \label{fig:all_idb1-best_worst}
+\end{figure}
 
 
 \begin{center}
@@ -1631,29 +1658,37 @@ On the other hand, the worst result is obtained by adding a huge value of noise 
   \hline
           & \textbf{ACC-TEST} & \textbf{LOSS-TEST} & \textbf{ACC-TRAIN} \\
   \hline
-  Exp A.1 & 65.45\% & 3.46 & 100\% \\
+  Exp A.1 (baseline)& 65.45\% & 3.46 & 100\% \\
   \hline
-  Exp A.2 (grey) & 51.81\% & 6.09 & 100\%  \\ 
+  Exp A.2 (grey) & \textcolor{red}{51.81\%} & 6.09 & 100\%  \\ 
   Exp A.2 (contrast) & 84.54\% & 1.43 & 100\% \\ 
   Exp A.2 (hist. eq.) & \textcolor{ForestGreen}{90.9\%} & \textcolor{ForestGreen}{0.28} & 100\% \\ 
   \hline
-  Exp A.3 & 59.08\% & 2.36 & 100\% \\
+  Exp A.3 (200x200)& 59.08\% & 2.36 & 100\% \\
   \hline
   Exp A.4 (noise=0.1) & 77.27\% & 0.67 & 100\%  \\ 
   Exp A.4 (noise=0.2) & 63.63\% & 1.64 & 100\% \\ 
   Exp A.4 (noise=0.4) & 59.09\% & 1.75 & 97.67\% \\
   Exp A.4 (noise=0.6) & 59.09\% & 4.33 & 94.18\%  \\ 
-  Exp A.4 (noise=0.8) & \textcolor{red}{54.54\%} & \textcolor{red}{7.32} & 84.88\% \\
+  Exp A.4 (noise=0.8) & 54.54\% & \textcolor{red}{7.32} & 84.88\% \\
   \hline 
-  Exp A.5 & \textcolor{red}{54.54\%} & 5.78 & 61.85\% \\
+  Exp A.5 (Dropout)& 54.54\% & 5.78 & 61.85\% \\
   \hline
-  Exp A.6 & 72.26\% & 1.31 & 99.64\% \\
+  Exp A.6 (Data aug)& 72.26\% & 1.31 & 99.64\% \\
   \hline
-  Exp A.7 & 65.9\% & 1.16 & 64.99\% \\ 
+  Exp A.7 (Dropout \& Data aug)& 65.9\% & 1.16 & 64.99\% \\ 
   \hline
 \end{tabular}
-\captionof{table}{Summary of the results obtained for ALL-IDB1. The results presented in this table are the average results for each experiment. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set. The result highlighted in \textcolor{ForestGreen}{green} is the best result obtained. The result highlighted in \textcolor{red}{red} is the worst result obtained.}
+\captionof{table}{Summary table of the results obtained for ALL-IDB1. The results presented in this table are the average results for each experiment. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set. The result highlighted in \textcolor{ForestGreen}{green} is the best result obtained. The result highlighted in \textcolor{red}{red} is the worst result obtained.}
 \label{table:summary-allidb1}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB1/all_idb1-summary.png}
+  \caption{Summary graph of the accuracy results obtained on test set for ALL-IDB1.}
+  \label{fig:summary_res_ALL-IDB1}
+\end{figure}
+
 \end{center}
 
 
@@ -1663,7 +1698,7 @@ On the other hand, the worst result is obtained by adding a huge value of noise 
 
 \fbox{ %fbox est utilisé pour voir les bords de la minipage
 \begin{minipage}[c]{14.5cm}
-\danger  \textbf{The detailed results of the experiments for ALL-IDB2 dataset are available in the appendix \autoref{sec:appendix-case-B}.} It contains detailed graphics, table and description of the results of each experiment done on \textbf{ALL-IDB2 dataset}. Each parameter is approached one by one and interpreted concerning their efficiency and the impact on the model's accuracy. Therefore, note that this current section is a \textbf{summary} of all these interpretations on obtained results for the second dataset ALL-IDB2.  
+\textcolor{BrickRed}{\danger  \textbf{The detailed results of the experiments for ALL-IDB2 dataset are available in the appendix \autoref{sec:appendix-case-B}.}} It contains detailed graphics, table and description of the results of each experiment done on \textbf{ALL-IDB2 dataset}. Each parameter is approached one by one and interpreted concerning their efficiency and the impact on the model's accuracy. Therefore, note that this current section is a \textbf{summary} of all these interpretations on obtained results for the second dataset ALL-IDB2.  
 \end{minipage}
 }
 
@@ -1672,24 +1707,33 @@ On the other hand, the worst result is obtained by adding a huge value of noise 
 
 To conclude the different experiments done using ALL-IDB2 dataset, the preprocessing step using image segmentation do not show a clear advantage in comparison with the experiments done using ALL-IDB1 with no segmentation. Overall, the results are quite equivalent. 
 
-Using contrast augmentation (whether with arbitrary value or with histogram equalization) is the best image enhancement technique to have great performance. On the other hand, adding a huge value of noise still gets the worst results. This conclusion is then corresponding to using the non-segmented dataset (ALL-IDB1). 
+Using contrast augmentation (whether with arbitrary value or with histogram equalization) is the best image enhancement technique to have great performance. Same as ALL-IDB1, using such technique increases the visibility of edges and then facilitates the model's learning. On the other hand, adding a huge value of noise still gets the worst results for the same reasons as ALL-IDB1. This conclusion is then corresponding to using the non-segmented dataset (ALL-IDB1). 
 
 However, some clear differences can be observed on some experiments such as the experiment A.2 or A.3 which demonstrate way more good performances by using segmentation. Indeed, the images of ALL-IDB1 are containing more edges and details to highlight as we don't segment them. Therefore, using the experiment 2 (which brings out these edges) or using the experiment 3 (that enlarges these images and then makes the details more visible) are more efficient for the non-segmented dataset ALL-IDB1. 
 
 The \autoref{table:summary-allidb2} summarizes all the average results obtained during the experiments done with ALL-IDB2. 
 
 \begin{center}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.27]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB2/all_idb2-best_worst.png}
+  \caption{Accuracy evolution on test set of the best and the worst result for ALL-IDB2. The worst result is the experiment with noise=0.8 (\textcolor{Orchid}{purple} line). The best result is the experiment using constrast increased filter (\textcolor{orange}{orange} line).}
+  \label{fig:all_idb2-best_worst}
+\end{figure}
+
+
 \begin{tabular}{|c|c|c|c|}
   \hline
           & \textbf{ACC-TEST} & \textbf{LOSS-TEST} & \textbf{ACC-TRAIN} \\
   \hline
-  Exp B.1 & 61.91\% & 1.86 & 100\% \\
+  Exp B.1 (baseline) & 61.91\% & 1.86 & 100\% \\
   \hline
   Exp B.2 (grey) & 71.53\% & 1.09 & 99.9\%  \\ 
   Exp B.2 (contrast) & \textcolor{ForestGreen}{80.38\%} & \textcolor{ForestGreen}{0.47} & 100\% \\ 
   Exp B.2 (hist. eq.) & 73.84\% & 0.95 & 100\% \\ 
   \hline
-  Exp B.3 & 66.92\% & 0.804 & 99.902\% \\
+  Exp B.3 (200x200) & 66.92\% & 0.804 & 99.902\% \\
   \hline
   Exp B.4 (noise=0.1) & 71.15\% & 1.41 & 100\%  \\ 
   Exp B.4 (noise=0.2) & 63.46\% & 2.34 & 99.5\% \\ 
@@ -1697,15 +1741,23 @@ The \autoref{table:summary-allidb2} summarizes all the average results obtained 
   Exp B.4 (noise=0.6) & 59.09\% & 4.33 & 97.55\%  \\ 
   Exp B.4 (noise=0.8) & \textcolor{red}{46.13\%} & \textcolor{red}{7.12} & 94.71\% \\
   \hline 
-  Exp B.5 & 55.37\% & 1.9 & 68.12\% \\
+  Exp B.5 (Dropout) & 55.37\% & 1.9 & 68.12\% \\
   \hline
-  Exp B.6 & 71.91\% & 1.198 & 99.9\% \\
+  Exp B.6 (Data aug) & 71.91\% & 1.198 & 99.9\% \\
   \hline
-  Exp B.7 & 64.61\% & 0.97 & 65.24\% \\ 
+  Exp B.7 (Dropout \& Data aug) & 64.61\% & 0.97 & 65.24\% \\ 
   \hline
 \end{tabular}
 \captionof{table}{Summary of the results obtained for ALL-IDB2. The results presented in this table are the average results for each experiment. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set. The result highlighted in \textcolor{ForestGreen}{green} is the best result obtained. The result highlighted in \textcolor{red}{red} is the worst result obtained.}
 \label{table:summary-allidb2}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Code/ch6-LeukemiaSubtypes/figures_result/ALL_IDB2/all_idb2-summary.png}
+  \caption{Summary graph of the accuracy results obtained on test set for ALL-IDB2.}
+  \label{fig:summary_res_ALL-IDB2}
+\end{figure}
+
 \end{center}
 
 
@@ -1715,44 +1767,62 @@ The \autoref{table:summary-allidb2} summarizes all the average results obtained 
 
 \fbox{ %fbox est utilisé pour voir les bords de la minipage
 \begin{minipage}[c]{14.5cm}
-\danger  \textbf{The detailed results of the experiments for ALL-IDB and DEMIR-LEUKEMIA datasets are available in the appendix \autoref{sec:appendix-case-C}.} It contains detailed graphics, table and description of the results of each experiment done on \textbf{ALL-IDB and DEMIR LEUKEMIA datasets}. Each parameter is approached one by one and interpreted concerning their efficiency and the impact on the model's accuracy. Therefore, note that this current section is a \textbf{summary} of all these interpretations on obtained results for the datasets ALL-IDB1 and DEMIR-LEUKEMIA.  
+\textcolor{BrickRed}{\danger  \textbf{The detailed results of the experiments for ALL-IDB and DEMIR-LEUKEMIA datasets are available in the appendix \autoref{sec:appendix-case-C}.}} It contains detailed graphics, table and description of the results of each experiment done on \textbf{ALL-IDB and DEMIR LEUKEMIA datasets}. Each parameter is approached one by one and interpreted concerning their efficiency and the impact on the model's accuracy. Therefore, note that this current section is a \textbf{summary} of all these interpretations on obtained results for the datasets ALL-IDB1 and DEMIR-LEUKEMIA.  
 \end{minipage}
 }
 
 \vspace{0.5cm}
 
-The \autoref{table:summary-allidb-demir} summarizes the results obtained for the identification of leukemia subtypes experiments. This time, the results obtained by using data augmentation get the highest performance. Nevertheless, the experiments using image enhancement are also efficient whether by adding filters (greyscale, contrast increase or histogram equalization) or by increasing the size of the images. One more time, it is the experiment B.4 where we add a large noise value that shows the worst performance. Moreover, it seems that the dataset is still not big enough for dropout to be an efficient technique.
+The \autoref{table:summary-allidb-demir} summarizes the results obtained for the identification of leukemia subtypes experiments. This time, the results obtained by using data augmentation get the highest performance which confirms the efficiency of data augmentation technique. Nevertheless, the experiments using image enhancement are also efficient whether by adding filters (greyscale, contrast increase or histogram equalization) or by increasing the size of the images. Following the three tackled cases, increasing the sample's size and using filters should then be validated methods to increase the performance of the model. One more time, it is the experiment C.4 where we add a large noise value that shows the worst performance. Remind that in this case, an accuracy of 20\% signifies the randomness since there are 5 classes. This shows that the performance is worst when adding that large noise value than a model that picks a class randomly. Moreover, it seems that the dataset is still not big enough for dropout to be an efficient technique.
 
 Thus, overall there is no real difference that we can observe from the experiments done on ALL-IDB (binary classification) and the identification of leukemia subtypes (5 classes). In both cases, data augmentation and image enhancement are the techniques that show the best performances.    
 
 \begin{center}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.27]{Code/ch6-LeukemiaSubtypes/figures_result/LEUK-SUBTYPES/leukSub-best_worst.png}
+  \caption{Accuracy evolution on test set of the best and the worst result for ALL-IDB and DEMIR-LEUKEMIA. The worst result is the experiment with noise=0.8 (\textcolor{Orchid}{purple} line). The best result is the experiment using data augmentation (\textbf{black} line).}
+  \label{fig:leukSub-best_worst}
+\end{figure}
+
+
 \begin{tabular}{|c|c|c|c|}
   \hline
           & \textbf{ACC-TEST} & \textbf{LOSS-TEST} & \textbf{ACC-TRAIN} \\
   \hline
-  Exp B.1 & 49.61\% & 2.93 & 99.69\% \\
+  Exp C.1 (baseline) & 49.61\% & 2.93 & 99.69\% \\
   \hline
-  Exp B.2 (grey) & 59.01\% & 2.29 & 99.86\%  \\ 
-  Exp B.2 (contrast) & 58.68\% & 2.05 & 99.72\% \\ 
-  Exp B.2 (hist. eq.) & 61.74\% & 1.63 & 99.72\% \\ 
+  Exp C.2 (grey) & 59.01\% & 2.29 & 99.86\%  \\ 
+  Exp C.2 (contrast) & 58.68\% & 2.05 & 99.72\% \\ 
+  Exp C.2 (hist. eq.) & 61.74\% & 1.63 & 99.72\% \\ 
   \hline
-  Exp B.3 & 59.99\% & \textcolor{ForestGreen}{1.29} & 99.69\% \\
+  Exp C.3 (200x200) & 59.99\% & \textcolor{ForestGreen}{1.29} & 99.69\% \\
   \hline
-  Exp B.4 (noise=0.1) & 51.36\% & 2.83 & 99.59\%  \\ 
-  Exp B.4 (noise=0.2) & 32.78\% & 4.23 & 98.22\% \\ 
-  Exp B.4 (noise=0.4) & 28.41\% & 4.92 & 97.81\% \\
-  Exp B.4 (noise=0.6) & 25.68\% & 5.64 & 96.17\%  \\ 
-  Exp B.4 (noise=0.8) & \textcolor{red}{14.75\%} & \textcolor{red}{8.80} & 94.67\% \\
+  Exp C.4 (noise=0.1) & 51.36\% & 2.83 & 99.59\%  \\ 
+  Exp C.4 (noise=0.2) & 32.78\% & 4.23 & 98.22\% \\ 
+  Exp C.4 (noise=0.4) & 28.41\% & 4.92 & 97.81\% \\
+  Exp C.4 (noise=0.6) & 25.68\% & 5.64 & 96.17\%  \\ 
+  Exp C.4 (noise=0.8) & \textcolor{red}{14.75\%} & \textcolor{red}{8.80} & 94.67\% \\
   \hline 
-  Exp B.5 & 25.89\% & 3.74 & 49.58\% \\
+  Exp C.5 (Dropout) & 25.89\% & 3.74 & 49.58\% \\
   \hline
-  Exp B.6 & \textcolor{ForestGreen}{71.91\%} & 1.556 & 97.2\% \\
+  Exp C.6 (Data aug) & \textcolor{ForestGreen}{71.91\%} & 1.556 & 97.2\% \\
   \hline
-  Exp B.7 & 31.41\% & 1.874 & 53.79\% \\ 
+  Exp C.7 (Dropout \& Data aug) & 31.41\% & 1.874 & 53.79\% \\ 
   \hline
 \end{tabular}
 \captionof{table}{Summary of the results obtained for ALL-IDB + DEMIR-LEUKEMIA datasets. The results presented in this table are the average results for each experiment. ACC-TEST is the accuracy result on test set, LOSS-TEST the value of cost function on test set and ACC-TRAIN the accuracy result on train set. The result highlighted in \textcolor{ForestGreen}{green} is the best result obtained. The result highlighted in \textcolor{red}{red} is the worst result obtained.}
 \label{table:summary-allidb-demir}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{Code/ch6-LeukemiaSubtypes/figures_result/LEUK-SUBTYPES/leukSub-summary.png}
+  \caption{Summary graph of the accuracy results obtained on test set for ALL-IDB and DEMIR-LEUKEMIA.}
+  \label{fig:summary_res-leukSub}
+\end{figure}
+
+
 \end{center}
 
 \newpage
@@ -1762,17 +1832,19 @@ To conclude the study of identification of leukemia subtypes from the multiple e
 
 Nevertheless, even if our datasets were not perfectly cleaned and formatted, we have obtained some convincing and motivating results referring to the results obtained by the authors of the article \cite{leukemia}. Overall, the experiments that performed best were obtained by using image enhancement and data augmentation. These techniques were used to highlight the edges and important features of the images or even to increase the number of samples of the dataset. These experiments were one more time some processing on the dataset and not on the model. It reinforces again the assertions on the importance of having a good dataset made previously. In contrary to this, the worst performance were obtained when using dropout on the CNN model. But again, it was due to the dataset that were not conform to the use of dropout regularization and not due to the technique itself (for example, we have seen that dropout was one of the best regularization technique on CIFAR-10 dataset constituted of 60000 images). \\ 
 
-Finally, what we can conclude from all these experiments is that the architecture of the CNN constitutes in the end a low impact on the total performance. Of course, it is still important to have an architecture that suits well with the type of dataset but the impact of the structure and the content of the dataset dominates and constitutes a huge percentage of the factors that make the model performing good.  
+Finally, what we can conclude from all these experiments is that the architecture of the CNN constitutes in the end a low impact on the total performance. Of course, it is still important to have an architecture that suits well with the type of dataset but the impact of the structure and the content of the dataset dominates and constitutes a huge percentage of the factors that make the model performing good.  \\
+
+However, how can we enhance these results and make it more efficient? Is there further methods that can make it more reliable? The next chapters discuss about that. 
 
 
-\chapter{Interactive Image Labelling and Active Learning}
+\chapter{Discussion: Interactive Image Labelling and Active Learning} \label{chap:active}
 
 % Introduction: parler que pour l'instant image classification est seulement utilisée en tant que computer-aided mais qu'il faut l'avis d'un expert -> on va utiliser ça pour améliorer notre modèle 
 % http://burrsettles.com/pub/settles.activelearning.pdf 
 % http://proceedings.mlr.press/v16/settles11a/settles11a.pdf
 % https://e-archivo.uc3m.es/bitstream/handle/10016/28068/visually_ijgi_2018.pdf?sequence=1&isAllowed=y
 
-Nowadays in the medical field, image recognition is mostly used as computer-aided detection in addition to an expert point-of-view. Nevertheless, the final goal is that the computer detection can be used independently and actually it constitutes a big challenge. The idea is that we use the professional expertise to enhance the model abilities to recognize images. We then introduce the concept of \textit{Interactive Image Labelling} and its relative method called \textit{Active Learning}. In this chapter, we will then first define those concepts and its relative areas. We will also discuss about how it works and the methodology of active learning. Finally, we will describe how it actually performs and what are the limitations of such techniques. 
+The results previously obtained may be convincing, though the objective is to improve again and again. Nowadays in the medical field, image recognition is mostly used as computer-aided detection in addition to an expert point-of-view. Nevertheless, the final goal is that the computer detection can be used independently and actually it constitutes a big challenge. The idea is that we use the professional expertise to enhance the model abilities to recognize images. We then introduce the concept of \textit{Interactive Image Labelling} and its relative method called \textit{Active Learning}. In this chapter, we will then first define those concepts and its relative areas. We will also discuss about how it works and the methodology of active learning. Finally, we will describe how it actually performs and what are the limitations of such techniques. 
 
 
 \section{What is interactive labelling?}
@@ -1813,7 +1885,7 @@ But why does semi-supervised learning techniques work? Following the survey of \
 \item \textbf{Smoothness assumption:} for two input points $x, x' \in X$ that are close by in
 the input space, the corresponding labels $y, y'$ should be the same. \cite{SSL-survey} That means that unlabelled points near a labelled point should have the same label as the labelled point.    
 \item \textbf{Low-density assumption:} (can be considered as the counterpart of the smoothness assumption) the decision boundary of a classifier should preferably pass through low-density regions in the input space \cite{SSL-survey}. 
-\item \textbf{Manifold assumption:} first, manifold are topological spaces that are locally Euclidean. This assumption states that the data lie approximately on a manifold of much lower dimension than the input space \cite{wiki-ssl}.  For instance, when we consider a 3-dimensional input space where all points lie on the surface of a sphere, the data can be said to lie on a 2-dimensional manifold \cite{SSL-survey}. 
+\item \textbf{Manifold assumption:} first, manifold are topological spaces that are locally Euclidean. This assumption states that the data lie approximately on a manifold of much lower dimension than the input space \cite{wiki}.  For instance, when we consider a 3-dimensional input space where all points lie on the surface of a sphere, the data can be said to lie on a 2-dimensional manifold \cite{SSL-survey}. 
 \end{itemize}
 
 \begin{figure}[H]
@@ -1877,7 +1949,7 @@ $$ E(S) = - \sum_{j=1}^{k} p_j log_{2}(p_j) $$
 
 where $S$ is the source that produces $k$ messages (i.e. labels), $p_j$ is the probability that that the $j^{th}$ element appears in the dataset. 
 
-The uncertainty sampling strategy can also consider the \textbf{least confident} where the learner selects the instance for which it has the least confidence in its most likely label. The least confident instance is defined by the class label with the highest posterior probability\footnote{Following \textit{Wikipedia}, the posterior probability of a random event or an uncertain proposition is the conditional probability that is assigned after the relevant evidence or background is taken into account.} under the model. 
+The uncertainty sampling strategy can also consider the \textbf{least confident} where the learner selects the instance for which it has the least confidence in its most likely label. The least confident instance is defined by the class label with the highest posterior probability\footnote{Following \textit{Wikipedia} \cite{wiki}, the posterior probability of a random event or an uncertain proposition is the conditional probability that is assigned after the relevant evidence or background is taken into account.} under the model. 
 
 However, using the least confident strategy may be too poor since it only takes in consideration the most probable label and disregards the other label probabilities. To overcome this problem, the uncertainty sampling strategy can also be based on \textbf{margin} that selects the instance that has the smallest difference between the first (i.e. the one found by the least confident strategy) and second most probable labels. 
 
@@ -1942,6 +2014,74 @@ Last but not least, active learning requires the intervention of an annotator to
 
 Nevertheless, it is important to remind that results that have been obtained by multiple researchers are very encouraging for the future of active learning technology. 
 
+
+
+
+\chapter{Conclusion and further work} \label{chap:conclusion}
+Image classification, artificial intelligence, machine learning, convolutional neural networks, performance, ... All these terms that have been approached and have constituted the keys of the thesis. To conclude the document, let's make an overview of what has been done as well as what could be done for a future work in the domain of image classification whether on classical data or on medical data. 
+
+
+\section{Thesis summary}
+\subsection{Image classification problem summary \protect\footnote{Corresponds to the summary of \autoref{chap:intro} (Introduction) to \autoref{chap:breast-cancer} (Breast cancer detection) included.}}
+%Recapitulation du problème (chap 1-4) 
+The thesis approaches the problem of image classification also called "image identification" or "image recognition".  Identifying the content of an image automatically is nowadays a very challenging problem and concerns all fields in the world. This image classification problem takes on greater importance when it is linked to the medical domain by, for instance, detecting cancer tumours from microscopic images. In this case, the human health comes into play and makes the business more serious. Nevertheless, for the medical field, automated image recognition technology is only used as computer-aided detection to the experts for the time being. Of course, the final objective is that the computer has the capability to be autonomous and reaches an accuracy of 100\%. Thus, identify an image's content requires an accurate methodology and each optimization that can be done to identify better or/and faster an image is welcome. 
+
+The image recognition methodology is described by machine learning and deep learning methods such as neural networks, in particular convolutional neural networks. We have observed that this kind of model cannot work alone and also needs a huge preprocessing work on images such as image enhancement or segmentation to extract interesting features. Thus, to do this pre-processing steps, we need to acquire conform datasets with enough data to train our model. All this proves the complexity of the image classification problem because all these elements need to be taken in account and cannot be ignored to have reliable results.    
+
+\subsection{Contribution summary \protect\footnote{Corresponds to the summary of \autoref{chap:CIFAR10-exp} (Model prototype) and \autoref{chap:leuk} (Leukemia Subtypes identification).}}
+%Contribution (chap 5-6): paramètres du modèle sur data normale et médicale -> résultats ? 
+How to optimise a CNN model? How to get the best results? These are the main purposes of the thesis. We have discussed about the parameters that could improve the accuracy of a CNN learning model first by experimenting our model on classical images dataset (CIFAR-10). The model that we have used was built from the simplest CNN structure so that changes made to the parameters are significantly observable. Before using our model, the dataset has been preprocessed using sampling and one hot encoding. Sample preprocessing step allowed us to observe how the results differ when using smaller dataset. Indeed, for the number of classes considered, using only one batch reduces the model's accuracy by an average of 10\%. The impact of sampling is then notable. Afterwards, CNN model's parameters that we have taken in account were the epochs number, the optimizer, dropout values, weight decay values, the use of data augmentation and the presence of Gaussian noise. Data augmentation and dropout have demonstrated the best results. 
+
+Subsequently, we have made experiences on medical images in particular on microscopic images of bone marrows and other blood-forming organs to detect abnormal blood cells in order to classify different leukemia subtypes (ALL, AML, CLL, CML). The parameters that we have considered this time are filters (contrast enhancement, histogram equalizer, greyscale), image's size, presence of noise, dropout and use of data augmentation. Same as CIFAR-10 dataset, data augmentation has shown the better result but this time filters has also proved its effectiveness by highlighting edges of tumours. Moreover, we have denoted the importance of the dataset structure and content which probably constitutes the most important step to obtain reliable results. That proves the significance of preprocessing steps in addition to a good CNN architecture.     
+
+
+
+\subsection{Limitations summary \protect\footnote{Corresponds to the summary of \autoref{chap:active} (Active Learning).}}
+%Limitations (chap 7): comment améliorer ses résultats -> active learning 
+Using exclusively the CNN model reaches limitations very quickly. The purpose of machine learning method on medical image recognition problem is to be pulled away from its status of "computer-aided detection". Thus, we have approached a new method called "Active Learning" that can enhance the interactive image labelling capacity of a CNN model. This method gathers the informations obtained by the model and the informations of an oracle (most of the time, a human expert) in order to improve the model by querying to the oracle new informations that could help on labelling new data. Active learning then uses labelled and unlabelled data for the purpose of reinforce the model's knowledge. That can make you think about semi-supervised learning and reinforcement learning. We have defined the most common strategies and query methods. Some papers have worked on it and have proven the efficiency of such a method compared to a classical supervised learning method by convincing results. Nevertheless, active learning remains very fuzzy by its vulnerability to biases and its expensiveness. 
+
+\section{Further work: neural networks extension}
+% https://www.pyimagesearch.com/2019/02/04/keras-multiple-inputs-and-mixed-data/ 
+% https://towardsdatascience.com/the-multi-channel-neural-network-26551bdfab6c
+% https://stats.stackexchange.com/questions/378338/how-can-i-mix-image-and-data-into-a-cnn
+
+\subsection{Multiple inputs and mixed data}
+% dans ce mémoire on a focus sur l'image mais image = une variable parmi tant d'autres
+% parler des différentes variables qui peuvent être utilisées (numeric, categorical, ...) 
+The content of the thesis focuses only on the image variable to make predictions on a problem but we have to note that \textbf{the image is one variable among many others}. For instance, if we come back to the breast cancer detection problem, in the \autoref{chap:breast-cancer} we have only taken in account the mammograms images ignoring others variables that can influence and may have a huge impact on the prediction result (in this case, if the patient has breast cancer or not). These variables can be the age, the global health, the height, the weight, gender, ... of the patient which are in particular \textbf{numerical and categorical data}. Thus, in addition to images data, we can add informations by using these data. The objective is to keep the efficiency of the CNN architecture used for images and extend it by adding this new information from non-image data. 
+
+% expliquer le concept de multiple inputs & mixed data (définir ces termes)  
+When giving multiple types of independent data to our machine learning model, we call them \textbf{mixed data}. In the previous example of breast cancer detection, the mixed data is composed by numerical data (age, height, weight,...), categorical data (gender) and of course image data (mammogram radiography images). Non-image data may be used such as time series or texts data. For example, the problem of emotion recognition involves multiple types of data: facial expressions (visual), the voice (audio), or the meaning of words (text). The 2 first can be translated into images and managed by CNN but the meaning of words needs to be processed by techniques such as Natural Language Processing (NLP).  
+
+Using mixed data is then obviously challenging since it is needed to use more preprocessing steps for non-image data such as normalization or scaling in addition to those done for images. Mixed data is simply illustrated in the \autoref{fig:mixed-data}. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{figures/mixed-data.png}
+  \caption{Scheme of mixed data given to machine learning model to enhance predictions. Figure extracted from \cite{mixed-data}}
+  \label{fig:mixed-data}
+\end{figure}
+
+\subsection{How and why would it work?}
+% => étapes load, pre-process, prepare 
+% expliquer pourquoi ça marcherait => pseudo-code qui résume le model 
+To use mixed data, we need to change the architecture of the machine learning model. Overall, the idea is to use two layers to manage on one side image data and on the other non-image data which creates multiple branches in the model that merges to produce one (or multiple) output(s). Thus, data must be loaded and preprocessed in order to be applied to the multi-input network. 
+
+We have seen that CNN is optimized for images and changing the CNN architecture directly would have been a loss of time and performance. The idea is then to use multiple models: one for image data which will be obviously a CNN as well as one for non-image data. Concerning this last, a multi-layer perceptron (MLP) is usually used when using numerical data but can differs depending of data type (e.g. NLP model for texts). The model is then defined by two branches including a CNN and another network (e.g. MLP, NLP). Their respective outputs are fed into a common set of Dense layers and are then combined  using for example concatenation to finally obtain a multi-inputs network model. The \autoref{fig:multiple-inputs-model} recapitulates and illustrates the scheme of the Machine Learning model architecture. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.7]{figures/multiple-inputs-model.png}
+  \caption{Scheme of a multi-inputs network model.}
+  \label{fig:multiple-inputs-model}
+\end{figure}
+       
+
+\subsection{Further work purpose}
+% conclure la section en ouvrant le sujet sur différents travaux https://www.hindawi.com/journals/jece/2017/9240407/ mais pas grand chose donc ça peut être du future work 
+We have noticed all along the thesis that the image classification problem concerns a large area of fields. From social to medical domain, we have focused on the image variable but we have seen the importance of other types of variables such as numerical or categorical data. However, combining multiple types of data is still a very touchy and in full expansion subject. 
+
+Nowadays, few papers and articles approach this while it can greatly improve the efficiency of machine learning techniques. For instance, \textit{Yu Sun et al.} are the authors of one of the few articles on this subject called "Multi-Input Convolutional Neural Network for Flower Grading" \cite{flowers-article} written recently in May 2020. This article approaches this extension of CNN using a Multi-Input CNN for flowers grading and shows the improvement of the prediction's accuracy that goes from 89\% to 94\% when using this Multi-Input CNN. Therefore to complete this thesis, further work on the combination of multiple inputs data by using multiple models may be a great improvement topic to discuss in particular for critical fields such as medical area.  
 
 
 % BIBLIOGRAPHY
